@@ -27,7 +27,7 @@
 
 function get($route, $callback)
 {
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD') {
         route($route, $callback);
     }
 }
