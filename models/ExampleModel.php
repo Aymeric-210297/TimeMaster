@@ -23,8 +23,7 @@ class ExampleModel
 
             return $sth->fetch();
         } catch (PDOException $e) {
-            error_log("Impossible de récupérer l'exemple: " . $e->getMessage());
-            render("out", "errors/500", [], 500);
+            renderError("out", 500, "Impossible de récupérer l'exemple", $e);
         }
     }
 }

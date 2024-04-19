@@ -13,6 +13,7 @@ require_once __DIR__ . "/utils/libs/router.php";
 
 // Functions
 require_once __DIR__ . "/utils/functions/render.php";
+require_once __DIR__ . "/utils/functions/renderError.php";
 require_once __DIR__ . "/utils/functions/redirect.php";
 
 /**
@@ -37,5 +38,5 @@ require_once __DIR__ . "/controllers/HomeController.php";
 
 // Handle 404 error
 any('/404', function () {
-    render("out", "errors/404", [], 404);
+    renderError("out", 404);
 });
