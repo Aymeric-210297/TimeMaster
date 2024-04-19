@@ -1,0 +1,9 @@
+# Logs
+logs/
+
+# Environment variables
+.env
+
+# Composer
+composer.phar
+/vendor/
