@@ -2,6 +2,7 @@ drop table if exists
     utilisateur_etablissement,
     utilisateur,
     salleClasse_matiere,
+    salleClasse_disponibilite,
     professeur_salleClasse,
     donnee,
     salleClasse,
@@ -196,7 +197,6 @@ create table salleClasse
     salleClasseRef           varchar(255)                      not null,
     salleClasseNombrePlace   int                               null,
     salleClasseProjecteur    tinyint(1)                        null,
-    salleClasseDisponibilite enum ('unavailable', 'available') null,
     etablissementId          int                               not null,
 
     unique (salleClasseRef, etablissementId),
@@ -234,6 +234,21 @@ create table professeur_salleClasse
 
     unique (professeurId, salleClasseId),
     foreign key (professeurId) references professeur (professeurId),
+    foreign key (salleClasseId) references salleClasse (salleClasseId)
+);
+
+create table salleClasse_disponibilite
+(
+    salleClasseDisponibiliteId int auto_increment
+        primary key,
+    salleClasseId              int                               not null,
+    creneauId                  int                               not null,
+    jourId                     int                               not null,
+    salleClasseDisponibilite   enum ('unavailable', 'available') not null,
+
+    unique (salleClasseId, creneauId, jourId),
+    foreign key (creneauId) references creneau (creneauId),
+    foreign key (jourId) references jour (jourId),
     foreign key (salleClasseId) references salleClasse (salleClasseId)
 );
 

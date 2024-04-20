@@ -12,8 +12,11 @@ session_start();
 require_once __DIR__ . "/utils/libs/router.php";
 
 // Functions
+require_once __DIR__ . "/utils/functions/logError.php";
 require_once __DIR__ . "/utils/functions/render.php";
-require_once __DIR__ . "/utils/functions/renderError.php";
+
+require_once __DIR__ . "/utils/functions/create500ResponseCallback.php";
+
 require_once __DIR__ . "/utils/functions/redirect.php";
 
 /**
@@ -31,6 +34,12 @@ require_once __DIR__ . "/configs/app.php";
 require_once __DIR__ . "/configs/database.php";
 
 /**
+ * Models
+ */
+
+require_once __DIR__ . "/models/BaseModel.php";
+
+/**
  * Controllers
  */
 
@@ -38,5 +47,5 @@ require_once __DIR__ . "/controllers/HomeController.php";
 
 // Handle 404 error
 any('/404', function () {
-    renderError("out", 404);
+    render("out", "errors/404");
 });
