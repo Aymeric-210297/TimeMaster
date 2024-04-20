@@ -4,7 +4,8 @@
 
 
 
-function afficherTableau($tab, $separateur = ' ') {
+function afficherTableau($tab, $separateur = ' ')
+{
     $rows = count($tab);
     $cols = count($tab[0]);
     echo "\n";
@@ -24,15 +25,17 @@ function afficherTableau($tab, $separateur = ' ') {
 
 
 
-function PrintTabEtablissement($tab){
-    for ($i=0; $i < count($tab); $i++) { 
+function PrintTabEtablissement($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
         echo $tab[$i][0] . " | ";
         echo $tab[$i][1] . " ";
 
     }
 }
-function PrintTabUtilisateur($tab){
-    for ($i=0; $i < count($tab); $i++) { 
+function PrintTabUtilisateur($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
         echo $tab[$i][0] . " ";
         echo $tab[$i][1] . " ";
         echo $tab[$i][2] . " ";
@@ -41,8 +44,9 @@ function PrintTabUtilisateur($tab){
         echo "\n";
     }
 }
-function PrintTabProf($tab){
-    for ($i=0; $i < count($tab); $i++) { 
+function PrintTabProf($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
         echo $tab[$i][0] . " ";
         echo $tab[$i][1] . " ";
         echo $tab[$i][2] . " ";
@@ -51,8 +55,9 @@ function PrintTabProf($tab){
         echo "\n";
     }
 }
-function PrintTabClasse($tab){
-    for ($i=0; $i < count($tab); $i++) {
+function PrintTabClasse($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
         echo $tab[$i][0] . " ";
         echo $tab[$i][1] . " ";
         echo "  |id : " . $tab[$i][2];
@@ -61,27 +66,31 @@ function PrintTabClasse($tab){
 
     }
 }
-function PrintTabUtilisateur_Etablissement($tab){
-    for ($i=0; $i < count($tab); $i++) {
+function PrintTabUtilisateur_Etablissement($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
         echo $tab[$i][0] . " ";
         echo $tab[$i][1] . " ";
         echo "\n";
     }
 }
-function supprimerEspace($chaine) {
+function supprimerEspace($chaine)
+{
     // Utilisation de la fonction str_replace pour remplacer les sauts de ligne par une chaîne vide
     $chaine = str_replace(" ", "_", $chaine);
     return $chaine;
 }
 
-function supprimerPassageLigne($chaine) {
+function supprimerPassageLigne($chaine)
+{
     // Utilisation de la fonction str_replace pour remplacer les sauts de ligne par une chaîne vide
     $chaine = str_replace("\n", ",", $chaine);
     return $chaine;
 }
 
-function PrintEleve($tab){
-    for ($i=0; $i < count($tab); $i++) {
+function PrintEleve($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
         echo $tab[$i][0] . "|";
         echo $tab[$i][1] . "|";
         echo $tab[$i][2] . "|";

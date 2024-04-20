@@ -1,5 +1,7 @@
 <?php
-function AddUtilisateur_Etablissement($dbh,$utilisateur_etablissement,$numero){
+
+function AddUtilisateur_Etablissement($dbh, $utilisateur_etablissement, $numero)
+{
     try {
         $query = "insert into utilisateur_etablissement (utilisateurId,etablissementId) values (:utilisateurId,:etablissementId)";
         $addEtablissement = $dbh->prepare($query);
@@ -14,7 +16,8 @@ function AddUtilisateur_Etablissement($dbh,$utilisateur_etablissement,$numero){
         die($message);
     }
 }
-function AddEtablissement($dbh,$Etablissements,$numeroEtablissement){
+function AddEtablissement($dbh, $Etablissements, $numeroEtablissement)
+{
     try {
         $query = "insert into etablissement (etablissementAdresse,etablissementNom) values (:etablissementAdresse,:etablissementNom)";
         $addEtablissement = $dbh->prepare($query);
@@ -30,7 +33,8 @@ function AddEtablissement($dbh,$Etablissements,$numeroEtablissement){
     }
 }
 
-function AddUtilisateur($dbh,$utilisateurs,$numeroUtilisateur){
+function AddUtilisateur($dbh, $utilisateurs, $numeroUtilisateur)
+{
     try {
         $query = "insert into utilisateur (utilisateurEmail,utilisateurNom,utilisateurPrenom,utilisateurMotDePasse) values (:utilisateurEmail,:utilisateurNom,:utilisateurPrenom,:utilisateurMotDePasse)";
         $addUtilisateur = $dbh->prepare($query);
@@ -47,7 +51,8 @@ function AddUtilisateur($dbh,$utilisateurs,$numeroUtilisateur){
         die($message);
     }
 }
-function AddMatiere($dbh,$Matieres,$numeroMatiere){
+function AddMatiere($dbh, $Matieres, $numeroMatiere)
+{
     try {
         $query = "insert into matiere (matiereNom,etablissementId) values (:matiereNom,:etablissementId)";
         $addClasse = $dbh->prepare($query);
@@ -60,7 +65,8 @@ function AddMatiere($dbh,$Matieres,$numeroMatiere){
         die($message);
     }
 }
-function AddClasse($dbh,$Classes,$numeroClasse){
+function AddClasse($dbh, $Classes, $numeroClasse)
+{
     try {
         $query = "insert into classe (classeRef,etablissementId) values (:classeRef,:etablissementId)";
         $addClasse = $dbh->prepare($query);
@@ -73,7 +79,8 @@ function AddClasse($dbh,$Classes,$numeroClasse){
         die($message);
     }
 }
-function addEleve($dbh,$Eleves,$numeroEleve){
+function addEleve($dbh, $Eleves, $numeroEleve)
+{
     try {
         $query = "insert into eleve (EleveEmail,eleveNom,elevePrenom,etablissementId,classeId) values (:EleveEmail,:elevePrenom,:eleveNom,:etablissementId,:classeId)";
         $addEleve = $dbh->prepare($query);
@@ -91,7 +98,8 @@ function addEleve($dbh,$Eleves,$numeroEleve){
 }
 
 
-function AddProf($dbh,$professeurs,$numeroProf){
+function AddProf($dbh, $professeurs, $numeroProf)
+{
     try {
         $query = "insert into professeur(professeurEmail,professeurNom,professeurPrenom,etablissementId) values (:professeurEmail,:professeurNom,:professeurPrenom,:etablissementId);";
         $addProf = $dbh->prepare($query);
