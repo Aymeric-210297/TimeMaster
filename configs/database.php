@@ -5,6 +5,7 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
-} catch (PDOException $e) {
-    renderError("out", 500, "Impossible de se connecter à la base de données", $e);
+} catch (PDOException $error) {
+    logError("Impossible de se connecter à la base de données", $error);
+    render("out", "errors/500");
 }

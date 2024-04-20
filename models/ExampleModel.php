@@ -1,14 +1,7 @@
 <?php
 
-class ExampleModel
+class ExampleModel extends BaseModel
 {
-    protected $dbh;
-
-    public function __construct($dbh)
-    {
-        $this->dbh = $dbh;
-    }
-
     public function getExample($exampleId)
     {
         try {
@@ -22,8 +15,8 @@ class ExampleModel
             ]);
 
             return $sth->fetch();
-        } catch (PDOException $e) {
-            renderError("out", 500, "Impossible de récupérer l'exemple", $e);
+        } catch (PDOException $error) {
+            $this->handleError("Impossible de récupérer l'exemple", $error);
         }
     }
 }
