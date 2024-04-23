@@ -6,20 +6,20 @@
         <div class="one-line">
             <div>
                 <label for="first-name">Prénom</label>
-                <input type="text" name="first-name" id="first-name" autocomplete="given-name">
+                <input type="text" name="first-name" id="first-name" autocomplete="given-name" required>
             </div>
             <div>
                 <label for="last-name">Nom</label>
-                <input type="text" name="last-name" id="last-name" autocomplete="family-name">
+                <input type="text" name="last-name" id="last-name" autocomplete="family-name" required>
             </div>
         </div>
         <div>
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" autocomplete="email">
+            <input type="email" name="email" id="email" autocomplete="email" required>
         </div>
         <div>
             <label for="password">Mot de passe</label>
-            <input type="password" name="password" id="password" autocomplete="new-password">
+            <input type="password" name="password" id="password" autocomplete="new-password" required>
         </div>
 
         <p>Déjà membre ? <a href="/sign-in">Se connecter</a></p>
