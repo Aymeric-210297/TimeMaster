@@ -22,7 +22,11 @@
             <input type="password" name="password" id="password" autocomplete="new-password" required>
         </div>
 
-        <p>Déjà membre ? <a href="/sign-in">Se connecter</a></p>
+        <p class="switch-form-text">Déjà membre ? <a href="/sign-in">Se connecter</a></p>
+
+        <?php if (!empty($errorMessage)): ?>
+            <p class="error-text"><?= out($errorMessage) ?></p>
+        <?php endif; ?>
 
         <button type="submit">S'inscrire</button>
     </form>

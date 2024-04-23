@@ -7,6 +7,8 @@
     --accent-color: #3ABFF8;
     --background-color: #FEFEFE;
     --text-color: #111111;
+
+    --error-color: #F83A3A;
 }
 
 * {

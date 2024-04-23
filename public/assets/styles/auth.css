@@ -7,7 +7,7 @@ main {
     bottom: 0;
     left: 0;
     right: 0;
-    
+
     margin: auto;
 }
 
@@ -29,7 +29,7 @@ form > div {
     margin-bottom: 10px;
 }
 
-form > p {
+.switch-form-text {
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -66,6 +66,11 @@ form button[type="submit"]:hover {
     cursor: pointer;
 }
 
+.error-text {
+    color: var(--error-color);
+    margin-bottom: 10px;
+}
+
 @media (width <= 700px) {
     .one-line {
         display: flex;
@@ -76,5 +81,4 @@ form button[type="submit"]:hover {
     main {
         padding: 0 20px;
     }
-    
 }

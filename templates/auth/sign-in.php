@@ -12,7 +12,11 @@
             <input type="password" name="password" id="password" autocomplete="current-password" required>
         </div>
 
-        <p>Pas encore membre ? <a href="/sign-up">S'inscrire</a></p>
+        <p class="switch-form-text">Pas encore membre ? <a href="/sign-up">S'inscrire</a></p>
+
+        <?php if (!empty($errorMessage)): ?>
+            <p class="error-text"><?= out($errorMessage) ?></p>
+        <?php endif; ?>
 
         <button type="submit">Se connecter</button>
     </form>
