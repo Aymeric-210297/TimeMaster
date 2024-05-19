@@ -5,7 +5,7 @@ require_once __DIR__ . "/../models/UserModel.php";
 $userModel = new UserModel($dbh, create500ResponseCallback("out"));
 
 get('/sign-in', function () {
-    if (isset($_SESSION['user'])) {
+    if (isset ($_SESSION['user'])) {
         redirect('/');
     }
 
@@ -37,8 +37,8 @@ post('/sign-in', function () use ($userModel) {
         );
     }
 
-    if (password_verify($_POST['password'], $user->utilisateurMotDePasse)) {
-        unset($user->utilisateurMotDePasse);
+    if (password_verify($_POST['password'], $user->userPassword)) {
+        unset ($user->userPassword);
         $_SESSION['user'] = $user;
         redirect('/');
     }
@@ -55,7 +55,7 @@ post('/sign-in', function () use ($userModel) {
 });
 
 get('/sign-up', function () {
-    if (isset($_SESSION['user'])) {
+    if (isset ($_SESSION['user'])) {
         redirect('/');
     }
 
