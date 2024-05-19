@@ -1,289 +1,289 @@
 drop table if exists
-    utilisateur_etablissement,
-    utilisateur,
-    salleClasse_matiere,
-    salleClasse_disponibilite,
-    professeur_salleClasse,
-    donnee,
-    salleClasse,
-    professeur_matiere,
-    presence_professeur,
-    professeur,
-    classe_matiere,
-    matiere,
-    horaire_jour,
-    fourche_preferentiel,
-    jour,
-    horaire_creneau,
-    horaire,
-    eleve,
-    creneau,
-    classe,
-    etablissement;
+    user_school,
+    user,
+    classroom_subject,
+    classroom_availability,
+    teacher_classroom,
+    class_schedule,
+    classroom,
+    teacher_subject,
+    teacher_availability,
+    teacher,
+    class_subject,
+    subject,
+    schedule_day,
+    time_preference,
+    day,
+    schedule_timeslot,
+    schedule,
+    student,
+    timeslot,
+    class,
+    school;
 
-create table etablissement
+create table school
 (
-    etablissementId      int auto_increment
+    schoolId      int auto_increment
         primary key,
-    etablissementAdresse varchar(255) not null,
-    etablissementNom     varchar(255) not null,
+    schoolAddress varchar(255) not null,
+    schoolName    varchar(255) not null,
 
-    unique (etablissementAdresse)
+    unique (schoolAddress)
 );
 
-create table classe
+create table class
 (
-    classeId        int auto_increment
+    classId  int auto_increment
         primary key,
-    classeRef       varchar(255) not null,
-    etablissementId int          not null,
+    classRef varchar(255) not null,
+    schoolId int          not null,
 
-    unique (classeRef, etablissementId),
-    foreign key (etablissementId) references etablissement (etablissementId)
+    unique (classRef, schoolId),
+    foreign key (schoolId) references school (schoolId)
 );
 
-create table creneau
+create table timeslot
 (
-    creneauId         int auto_increment
+    timeslotId        int auto_increment
         primary key,
-    creneauHeureStart time not null,
-    creneauHeureEnd   time not null,
-    creneauGroupe     int           not null,
-    etablissementId   int           not null,
+    timeslotStartHour time not null,
+    timeslotEndHour   time not null,
+    timeslotGroup     int  not null,
+    schoolId          int  not null,
 
-    unique (creneauHeureEnd, etablissementId),
-    unique (creneauHeureStart, etablissementId),
-    foreign key (etablissementId) references etablissement (etablissementId)
+    unique (timeslotEndHour, schoolId),
+    unique (timeslotStartHour, schoolId),
+    foreign key (schoolId) references school (schoolId)
 );
 
-create table eleve
+create table student
 (
-    eleveId         int auto_increment
+    studentId         int auto_increment
         primary key,
-    eleveEmail      varchar(255) not null,
-    eleveNom        varchar(255) not null,
-    elevePrenom     varchar(255) not null,
-    etablissementId int          not null,
-    classeId        int          not null,
+    studentEmail      varchar(255) not null,
+    studentFamilyName varchar(255) not null,
+    studentGivenName  varchar(255) not null,
+    schoolId          int          not null,
+    classId           int          not null,
 
-    unique (eleveEmail, etablissementId),
-    foreign key (classeId) references classe (classeId),
-    foreign key (etablissementId) references etablissement (etablissementId)
+    unique (studentEmail, schoolId),
+    foreign key (classId) references class (classId),
+    foreign key (schoolId) references school (schoolId)
 );
 
-create table horaire
+create table schedule
 (
-    horaireId       int auto_increment
+    scheduleId int auto_increment
         primary key,
-    etablissementId int not null,
+    schoolId   int not null,
 
-    foreign key (etablissementId) references etablissement (etablissementId)
+    foreign key (schoolId) references school (schoolId)
 );
 
-create table horaire_creneau
+create table schedule_timeslot
 (
-    horaireCreneauId int auto_increment
+    scheduleTimeslotId int auto_increment
         primary key,
-    horaireId        int not null,
-    creneauId        int not null,
+    scheduleId         int not null,
+    timeslotId         int not null,
 
-    unique (horaireId, creneauId),
-    foreign key (creneauId) references creneau (creneauId),
-    foreign key (horaireId) references horaire (horaireId)
+    unique (scheduleId, timeslotId),
+    foreign key (timeslotId) references timeslot (timeslotId),
+    foreign key (scheduleId) references schedule (scheduleId)
 );
 
-create table jour
+create table day
 (
-    jourId  int auto_increment
+    dayId   int auto_increment
         primary key,
-    jourNom varchar(255) not null,
+    dayName varchar(255) not null,
 
-    unique (jourNom)
+    unique (dayName)
 );
 
-create table fourche_preferentiel
+create table time_preference
 (
-    fourchePreferentielId         int auto_increment
+    timePreferenceId int auto_increment
         primary key,
-    creneauId                     int                                                    not null,
-    jourId                        int                                                    not null,
-    fourchePreferentielPreference enum ('very-unlikely', 'unlikely', 'normal', 'better') not null,
+    timeslotId       int                                                    not null,
+    dayId            int                                                    not null,
+    timePreference   enum ('very-unlikely', 'unlikely', 'normal', 'better') not null,
 
-    unique (creneauId, jourId),
-    foreign key (creneauId) references creneau (creneauId),
-    foreign key (jourId) references jour (jourId)
+    unique (timeslotId, dayId),
+    foreign key (timeslotId) references timeslot (timeslotId),
+    foreign key (dayId) references day (dayId)
 );
 
-create table horaire_jour
+create table schedule_day
 (
-    horaireJourId int auto_increment
+    scheduleDayId int auto_increment
         primary key,
-    horaireId     int not null,
-    jourId        int not null,
+    scheduleId    int not null,
+    dayId         int not null,
 
-    unique (horaireId, jourId),
-    foreign key (horaireId) references horaire (horaireId),
-    foreign key (jourId) references jour (jourId)
+    unique (scheduleId, dayId),
+    foreign key (scheduleId) references schedule (scheduleId),
+    foreign key (dayId) references day (dayId)
 );
 
-create table matiere
+create table subject
 (
-    matiereId       int auto_increment
+    subjectId   int auto_increment
         primary key,
-    matiereNom      varchar(255) not null,
-    etablissementId int          not null,
+    subjectName varchar(255) not null,
+    schoolId    int          not null,
 
-    unique (matiereNom, etablissementId),
-    foreign key (etablissementId) references etablissement (etablissementId)
+    unique (subjectName, schoolId),
+    foreign key (schoolId) references school (schoolId)
 );
 
-create table classe_matiere
+create table class_subject
 (
-    classeMatiereId           int auto_increment
+    classSubjectId          int auto_increment
         primary key,
-    classeMatiereNombreHeures int not null,
-    classeId                  int not null,
-    matiereId                 int not null,
+    classSubjectNumberHours int not null,
+    classId                 int not null,
+    subjectId               int not null,
 
-    unique (classeId, matiereId),
-    foreign key (classeId) references classe (classeId),
-    foreign key (matiereId) references matiere (matiereId)
+    unique (classId, subjectId),
+    foreign key (classId) references class (classId),
+    foreign key (subjectId) references subject (subjectId)
 );
 
-create table professeur
+create table teacher
 (
-    professeurId     int auto_increment
+    teacherId         int auto_increment
         primary key,
-    professeurEmail  varchar(255) not null,
-    professeurNom    varchar(255) not null,
-    professeurPrenom varchar(255) not null,
-    etablissementId  int          not null,
+    teacherEmail      varchar(255) not null,
+    teacherFamilyName varchar(255) not null,
+    teacherGivenName  varchar(255) not null,
+    schoolId          int          not null,
 
-    unique (professeurEmail, etablissementId),
-    foreign key (etablissementId) references etablissement (etablissementId)
+    unique (teacherEmail, schoolId),
+    foreign key (schoolId) references school (schoolId)
 );
 
-create table presence_professeur
+create table teacher_availability
 (
-    presenceProfesseurId            int auto_increment
+    teacherAvailabilityId int auto_increment
         primary key,
-    professeurId                    int                                             not null,
-    creneauId                       int                                             not null,
-    jourId                          int                                             not null,
-    presenceProfesseurDisponibilite enum ('unavailable', 'prefer-not', 'available') not null,
+    teacherId             int                                             not null,
+    timeslotId            int                                             not null,
+    dayId                 int                                             not null,
+    teacherAvailability   enum ('unavailable', 'prefer-not', 'available') not null,
 
-    unique (professeurId, creneauId, jourId),
-    foreign key (creneauId) references creneau (creneauId),
-    foreign key (jourId) references jour (jourId),
-    foreign key (professeurId) references professeur (professeurId)
+    unique (teacherId, timeslotId, dayId),
+    foreign key (timeslotId) references timeslot (timeslotId),
+    foreign key (dayId) references day (dayId),
+    foreign key (teacherId) references teacher (teacherId)
 );
 
-create table professeur_matiere
+create table teacher_subject
 (
-    professeurMatiereId int auto_increment
+    teacherSubjectId int auto_increment
         primary key,
-    professeurId        int not null,
-    matiereId           int not null,
+    teacherId        int not null,
+    subjectId        int not null,
 
-    unique (professeurId, matiereId),
-    foreign key (matiereId) references matiere (matiereId),
-    foreign key (professeurId) references professeur (professeurId)
+    unique (teacherId, subjectId),
+    foreign key (subjectId) references subject (subjectId),
+    foreign key (teacherId) references teacher (teacherId)
 );
 
-create table salleClasse
+create table classroom
 (
-    salleClasseId            int auto_increment
+    classroomId          int auto_increment
         primary key,
-    salleClasseRef           varchar(255)                      not null,
-    salleClasseNombrePlace   int                               null,
-    salleClasseProjecteur    tinyint(1)                        null,
-    etablissementId          int                               not null,
+    classroomRef         varchar(255) not null,
+    classroomNumberSeats int          null,
+    classroomProjector   tinyint(1)   null,
+    schoolId             int          not null,
 
-    unique (salleClasseRef, etablissementId),
-    foreign key (etablissementId) references etablissement (etablissementId)
+    unique (classroomRef, schoolId),
+    foreign key (schoolId) references school (schoolId)
 );
 
-create table donnee
+create table class_schedule
 (
-    donneeId      int auto_increment
+    classScheduleId int auto_increment
         primary key,
-    horaireId     int null,
-    jourId        int not null,
-    creneauId     int not null,
-    classeId      int not null,
-    professeurId  int not null,
-    salleClasseId int not null,
-    matiereId     int not null,
+    scheduleId      int null,
+    dayId           int not null,
+    timeslotId      int not null,
+    classId         int not null,
+    teacherId       int not null,
+    classroomId     int not null,
+    subjectId       int not null,
 
-    foreign key (classeId) references classe (classeId),
-    foreign key (creneauId) references creneau (creneauId),
-    foreign key (horaireId) references horaire (horaireId),
-    foreign key (jourId) references jour (jourId),
-    foreign key (matiereId) references matiere (matiereId),
-    foreign key (professeurId) references professeur (professeurId),
-    foreign key (salleClasseId) references salleClasse (salleClasseId)
+    foreign key (classId) references class (classId),
+    foreign key (timeslotId) references timeslot (timeslotId),
+    foreign key (scheduleId) references schedule (scheduleId),
+    foreign key (dayId) references day (dayId),
+    foreign key (subjectId) references subject (subjectId),
+    foreign key (teacherId) references teacher (teacherId),
+    foreign key (classroomId) references classroom (classroomId)
 );
 
-create table professeur_salleClasse
+create table teacher_classroom
 (
-    professeurSalleClasseId         int auto_increment
+    teacherClassroomId      int auto_increment
         primary key,
-    professeurId                    int not null,
-    salleClasseId                   int not null,
-    professeurSalleClasseClassement int not null,
+    teacherId               int not null,
+    classroomId             int not null,
+    teacherClassroomRanking int not null,
 
-    unique (professeurId, salleClasseId),
-    foreign key (professeurId) references professeur (professeurId),
-    foreign key (salleClasseId) references salleClasse (salleClasseId)
+    unique (teacherId, classroomId),
+    foreign key (teacherId) references teacher (teacherId),
+    foreign key (classroomId) references classroom (classroomId)
 );
 
-create table salleClasse_disponibilite
+create table classroom_availability
 (
-    salleClasseDisponibiliteId int auto_increment
+    classroomAvailabilityId int auto_increment
         primary key,
-    salleClasseId              int                               not null,
-    creneauId                  int                               not null,
-    jourId                     int                               not null,
-    salleClasseDisponibilite   enum ('unavailable', 'available') not null,
+    classroomId             int                               not null,
+    timeslotId              int                               not null,
+    dayId                   int                               not null,
+    classroomAvailability   enum ('unavailable', 'available') not null,
 
-    unique (salleClasseId, creneauId, jourId),
-    foreign key (creneauId) references creneau (creneauId),
-    foreign key (jourId) references jour (jourId),
-    foreign key (salleClasseId) references salleClasse (salleClasseId)
+    unique (classroomId, timeslotId, dayId),
+    foreign key (timeslotId) references timeslot (timeslotId),
+    foreign key (dayId) references day (dayId),
+    foreign key (classroomId) references classroom (classroomId)
 );
 
-create table salleClasse_matiere
+create table classroom_subject
 (
-    salleClasseMatiereId int auto_increment
+    classroomSubjectId int auto_increment
         primary key,
-    salleClasseId        int not null,
-    matiereId            int not null,
+    classroomId        int not null,
+    subjectId          int not null,
 
-    unique (salleClasseId, matiereId),
-    foreign key (matiereId) references matiere (matiereId),
-    foreign key (salleClasseId) references salleClasse (salleClasseId)
+    unique (classroomId, subjectId),
+    foreign key (subjectId) references subject (subjectId),
+    foreign key (classroomId) references classroom (classroomId)
 );
 
-create table utilisateur
+create table user
 (
-    utilisateurId         int auto_increment
+    userId         int auto_increment
         primary key,
-    utilisateurEmail      varchar(255) not null,
-    utilisateurNom        varchar(255) not null,
-    utilisateurPrenom     varchar(255) not null,
-    utilisateurMotDePasse varchar(255) not null,
+    userEmail      varchar(255) not null,
+    userFamilyName varchar(255) not null,
+    userGivenName  varchar(255) not null,
+    userPassword   varchar(255) not null,
 
-    unique (utilisateurEmail)
+    unique (userEmail)
 );
 
-create table utilisateur_etablissement
+create table user_school
 (
-    utilisateurEtablissementId int auto_increment
+    userSchoolId int auto_increment
         primary key,
-    utilisateurId              int not null,
-    etablissementId            int not null,
+    userId       int not null,
+    schoolId     int not null,
 
-    unique (utilisateurId, etablissementId),
-    foreign key (etablissementId) references etablissement (etablissementId),
-    foreign key (utilisateurId) references utilisateur (utilisateurId)
+    unique (userId, schoolId),
+    foreign key (schoolId) references school (schoolId),
+    foreign key (userId) references user (userId)
 );
