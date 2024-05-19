@@ -1,3 +1,7 @@
+create database if not exists projet_horaires character set utf8mb4 collate utf8mb4_unicode_ci;
+
+use projet_horaires;
+
 drop table if exists
     user_school,
     user,
