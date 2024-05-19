@@ -8,6 +8,7 @@ drop table if exists
     classroom,
     teacher_subject,
     teacher_availability,
+    teacher_assignment,
     teacher,
     class_subject,
     subject,
@@ -157,10 +158,26 @@ create table teacher
     teacherEmail      varchar(255) not null,
     teacherFamilyName varchar(255) not null,
     teacherGivenName  varchar(255) not null,
+    teacherGender     varchar(255) not null,
     schoolId          int          not null,
 
     unique (teacherEmail, schoolId),
     foreign key (schoolId) references school (schoolId)
+);
+
+create table teacher_assignment
+(
+    teacherAssignmentId          int auto_increment
+        primary key,
+    classId                      int not null,
+    subjectId                    int not null,
+    teacherId                    int not null,
+    teacherAssignmentNumberHours int not null,
+
+    unique (classId, subjectId),
+    foreign key (teacherId) references teacher (teacherId),
+    foreign key (classId) references class (classId),
+    foreign key (subjectId) references subject (subjectId)
 );
 
 create table teacher_availability
