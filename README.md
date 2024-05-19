@@ -10,7 +10,7 @@
 
 ### Préparation
 
-1. Importez le fichier SQL `projet_horaires.sql` sur votre serveur MySQL pour créer la base de données et les tables nécessaires au fonctionnement du projet.
+1. Lancez le fichier SQL `database.sql` sur votre serveur MySQL pour créer la base de données et les tables nécessaires au fonctionnement du projet.
 
 2. Clonez ce répertoire sur votre machine locale :
 

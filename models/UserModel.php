@@ -2,16 +2,16 @@
 
 class UserModel extends BaseModel
 {
-    public function getUserByEmail($utilisateurEmail)
+    public function getUserByEmail($userEmail)
     {
         try {
             $query = "SELECT * ";
-            $query .= "FROM utilisateur ";
-            $query .= "WHERE utilisateurEmail = :utilisateurEmail";
+            $query .= "FROM user ";
+            $query .= "WHERE userEmail = :userEmail";
 
             $sth = $this->dbh->prepare($query);
             $sth->execute([
-                ":utilisateurEmail" => $utilisateurEmail
+                ":userEmail" => $userEmail
             ]);
 
             return $sth->fetch();
@@ -20,20 +20,20 @@ class UserModel extends BaseModel
         }
     }
 
-    public function createUser($utilisateurEmail, $utilisateurNom, $utilisateurPrenom, $utilisateurMotDePasse)
+    public function createUser($userEmail, $userFamilyName, $userGivenName, $userPassword)
     {
         try {
-            $query = "INSERT INTO utilisateur ";
-            $query .= "(utilisateurEmail, utilisateurNom, utilisateurPrenom, utilisateurMotDePasse)";
+            $query = "INSERT INTO user ";
+            $query .= "(userEmail, userFamilyName, userGivenName, userPassword)";
             $query .= " VALUES ";
-            $query .= "(:utilisateurEmail, :utilisateurNom, :utilisateurPrenom, :utilisateurMotDePasse)";
+            $query .= "(:userEmail, :userFamilyName, :userGivenName, :userPassword)";
 
             $sth = $this->dbh->prepare($query);
             $sth->execute([
-                ":utilisateurEmail" => $utilisateurEmail,
-                ":utilisateurNom" => $utilisateurNom,
-                ":utilisateurPrenom" => $utilisateurPrenom,
-                ":utilisateurMotDePasse" => password_hash($utilisateurMotDePasse, PASSWORD_DEFAULT)
+                ":userEmail" => $userEmail,
+                ":userFamilyName" => $userFamilyName,
+                ":userGivenName" => $userGivenName,
+                ":userPassword" => password_hash($userPassword, PASSWORD_DEFAULT)
             ]);
 
             return $this->dbh->lastInsertId();
