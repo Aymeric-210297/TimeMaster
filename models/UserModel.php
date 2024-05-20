@@ -16,7 +16,7 @@ class UserModel extends BaseModel
 
             return $sth->fetch();
         } catch (PDOException $error) {
-            $this->handleError($error, "Impossible de récupérer l'utilisateur via son email");
+            $this->handleError($error);
         }
     }
 
@@ -38,7 +38,7 @@ class UserModel extends BaseModel
 
             return $this->dbh->lastInsertId();
         } catch (PDOException $error) {
-            $this->handleError($error, "Impossible de créer l'utilisateur");
+            $this->handleError($error);
         }
     }
 }

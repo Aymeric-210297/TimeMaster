@@ -6,6 +6,6 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
 } catch (PDOException $error) {
-    logError($error, "Impossible de se connecter à la base de données");
+    logError($error);
     render("out", "errors/500");
 }
