@@ -1,6 +1,24 @@
 <?php
 
+function genererValeurAleatoire($probabilites) {
+    // Vérifiez que la somme des probabilités est égale à 100
+    $sommeProbabilites = array_sum($probabilites);
+    if ($sommeProbabilites != 100) {
+        throw new Exception("La somme des probabilités doit être égale à 100. Actuelle somme: $sommeProbabilites");
+    }
 
+    // Génère un nombre aléatoire entre 1 et 100
+    $nombreAleatoire = rand(1, 100);
+
+    // Détermine quel chiffre correspond à ce nombre aléatoire selon les probabilités
+    $seuil = 0;
+    foreach ($probabilites as $chiffre => $probabilite) {
+        $seuil += $probabilite;
+        if ($nombreAleatoire <= $seuil) {
+            return $chiffre;
+        }
+    }
+}
 
 
 
@@ -22,14 +40,26 @@ function afficherTableau($tab, $separateur = ' ')
 
 
 
-
-
-
 function PrintTabEtablissement($tab)
 {
     for ($i = 0; $i < count($tab); $i++) {
         echo $tab[$i][0] . " | ";
         echo $tab[$i][1] . " ";
+
+    }
+}
+
+
+function PrintTabClasseMatiere($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
+        if ($tab[$i][0] != null) {
+            echo $tab[$i][0] . " | ";
+            echo $tab[$i][1] . " ";
+            echo $tab[$i][2] . " ";
+            echo "\n";
+        }
+        
 
     }
 }
@@ -97,6 +127,16 @@ function PrintEleve($tab)
         echo $tab[$i][3] . "|";
         echo $tab[$i][4] . "id : ";
         echo $tab[$i][5] . "";
+        echo "\n";
+    }
+}
+
+function PrintProf_Matiere($tab)
+{
+    for ($i = 0; $i < count($tab); $i++) {
+        echo $tab[$i][0] . "|";
+        echo $tab[$i][1] . "|";
+
         echo "\n";
     }
 }
