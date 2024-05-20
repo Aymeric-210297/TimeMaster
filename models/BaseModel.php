@@ -14,11 +14,11 @@ class BaseModel
         $this->errorCallback = $errorCallback;
     }
 
-    protected function handleError($message, $error)
+    protected function handleError($error, $message = null)
     {
-        logError($message, $error);
+        logError($error, $message);
         if (isset($this->errorCallback)) {
-            call_user_func_array($this->errorCallback, [$message, $error]);
+            call_user_func_array($this->errorCallback, [$error, $message]);
         } else {
             throw $error;
         }
