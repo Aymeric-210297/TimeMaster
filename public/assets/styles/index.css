@@ -1,3 +1,30 @@
-h1 {
-    color: blue;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root {
+    --light-gray: #D1D5DB;
+    --primary-color: #0C4A6E;
+    --secondary-color: #0DA2E7;
+    --accent-color: #3ABFF8;
+    --background-color: #FEFEFE;
+    --text-color: #111111;
+
+    --error-color: #F83A3A;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Inter;
 }
