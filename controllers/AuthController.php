@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../models/UserModel.php";
 
-$userModel = new UserModel($dbh, create500ResponseCallback("out"));
+$userModel = new UserModel($dbh, createErrorCallback(500, "out"));
 
 get('/sign-in', function () {
     if (isset ($_SESSION['user'])) {
