@@ -4,41 +4,31 @@ class UserModel extends BaseModel
 {
     public function getUserByEmail($userEmail)
     {
-        try {
-            $query = "SELECT * ";
-            $query .= "FROM user ";
-            $query .= "WHERE userEmail = :userEmail";
+        $query = "SELECT * ";
+        $query .= "FROM user ";
+        $query .= "WHERE userEmail = :userEmail";
 
-            $sth = $this->dbh->prepare($query);
-            $sth->execute([
-                ":userEmail" => $userEmail
-            ]);
+        $sth = $this->executeQuery($query, [
+            ":userEmail" => $userEmail
+        ]);
 
-            return $sth->fetch();
-        } catch (PDOException $error) {
-            $this->handleError($error);
-        }
+        return $sth->fetch();
     }
 
     public function createUser($userEmail, $userFamilyName, $userGivenName, $userPassword)
     {
-        try {
-            $query = "INSERT INTO user ";
-            $query .= "(userEmail, userFamilyName, userGivenName, userPassword)";
-            $query .= " VALUES ";
-            $query .= "(:userEmail, :userFamilyName, :userGivenName, :userPassword)";
+        $query = "INSERT INTO user ";
+        $query .= "(userEmail, userFamilyName, userGivenName, userPassword)";
+        $query .= " VALUES ";
+        $query .= "(:userEmail, :userFamilyName, :userGivenName, :userPassword)";
 
-            $sth = $this->dbh->prepare($query);
-            $sth->execute([
-                ":userEmail" => $userEmail,
-                ":userFamilyName" => $userFamilyName,
-                ":userGivenName" => $userGivenName,
-                ":userPassword" => password_hash($userPassword, PASSWORD_DEFAULT)
-            ]);
+        $this->executeQuery($query, [
+            ":userEmail" => $userEmail,
+            ":userFamilyName" => $userFamilyName,
+            ":userGivenName" => $userGivenName,
+            ":userPassword" => password_hash($userPassword, PASSWORD_DEFAULT)
+        ]);
 
-            return $this->dbh->lastInsertId();
-        } catch (PDOException $error) {
-            $this->handleError($error);
-        }
+        return $this->dbh->lastInsertId();
     }
 }
