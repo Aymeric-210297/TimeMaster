@@ -1,8 +1,8 @@
 <?php
 
-function logError($message, $error)
+function logError($error, $message = null)
 {
-    $fullMessage = $message . ": " . $error->getMessage();
+    $fullMessage = (!empty($message) ? $message . ": " : "") . $error->getMessage();
 
     error_log($fullMessage);
 
