@@ -2,7 +2,7 @@
 function AddSalleClasseMatiere($dbh, $salleClasse_matiere, $numeroSalleClasseMatiere)
 {
     try {
-        $query = "INSERT INTO salleClasse_matiere (salleClasseId, matiereId) VALUES (:salleClasseId, :matiereId);";
+        $query = "INSERT INTO classroom_subject (classroomId, subjectId) VALUES (:salleClasseId, :matiereId);";
         $addAffectation = $dbh->prepare($query);
         $addAffectation->execute([
             'salleClasseId' => $salleClasse_matiere[$numeroSalleClasseMatiere][0],
@@ -18,7 +18,7 @@ function AddSalleClasseMatiere($dbh, $salleClasse_matiere, $numeroSalleClasseMat
 function AddSalleClasseDisponibilite($dbh, $salleClasse_disponibilite, $numeroSalleDispo)
 {
     try {
-        $query = "INSERT INTO salleClasse_disponibilite (salleClasseId, creneauId, jourId,salleClasseDisponibilite) VALUES (:salleClasseId, :creneauId, :jourId,:salleClasseDisponibilite);";
+        $query = "INSERT INTO classroom_availability (classroomId, timeslotId, dayId, classroomAvailability) VALUES (:salleClasseId, :creneauId, :jourId,:salleClasseDisponibilite);";
         $addAffectation = $dbh->prepare($query);
         $addAffectation->execute([
             'salleClasseId' => $salleClasse_disponibilite[$numeroSalleDispo][0],
@@ -37,7 +37,7 @@ function AddSalleClasseDisponibilite($dbh, $salleClasse_disponibilite, $numeroSa
 function AddProfesseurSalleClasse($dbh, $professeur_salleClasse, $numeroProfSalle)
 {
     try {
-        $query = "INSERT INTO professeur_salleClasse (professeurId, salleClasseId, professeurSalleClasseClassement) VALUES (:professeurId, :salleClasseId, :professeurSalleClasseClassement);";
+        $query = "INSERT INTO teacher_classroom (teacherId, classroomId, teacherClassroomRanking) VALUES (:professeurId, :salleClasseId, :professeurSalleClasseClassement);";
         $addAffectation = $dbh->prepare($query);
         $addAffectation->execute([
             'professeurId' => $professeur_salleClasse[$numeroProfSalle][0],
@@ -55,7 +55,7 @@ function AddProfesseurSalleClasse($dbh, $professeur_salleClasse, $numeroProfSall
 function AddProfesseurAffectation($dbh, $professeur_affectation, $numeroAffectation)
 {
     try {
-        $query = "INSERT INTO professeur_affectation (professeurId, classeId, matiereId, nombreHeures) VALUES (:professeurId, :classeId, :matiereId, :nombreHeures);";
+        $query = "INSERT INTO teacher_assignment (teacherId, classId, subjectId, teacherAssignmentNumberHours) VALUES (:professeurId, :classeId, :matiereId, :nombreHeures);";
         $addAffectation = $dbh->prepare($query);
         $addAffectation->execute([
             'professeurId' => $professeur_affectation[$numeroAffectation][0],
@@ -73,7 +73,7 @@ function AddProfesseurAffectation($dbh, $professeur_affectation, $numeroAffectat
 function AddPresenceProfesseur($dbh, $presence_professeur, $numeroPresenceProf)
 {
     try {
-        $query = "insert into presence_professeur(professeurId,creneauId,jourId,presenceProfesseurDisponibilite) values (:professeurId,:creneauId,:jourId,:presenceProfesseurDisponibilite);";
+        $query = "insert into teacher_availability(teacherId,timeslotId,dayId,teacherAvailability) values (:professeurId,:creneauId,:jourId,:presenceProfesseurDisponibilite);";
         $addProf = $dbh->prepare($query);
         $addProf->execute([
             'professeurId' => $presence_professeur[$numeroPresenceProf][0],
@@ -91,7 +91,7 @@ function AddPresenceProfesseur($dbh, $presence_professeur, $numeroPresenceProf)
 function AddFourchePreferentiel($dbh, $fourche_preferentiel, $numeroFourchePref)
 {
     try {
-        $query = "insert into fourche_preferentiel(creneauId,jourId,fourchePreferentielPreference) values (:creneauId,:jourId,:fourchePreferentielPreference);";
+        $query = "insert into time_preference(timeslotId,dayId,timePreference) values (:creneauId,:jourId,:fourchePreferentielPreference);";
         $addProf = $dbh->prepare($query);
         $addProf->execute([
             'creneauId' => $fourche_preferentiel[$numeroFourchePref][0],
@@ -105,10 +105,10 @@ function AddFourchePreferentiel($dbh, $fourche_preferentiel, $numeroFourchePref)
         die($message);
     }
 }
-function AddJour($dbh, $jours,$compteur)
+function AddJour($dbh, $jours, $compteur)
 {
     try {
-        $query = "insert into jour (jourNom) values (:jourNom)";
+        $query = "insert into day (dayName) values (:jourNom)";
         $addJour = $dbh->prepare($query);
         $addJour->execute([
             'jourNom' => $jours[$compteur],
@@ -120,10 +120,10 @@ function AddJour($dbh, $jours,$compteur)
         die($message);
     }
 }
-function AddCreneau($dbh, $creneaux,$compteur)
+function AddCreneau($dbh, $creneaux, $compteur)
 {
     try {
-        $query = "insert into creneau (creneauHeureStart,creneauHeureEnd,creneauGroupe,etablissementId) values (:creneauHeureStart,:creneauHeureEnd,:creneauGroupe,:etablissementId)";
+        $query = "insert into timeslot (timeslotStartHour,timeslotEndHour,timeslotGroup,schoolId) values (:creneauHeureStart,:creneauHeureEnd,:creneauGroupe,:etablissementId)";
         $addCreneau = $dbh->prepare($query);
         $addCreneau->execute([
             'creneauHeureStart' => $creneaux[0][$compteur],
@@ -141,12 +141,12 @@ function AddCreneau($dbh, $creneaux,$compteur)
 function AddProfesseur_Matiere($dbh, $professeur_matiere, $numero)
 {
     try {
-        $query = "insert into professeur_matiere (professeurId,matiereId) values (:professeurId,:matiereId)";
+        $query = "insert into teacher_subject (teacherId,subjectId) values (:professeurId,:matiereId)";
         $addEtablissement = $dbh->prepare($query);
         $addEtablissement->execute([
             'professeurId' => $professeur_matiere[$numero][0],
             'matiereId' => $professeur_matiere[$numero][1],
-            
+
         ]);
         $listeCreneau = $addEtablissement->fetchAll();
         return $listeCreneau;
@@ -158,7 +158,7 @@ function AddProfesseur_Matiere($dbh, $professeur_matiere, $numero)
 function AddClass_Matiere($dbh, $classe_matiere, $numero)
 {
     try {
-        $query = "insert into classe_matiere (classeMatiereNombreHeures,classeId,matiereId) values (:classeMatiereNombreHeures,:classeId,:matiereId)";
+        $query = "insert into class_subject (classSubjectNumberHours,classId,subjectId) values (:classeMatiereNombreHeures,:classeId,:matiereId)";
         $addEtablissement = $dbh->prepare($query);
         $addEtablissement->execute([
             'classeMatiereNombreHeures' => $classe_matiere[$numero][0],
@@ -175,7 +175,7 @@ function AddClass_Matiere($dbh, $classe_matiere, $numero)
 function AddSalleClasse($dbh, $salleClasse, $numero)
 {
     try {
-        $query = "insert into salleClasse (salleClasseRef,salleClasseNombrePlace,salleClasseProjecteur,etablissementId) values (:salleClasseRef,:salleClasseNombrePlace,:salleClasseProjecteur,:etablissementId)";
+        $query = "insert into classroom (classroomRef,classroomNumberSeats,classroomProjector,schoolId) values (:salleClasseRef,:salleClasseNombrePlace,:salleClasseProjecteur,:etablissementId)";
         $addEtablissement = $dbh->prepare($query);
         $addEtablissement->execute([
             'salleClasseRef' => $salleClasse[$numero][0],
@@ -193,7 +193,7 @@ function AddSalleClasse($dbh, $salleClasse, $numero)
 function AddUtilisateur_Etablissement($dbh, $utilisateur_etablissement, $numero)
 {
     try {
-        $query = "insert into utilisateur_etablissement (utilisateurId,etablissementId) values (:utilisateurId,:etablissementId)";
+        $query = "insert into user_school (userId,schoolId) values (:utilisateurId,:etablissementId)";
         $addEtablissement = $dbh->prepare($query);
         $addEtablissement->execute([
             'utilisateurId' => $utilisateur_etablissement[$numero][0],
@@ -209,7 +209,7 @@ function AddUtilisateur_Etablissement($dbh, $utilisateur_etablissement, $numero)
 function AddEtablissement($dbh, $Etablissements, $numeroEtablissement)
 {
     try {
-        $query = "insert into etablissement (etablissementAdresse,etablissementNom) values (:etablissementAdresse,:etablissementNom)";
+        $query = "insert into school (schoolAddress,schoolName) values (:etablissementAdresse,:etablissementNom)";
         $addEtablissement = $dbh->prepare($query);
         $addEtablissement->execute([
             'etablissementAdresse' => $Etablissements[$numeroEtablissement][0],
@@ -226,7 +226,7 @@ function AddEtablissement($dbh, $Etablissements, $numeroEtablissement)
 function AddUtilisateur($dbh, $utilisateurs, $numeroUtilisateur)
 {
     try {
-        $query = "insert into utilisateur (utilisateurEmail,utilisateurNom,utilisateurPrenom,utilisateurMotDePasse) values (:utilisateurEmail,:utilisateurNom,:utilisateurPrenom,:utilisateurMotDePasse)";
+        $query = "insert into user (userEmail,userFamilyName,userGivenName,userPassword) values (:utilisateurEmail,:utilisateurNom,:utilisateurPrenom,:utilisateurMotDePasse)";
         $addUtilisateur = $dbh->prepare($query);
         $addUtilisateur->execute([
             'utilisateurEmail' => $utilisateurs[$numeroUtilisateur][0],
@@ -244,7 +244,7 @@ function AddUtilisateur($dbh, $utilisateurs, $numeroUtilisateur)
 function AddMatiere($dbh, $Matieres, $numeroMatiere)
 {
     try {
-        $query = "insert into matiere (matiereNom,etablissementId) values (:matiereNom,:etablissementId)";
+        $query = "insert into subject (subjectName,schoolId) values (:matiereNom,:etablissementId)";
         $addClasse = $dbh->prepare($query);
         $addClasse->execute([
             'matiereNom' => $Matieres[$numeroMatiere][0],
@@ -258,7 +258,7 @@ function AddMatiere($dbh, $Matieres, $numeroMatiere)
 function AddClasse($dbh, $Classes, $numeroClasse)
 {
     try {
-        $query = "insert into classe (classeRef,etablissementId) values (:classeRef,:etablissementId)";
+        $query = "insert into class (classRef,schoolId) values (:classeRef,:etablissementId)";
         $addClasse = $dbh->prepare($query);
         $addClasse->execute([
             'classeRef' => $Classes[$numeroClasse][0],
@@ -272,7 +272,7 @@ function AddClasse($dbh, $Classes, $numeroClasse)
 function addEleve($dbh, $Eleves, $numeroEleve)
 {
     try {
-        $query = "insert into eleve (EleveEmail,eleveNom,elevePrenom,etablissementId,classeId) values (:EleveEmail,:elevePrenom,:eleveNom,:etablissementId,:classeId)";
+        $query = "insert into student (studentEmail,studentFamilyName,studentGivenName,schoolId,classId) values (:EleveEmail,:eleveNom,:elevePrenom,:etablissementId,:classeId)";
         $addEleve = $dbh->prepare($query);
         $addEleve->execute([
             'EleveEmail' => $Eleves[$numeroEleve][0],
@@ -291,7 +291,7 @@ function addEleve($dbh, $Eleves, $numeroEleve)
 function AddProf($dbh, $professeurs, $numeroProf)
 {
     try {
-        $query = "insert into professeur(professeurEmail,professeurNom,professeurPrenom,etablissementId,professeurGenre) values (:professeurEmail,:professeurNom,:professeurPrenom,:etablissementId,:professeurGenre);";
+        $query = "insert into teacher(teacherEmail,teacherFamilyName,teacherGivenName,schoolId,teacherGender) values (:professeurEmail,:professeurNom,:professeurPrenom,:etablissementId,:professeurGenre);";
         $addProf = $dbh->prepare($query);
         $addProf->execute([
             'professeurGenre' => $professeurs[$numeroProf][0],
