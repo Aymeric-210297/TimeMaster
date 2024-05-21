@@ -11,23 +11,9 @@ main {
     margin: auto;
 }
 
-.one-line {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-}
-
-.one-line div {
-    width: 100%;
-}
-
 h1 {
     text-align: center;
     margin-bottom: 40px;
-}
-
-form > div {
-    margin-bottom: 20px;
 }
 
 .switch-form-text {
@@ -43,55 +29,12 @@ form > div {
     text-decoration: underline;
 }
 
-form div {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-form div label {
-    font-weight: 500;
-}
-
-form div input {
-    border: 1px solid #D1D5DB;
-    border-radius: .375rem;
-    padding: 9px;
-    font-size: 16px;
-}
-
-form div input:focus {
-    padding: 8px;
-    border: 2px solid var(--primary-color);
-}
-
-form button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: .375rem;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-form button[type="submit"]:hover {
-    background-color: var(--primary-color);
-    opacity: 0.8;
-    cursor: pointer;
-}
-
 .error-text {
     color: var(--error-color);
     margin-bottom: 10px;
 }
 
 @media (width <= 700px) {
-    .one-line {
-        flex-direction: column;
-    }
-
     main {
         padding: 0 20px;
     }
