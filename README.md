@@ -55,7 +55,7 @@ Configurez votre serveur web pour servir le projet dans le dossier `public/` ou 
 php -S localhost:3000 -t public
 ```
 
-## ⚠ Avertissement
+## ⚠️ Avertissement
 
 Ce projet est réalisé à des fins éducatives dans le cadre d'un cours d'informatique. **Ne l'utilisez pas en production**, car il peut présenter des vulnérabilités de sécurité, des problèmes de performance et ne suit pas nécessairement les meilleures pratiques de développement.
 
