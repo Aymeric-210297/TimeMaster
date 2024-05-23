@@ -1,5 +1,19 @@
 <?php
+function generateUniqueRandom($min, $max, &$lastValues) {
+    do {
+        $newValue = rand($min, $max);
+    } while (in_array($newValue, $lastValues));
+    
+    // Ajouter la nouvelle valeur générée au tableau des dernières valeurs
+    array_push($lastValues, $newValue);
 
+    // Limiter la taille du tableau à 10
+    if (count($lastValues) > 10) {
+        array_shift($lastValues); // Retirer la première valeur (la plus ancienne)
+    }
+
+    return $newValue;
+}
 function genererValeurAleatoire($probabilites) {
     // Vérifiez que la somme des probabilités est égale à 100
     $sommeProbabilites = array_sum($probabilites);

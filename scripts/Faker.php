@@ -463,7 +463,6 @@ $compteur = 0;
 //--------------------------
 //  PROFESSEUR_AFFECTATION
 //--------------------------
-/*
 $probabilites1 = [
     8 => 5, 
     10 => 5,
@@ -481,8 +480,6 @@ $probabilites1 = [
     34 => 10,
     36 => 10,
 ];
-
-// Probabilités pour le nombre total d'heures de cours par classe
 $probabilites2 = [
     28 => 20, 
     30 => 20, 
@@ -490,59 +487,52 @@ $probabilites2 = [
     34 => 20,
     36 => 20,
 ];
-
-
-
-function genererEmploiDuTemps($nbEtablissement, $nbClasse, $probabilites1, $probabilites2, $nbMatiere, $professeur_matiere) {
-    $emploiDuTemps = [];
-
-    for ($i = 0; $i < $nbEtablissement; $i++) {
-        for ($y = 0; $y < $nbClasse; $y++) {
-            $totalHeuresClasse = genererValeurAleatoire($probabilites2);
-            $heuresRestantes = $totalHeuresClasse;
-            $dejaPris = []; // Pour éviter de sélectionner deux fois la même matière avec le même professeur
-
-            while ($heuresRestantes > 0) {
-                $heuresMatiere = min(genererValeurAleatoire($probabilites1), $heuresRestantes);
-                $idMatiere = rand(1, $nbMatiere);
-
-                // Trouver un professeur qui peut enseigner cette matière et qui n'est pas déjà pris
-                $professeurs = [];
-                foreach ($professeur_matiere as $professeur => $matieres) {
-                    if ($matieres[1] == $idMatiere && !isset($dejaPris[$professeur])) {
-                        $professeurs[] = $professeur;
-                    }
-                }
-
-                if (!empty($professeurs)) {
-                    $professeurChoisi = $professeurs[array_rand($professeurs)];
-                    $emploiDuTemps[$i][$y][] = [
-                        'matiere' => $idMatiere,
-                        'professeur' => $professeurChoisi,
-                        'heures' => $heuresMatiere
-                    ];
-                    $dejaPris[$professeurChoisi] = true;
-                    $heuresRestantes -= $heuresMatiere;
-                } else {
-                    break; // Si aucun professeur n'est disponible pour cette matière, sortir de la boucle
-                }
-            }
-        }
-    }
-
-    return $emploiDuTemps;
+$aleatoireNombreHeure = 0;
+$profDejaDonneCours = array();
+$profDejaDonneCours[0][0] = 1; //id de la matiere
+$profDejaDonneCours[0][1] = 1; //nb d'heure restante a donner
+// le 0 est +- l'id de la matiere
+$totalHeureProfs = 0;
+$totalHeureClasse = 0;
+//creation du tableau de profs :
+for ($i=0; $i < $nbProf*$nbEtablissement; $i++) { 
+    $profDejaDonneCours[$i][0] = 1;
+    $aleatoireNombreHeure = genererValeurAleatoire($probabilites1);
+    $profDejaDonneCours[$i][1] = $aleatoireNombreHeure;
+    $totalHeureProfs += $aleatoireNombreHeure;
 }
+$classeHeureMatiere = array();
+$lastValues = array();
+//creation du tableau de classe : 
+$classeHeureMatiere[0][0] = 30; //nb heure a recevoir au total
+$classeHeureMatiere[0][1][2] = 9; //2 = id de la matiere / 9 = auto insrement qui definit le nombre d'heure de cours de cette matiere
 
-$emploiDuTemps = genererEmploiDuTemps($nbEtablissement, $nbClasse, $probabilites1, $probabilites2, $nbMatiere, $professeur_matiere);
-
-// Affichage de l'emploi du temps généré
-foreach ($emploiDuTemps as $etablissement => $classes) {
-    echo "Etablissement " . ($etablissement + 1) . ":\n";
-    foreach ($classes as $classe => $cours) {
-        echo "  Classe " . ($classe + 1) . ":\n";
-        foreach ($cours as $cour) {
-            echo "    Matière: " . $cour['matiere'] . ", Professeur: " . $cour['professeur'] . ", Heures: " . $cour['heures'] . "\n";
+for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) { 
+    $aleatoireNombreHeure = genererValeurAleatoire($probabilites2);
+    $classeHeureMatiere[$i][0] = $aleatoireNombreHeure;
+    $totalHeureClasse += $aleatoireNombreHeure;
+    $lastValues = array();
+    for ($j=0; $j < $classeHeureMatiere[$i][0]; $j++) { 
+        $chiffreAleatoire = rand(1,$nbMatiere);
+        if ($classeHeureMatiere[$i][1][$chiffreAleatoire] == null) {
+            $classeHeureMatiere[$i][1][$chiffreAleatoire] = 0;
+        }
+        else {
+            $classeHeureMatiere[$i][1][$chiffreAleatoire] ++;
         }
     }
 }
-*/
+echo("le nombre d'heure des classe au total est de : " + $totalHeureClasse + " Tandis que le nombre d'heures total des profs est de : " + $totalHeureProfs + " Il y'a donc une difference de : " + $totalHeureProfs - $totalHeureClasse + "si positif trop de prof si negatif pas assez de profs");
+for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) { 
+    // id de toutes les classes recup
+    //mtn il faut repeter le nombre d'heure de cours qu'ils auront donc 
+    $aleatoireNombreHeureCours = genererValeurAleatoire($probabilites2);
+    for ($j=0; $j < $chiffreAleatoire; $j++) { 
+        //la on a une boucle qui devrat selectionner le professeurId la matiereId et le nombre d'heures
+        //on va recup l'id du prof et de la matiere dans professeur_matiere Mais il faut stocker le nombre maximum u'n prof peut donner d'heure
+        //on va donc dans un tableau stocker l'id d'un prof et l'utiliser jusqu'a ce qu'il ne puisse plus donner cours
+        
+    }
+}
+
+
