@@ -47,5 +47,5 @@ require_once __DIR__ . "/controllers/AuthController.php";
 
 // Handle 404 error
 any('/404', function () {
-    render("out", "errors/404");
+    render("error", "404");
 });

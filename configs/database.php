@@ -7,5 +7,5 @@ try {
     ]);
 } catch (PDOException $error) {
     logError($error);
-    render("out", "errors/500");
+    render("error", "500");
 }

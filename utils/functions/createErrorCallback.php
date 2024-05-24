@@ -1,8 +1,8 @@
 <?php
 
-function createErrorCallback($responseCode, $layout)
+function createErrorCallback($responseCode)
 {
-    return function () use ($responseCode, $layout) {
-        render($layout, "errors/" . $responseCode);
+    return function () use ($responseCode) {
+        render("error", $responseCode);
     };
 }
