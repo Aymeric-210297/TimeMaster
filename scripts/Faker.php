@@ -84,7 +84,7 @@ $matiereNom = array(
     "Éducation environnementale"
 );
 
-$nbProf = 30;
+$nbProf = 120;
 $professeurs = array();
 $tables = array(
     "user_school",
@@ -168,6 +168,11 @@ for ($i = 0; $i < $nbUtilisateur; $i++) {
     AddUtilisateur($dbh, $utilisateurs, $i);
     $utilisateurs[$i][4] = $dbh->lastInsertId();
 }
+$utilisateurs[$nbUtilisateur][0] = "test@example.com"; 
+$utilisateurs[$nbUtilisateur][1] = "John";
+$utilisateurs[$nbUtilisateur][2] = "Doe";
+$utilisateurs[$nbUtilisateur][3] = password_hash("test",PASSWORD_DEFAULT);
+AddUtilisateur($dbh, $utilisateurs, $nbUtilisateur);
 echo ("Ok => Ajout de utilisateur \n");
 
 
@@ -252,6 +257,11 @@ for ($i = 0; $i < $nbUtilisateur; $i++) {
         $compteur++;
     }
 }
+$utilisateur_etablissement[$compteur+1][0] = $nbUtilisateur+1;
+$utilisateur_etablissement[$compteur+1][1] = 1;
+AddUtilisateur_Etablissement($dbh, $utilisateur_etablissement, $compteur+1);
+$utilisateur_etablissement[$compteur+1][1] = 2;
+AddUtilisateur_Etablissement($dbh, $utilisateur_etablissement, $compteur+1);
 echo ("Ok => Ajout de utilisateur_etablissement \n");
 $compteur = 0;
 
@@ -276,6 +286,14 @@ for ($y = 0; $y < $nbEtablissement; $y++) {
         $compteur++;
     }
 }
+$professeurs[$compteur+1][0] = "M";
+$professeurs[$compteur+1][1] = "X";
+$professeurs[$compteur+1][2] = "X";
+$professeurs[$compteur+1][3] = "test@example.com";
+$professeurs[$compteur+1][4] = 1;
+addProf($dbh, $professeurs, $compteur+1);
+$professeurs[$compteur+1][4] = 2;
+addProf($dbh, $professeurs, $compteur+1);
 $compteur = 0;
 echo ("Ok => Ajout de professeur \n");
 //--------------------------
@@ -325,6 +343,108 @@ echo ("Ok => Ajout de classe_matiere \n");
 $compteur = 0;
 $compteur2 = 0;
 //--------------------------
+//  PROFESSEUR_MATIERE
+//--------------------------
+
+
+for ($y = 0; $y < $nbProf * $nbEtablissement; $y++) {
+    $random_number = rand(1, $nbMatiere);
+    $professeur_matiere[$y][0] = $professeurs[$y][5];
+    $professeur_matiere[$y][1] = $random_number;
+    AddProfesseur_Matiere($dbh, $professeur_matiere, $y);
+    $professeur_matiere[$y][2] = $dbh->lastInsertId();
+}
+echo ("Ok => Ajout de professeur_matiere \n");
+//--------------------------
+//  PROFESSEUR_AFFECTATION
+//--------------------------
+$probabilites = [
+    8 => 5,
+    10 => 5,
+    12 => 5,
+    14 => 5,
+    16 => 5,
+    18 => 5,
+    20 => 5,
+    22 => 5,
+    24 => 5,
+    26 => 5,
+    28 => 10,
+    30 => 10,
+    32 => 10,
+    34 => 10,
+    36 => 10,
+];
+
+$aleatoireNombreHeure = 0;
+$profDejaDonneCours = array();
+
+
+//creation du tableau de profs :
+for ($i=0; $i < $nbProf*$nbEtablissement; $i++) { 
+    $profDejaDonneCours[$i][0] = $professeur_matiere[$i][1]; //id de la matiere
+    $aleatoireNombreHeure = genererValeurAleatoire($probabilites);
+    $profDejaDonneCours[$i][1] = $aleatoireNombreHeure; // nb d'heure restante a donner
+}
+$classeHeureMatiere = array();
+$lastValues = array();
+//recap de donnée que j'ai
+//prof et le nombre d'heure restante a donnée
+//telle classe tel nombre d'heure
+for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) { 
+    for ($y=0; $y < $nbMatiere; $y++) {
+        //calcul du prof
+        $check = true; 
+        do {
+            for ($j=0; $j < $nbProf*$nbEtablissement; $j++) { 
+                //echo($profDejaDonneCours[$j][1]);
+                if ($profDejaDonneCours[$j][0] == $y+1 && $classe_matiere[$compteur][0] <= $profDejaDonneCours[$j][1]) {
+                    //verifie si ya un prof de dispo
+                    $professeur_affectation[$compteur][0] = $j+1; //prof id
+                    $profDejaDonneCours[$j][1] -= $classe_matiere[$compteur][0];
+                    $check = false;
+                    break;
+                }
+                else{
+                   
+                }
+               echo("e");
+            }
+            $check = false;
+            
+            
+        } while ($check);
+        
+        $professeur_affectation[$compteur][1] = $i+1; //classe id
+        $professeur_affectation[$compteur][2] = $y+1; //matiereId
+        $professeur_affectation[$compteur][3] = $classe_matiere[$compteur][0]; //nombre heure
+        $compteur ++;
+        echo($compteur . "\n");
+    }
+}
+/*
+
+
+for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) { 
+    $aleatoireNombreHeure = genererValeurAleatoire($probabilites2);
+    $classeHeureMatiere[$i][0] = $aleatoireNombreHeure;
+    $totalHeureClasse += $aleatoireNombreHeure;
+    $lastValues = array();
+    for ($j=0; $j < $classeHeureMatiere[$i][0]; $j++) { 
+        $chiffreAleatoire = rand(1,$nbMatiere);
+        if ($classeHeureMatiere[$i][1][$chiffreAleatoire] == null) {
+            $classeHeureMatiere[$i][1][$chiffreAleatoire] = 0;
+        }
+        else {
+            $classeHeureMatiere[$i][1][$chiffreAleatoire] ++;
+        }
+    }
+}
+//echo("le nombre d'heure des classe au total est de : " + $totalHeureClasse + " Tandis que le nombre d'heures total des profs est de : " + $totalHeureProfs + " Il y'a donc une difference de : " + $totalHeureProfs - $totalHeureClasse + "si positif trop de prof si negatif pas assez de profs");
+
+//on sait donc pour chaque classe le nombre d'heure de tel matiere qu'elle va recevoir il faut mtn choisir le prof
+
+//--------------------------
 //  SALLECLASSE_MATIERE
 //--------------------------
 
@@ -349,20 +469,7 @@ for ($y = 0; $y < $nbSalleClasse * $nbEtablissement; $y++) {
 
 echo ("Ok => Ajout de salleClasse_matiere \n");
 $compteur = 0;
-//--------------------------
-//  PROFESSEUR_MATIERE
-//--------------------------
 
-
-for ($y = 0; $y < $nbProf * $nbEtablissement; $y++) {
-    $random_number = rand(1, $nbMatiere);
-    $professeur_matiere[$y][0] = $professeurs[$y][5];
-    $professeur_matiere[$y][1] = $random_number;
-    $professeur_matiere[$y][2] = $dbh->lastInsertId();
-    AddProfesseur_Matiere($dbh, $professeur_matiere, $y);
-}
-echo ("Ok => Ajout de professeur_matiere \n");
-//
 //--------------------------
 //  FOURCHE_PREFERENTIEL
 //--------------------------
@@ -480,79 +587,5 @@ for ($i = 0; $i < $nbEtablissement * $nbProf; $i++) {
 echo ("Ok => Ajout de presence_professeur \n");
 $compteur = 0;
 
-//--------------------------
-//  PROFESSEUR_AFFECTATION
-//--------------------------
-$probabilites1 = [
-    8 => 5,
-    10 => 5,
-    12 => 5,
-    14 => 5,
-    16 => 5,
-    18 => 5,
-    20 => 5,
-    22 => 5,
-    24 => 5,
-    26 => 5,
-    28 => 10,
-    30 => 10,
-    32 => 10,
-    34 => 10,
-    36 => 10,
-];
-$probabilites2 = [
-    28 => 20,
-    30 => 20,
-    32 => 20,
-    34 => 20,
-    36 => 20,
-];
-$aleatoireNombreHeure = 0;
-$profDejaDonneCours = array();
-$profDejaDonneCours[0][0] = 1; //id de la matiere
-$profDejaDonneCours[0][1] = 1; //nb d'heure restante a donner
-// le 0 est +- l'id de la matiere
-$totalHeureProfs = 0;
-$totalHeureClasse = 0;
-//creation du tableau de profs :
-for ($i=0; $i < $nbProf*$nbEtablissement; $i++) { 
-    $profDejaDonneCours[$i][0] = 1;
-    $aleatoireNombreHeure = genererValeurAleatoire($probabilites1);
-    $profDejaDonneCours[$i][1] = $aleatoireNombreHeure;
-    $totalHeureProfs += $aleatoireNombreHeure;
-}
-$classeHeureMatiere = array();
-$lastValues = array();
-//creation du tableau de classe : 
-$classeHeureMatiere[0][0] = 30; //nb heure a recevoir au total
-$classeHeureMatiere[0][1][2] = 9; //2 = id de la matiere / 9 = auto insrement qui definit le nombre d'heure de cours de cette matiere
-
-for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) { 
-    $aleatoireNombreHeure = genererValeurAleatoire($probabilites2);
-    $classeHeureMatiere[$i][0] = $aleatoireNombreHeure;
-    $totalHeureClasse += $aleatoireNombreHeure;
-    $lastValues = array();
-    for ($j=0; $j < $classeHeureMatiere[$i][0]; $j++) { 
-        $chiffreAleatoire = rand(1,$nbMatiere);
-        if ($classeHeureMatiere[$i][1][$chiffreAleatoire] == null) {
-            $classeHeureMatiere[$i][1][$chiffreAleatoire] = 0;
-        }
-        else {
-            $classeHeureMatiere[$i][1][$chiffreAleatoire] ++;
-        }
-    }
-}
-echo("le nombre d'heure des classe au total est de : " + $totalHeureClasse + " Tandis que le nombre d'heures total des profs est de : " + $totalHeureProfs + " Il y'a donc une difference de : " + $totalHeureProfs - $totalHeureClasse + "si positif trop de prof si negatif pas assez de profs");
-for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) { 
-    // id de toutes les classes recup
-    //mtn il faut repeter le nombre d'heure de cours qu'ils auront donc 
-    $aleatoireNombreHeureCours = genererValeurAleatoire($probabilites2);
-    for ($j=0; $j < $chiffreAleatoire; $j++) { 
-        //la on a une boucle qui devrat selectionner le professeurId la matiereId et le nombre d'heures
-        //on va recup l'id du prof et de la matiere dans professeur_matiere Mais il faut stocker le nombre maximum u'n prof peut donner d'heure
-        //on va donc dans un tableau stocker l'id d'un prof et l'utiliser jusqu'a ce qu'il ne puisse plus donner cours
-        
-    }
-}
-
+*/
 
