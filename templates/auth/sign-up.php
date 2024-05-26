@@ -28,6 +28,6 @@
             <p class="error-text"><?= out($errorMessage) ?></p>
         <?php endif; ?>
 
-        <button type="submit">S'inscrire</button>
+        <button type="submit" class="button primary">S'inscrire</button>
     </form>
 </main>

@@ -1,0 +1,35 @@
+.button {
+    border: none;
+    padding: 12px 16px;
+    border-radius: .375rem;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.button.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.button.primary:hover {
+    opacity: 0.8;
+}
+
+.button.secondary {
+    box-shadow: inset 0px 0px 0px 1.2px var(--primary-color);
+    color: var(--primary-color);
+}
+
+.button.secondary:hover {
+    background-color: #F1F1F1;
+}
+
+.button.error {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.button.error:hover {
+    opacity: 0.8;
+}

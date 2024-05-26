@@ -18,6 +18,6 @@
             <p class="error-text"><?= out($errorMessage) ?></p>
         <?php endif; ?>
 
-        <button type="submit">Se connecter</button>
+        <button type="submit" class="button primary">Se connecter</button>
     </form>
 </main>

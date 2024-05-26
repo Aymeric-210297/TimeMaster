@@ -34,6 +34,10 @@ h1 {
     margin-bottom: 10px;
 }
 
+.button {
+    width: 100%;
+}
+
 @media (width <= 700px) {
     main {
         padding: 0 20px;
