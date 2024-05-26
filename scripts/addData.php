@@ -291,14 +291,15 @@ function addEleve($dbh, $Eleves, $numeroEleve)
 function AddProf($dbh, $professeurs, $numeroProf)
 {
     try {
-        $query = "insert into teacher(teacherEmail,teacherFamilyName,teacherGivenName,schoolId,teacherGender) values (:professeurEmail,:professeurNom,:professeurPrenom,:etablissementId,:professeurGenre);";
+        $query = "insert into teacher(teacherEmail,teacherFamilyName,teacherGivenName,schoolId,teacherGender,teacherNumberHours) values (:professeurEmail,:professeurNom,:professeurPrenom,:etablissementId,:professeurGenre,:teacherNumberHours);";
         $addProf = $dbh->prepare($query);
         $addProf->execute([
             'professeurGenre' => $professeurs[$numeroProf][0],
             'professeurEmail' => $professeurs[$numeroProf][3],
             'professeurNom' => $professeurs[$numeroProf][2],
             'professeurPrenom' => $professeurs[$numeroProf][1],
-            'etablissementId' => $professeurs[$numeroProf][4]
+            'etablissementId' => $professeurs[$numeroProf][4],
+            'teacherNumberHours' => $professeurs[$numeroProf][5]
         ]);
         $listeCreneau = $addProf->fetchAll();
         return $listeCreneau;

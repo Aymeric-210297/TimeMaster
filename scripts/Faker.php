@@ -262,6 +262,23 @@ $compteur = 0;
 //--------------------------
 //       PROFESSEUR
 //--------------------------
+$probabilites = [
+    8 => 5,
+    10 => 5,
+    12 => 5,
+    14 => 5,
+    16 => 5,
+    18 => 5,
+    20 => 5,
+    22 => 5,
+    24 => 5,
+    26 => 5,
+    28 => 10,
+    30 => 10,
+    32 => 10,
+    34 => 10,
+    36 => 10,
+];
 for ($y = 0; $y < $nbEtablissement; $y++) {
     for ($i = 0; $i < $nbProf; $i++) {
         if (rand(0, 1) == 0) {
@@ -274,9 +291,9 @@ for ($y = 0; $y < $nbEtablissement; $y++) {
         $professeurs[$compteur][2] = $faker->lastName();
         $professeurs[$compteur][3] = str_replace(' ', '', $professeurs[$compteur][2]) . "." . $professeurs[$compteur][1] . "_" . $compteur . "@site.ecole.be";
         $professeurs[$compteur][4] = $Etablissements[$y][2];
+        $professeurs[$compteur][5] = genererValeurAleatoire($probabilites);
         addProf($dbh, $professeurs, $compteur);
-
-        $professeurs[$compteur][5] = $dbh->lastInsertId();
+        $professeurs[$compteur][6] = $dbh->lastInsertId();
         $compteur++;
     }
 }
@@ -285,8 +302,10 @@ $professeurs[$compteur+1][1] = "X";
 $professeurs[$compteur+1][2] = "X";
 $professeurs[$compteur+1][3] = "test@example.com";
 $professeurs[$compteur+1][4] = 1;
+$professeurs[$compteur+1][5] = 0;
 addProf($dbh, $professeurs, $compteur+1);
 $professeurs[$compteur+1][4] = 2;
+
 addProf($dbh, $professeurs, $compteur+1);
 $compteur = 0;
 echo ("Ok => Ajout de professeur \n");
@@ -343,7 +362,7 @@ $compteur2 = 0;
 
 for ($y = 0; $y < $nbProf * $nbEtablissement; $y++) {
     $random_number = rand(1, $nbMatiere);
-    $professeur_matiere[$y][0] = $professeurs[$y][5];
+    $professeur_matiere[$y][0] = $professeurs[$y][6];
     $professeur_matiere[$y][1] = $random_number;
     AddProfesseur_Matiere($dbh, $professeur_matiere, $y);
     $professeur_matiere[$y][2] = $dbh->lastInsertId();
