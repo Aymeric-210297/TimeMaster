@@ -157,13 +157,14 @@ create table class_subject
 
 create table teacher
 (
-    teacherId         int auto_increment
+    teacherId          int auto_increment
         primary key,
-    teacherEmail      varchar(255) not null,
-    teacherFamilyName varchar(255) not null,
-    teacherGivenName  varchar(255) not null,
-    teacherGender     varchar(255) not null,
-    schoolId          int          not null,
+    teacherEmail       varchar(255) not null,
+    teacherFamilyName  varchar(255) not null,
+    teacherGivenName   varchar(255) not null,
+    teacherGender      varchar(255) not null,
+    teacherNumberHours int          not null,
+    schoolId           int          not null,
 
     unique (teacherEmail, schoolId),
     foreign key (schoolId) references school (schoolId)
