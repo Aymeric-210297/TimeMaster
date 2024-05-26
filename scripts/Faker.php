@@ -13,10 +13,8 @@ require_once __DIR__ . '/addData.php';
 
 $faker = Faker\Factory::create("fr_BE");
 $compteur2 = 0;
-//Utilisateur
-$nbUtilisateur = 5;
+
 $utilisateurs = array();
-//lien
 $utilisateur_etablissement = array();
 $horaire_jour = array();
 $classe_matiere = array();
@@ -28,7 +26,17 @@ $professeur_affectation = array();
 $professeur_salleClasse = array();
 $salleClasse_disponibilite = array();
 $salleClasse_matiere = array();
-$nbJour = 5;
+$eleves = array();
+$salleClasse = array();
+$matieres = array();
+$classes = array();
+$professeurs = array();
+$Etablissements = array();
+$creneaux = array(
+    ["08:25", "09:15", "10:20", "11:10", "12:50", "13:40", "14:40", "15:30"],
+    ["09:15", "10:05", "11:10", "12:00", "13:40", "14:30", "15:30", "16:15"],
+    ["1", "1", "2", "2", "3", "3", "4", "4"]
+);
 $jours = array(
     "Lundi",
     "Mardi",
@@ -36,31 +44,6 @@ $jours = array(
     "Jeudi",
     "Vendredi"
 );
-$nbCreneau = 8;
-$creneaux = array(
-    ["08:25", "09:15", "10:20", "11:10", "12:50", "13:40", "14:40", "15:30"],
-    ["09:15", "10:05", "11:10", "12:00", "13:40", "14:30", "15:30", "16:15"],
-    ["1", "1", "2", "2", "3", "3", "4", "4"]
-);
-
-$nbEleve = 200;
-$eleves = array();
-
-$nbSalleClasse = 10;
-$salleClasse = array();
-
-$nbClasse = 100; //max 800
-$nbAnnee = 6;
-$anneeDebut = 3;
-//le nombre de classe sera ajusté en fonction du nombre d'année
-$nbClasse = $nbClasse - ($nbClasse % ($nbAnnee - $anneeDebut));
-$classes = array();
-
-$nbEtablissement = 2;
-$Etablissements = array();
-
-$nbMatiere = 20;
-$matieres = array();
 $matiereNom = array(
     "SVT",
     "Physique",
@@ -83,9 +66,22 @@ $matiereNom = array(
     "Sciences sociales",
     "Éducation environnementale"
 );
+$nbMatiere = 20; //si on modifie modifier le tab matiereNom
+$nbUtilisateur = 5;
+$nbJour = 5;
+$nbCreneau = 8;
+$nbProf = 150;
+$nbEleve = 200;
+$nbSalleClasse = 100;
+$nbEtablissement = 2;
+$nbClasse = 100; //max 800
+$nbAnnee = 6;
+$anneeDebut = 3;  //le nombre de classe sera ajusté en fonction du nombre d'année
+$nbClasse = $nbClasse - ($nbClasse % ($nbAnnee - $anneeDebut));
 
-$nbProf = 120;
-$professeurs = array();
+
+
+
 $tables = array(
     "user_school",
     "user",
@@ -110,8 +106,6 @@ $tables = array(
     "class",
     "school"
 );
-
-$compteur = 0;
 // Réinitialisation des données de chaque table
 foreach ($tables as $table) {
     // Suppression des données de la table
@@ -127,7 +121,7 @@ echo "Les données de la base de données ont été réinitialisées avec succè
 
 
 
-
+$compteur = 0;
 //--------------------------
 //      ETABLISSEMENT
 //--------------------------
@@ -358,6 +352,7 @@ echo ("Ok => Ajout de professeur_matiere \n");
 //--------------------------
 //  PROFESSEUR_AFFECTATION
 //--------------------------
+/*
 $probabilites = [
     8 => 5,
     10 => 5,
@@ -422,7 +417,7 @@ for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) {
         echo($compteur . "\n");
     }
 }
-/*
+
 
 
 for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) { 
@@ -439,7 +434,7 @@ for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) {
             $classeHeureMatiere[$i][1][$chiffreAleatoire] ++;
         }
     }
-}
+}*/
 //echo("le nombre d'heure des classe au total est de : " + $totalHeureClasse + " Tandis que le nombre d'heures total des profs est de : " + $totalHeureProfs + " Il y'a donc une difference de : " + $totalHeureProfs - $totalHeureClasse + "si positif trop de prof si negatif pas assez de profs");
 
 //on sait donc pour chaque classe le nombre d'heure de tel matiere qu'elle va recevoir il faut mtn choisir le prof
@@ -587,5 +582,5 @@ for ($i = 0; $i < $nbEtablissement * $nbProf; $i++) {
 echo ("Ok => Ajout de presence_professeur \n");
 $compteur = 0;
 
-*/
+
 
