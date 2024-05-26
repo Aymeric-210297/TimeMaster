@@ -4,6 +4,8 @@ require_once __DIR__ . "/../models/UserModel.php";
 
 $userModel = new UserModel($dbh, createErrorCallback(500));
 
+// TODO: /app/account
+
 get('/sign-in', function () {
     if (isset ($_SESSION['user'])) {
         redirect('/');
