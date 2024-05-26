@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../models/UserModel.php";
 
-$userModel = new UserModel($dbh, createErrorCallback(500, "out"));
+$userModel = new UserModel($dbh, createErrorCallback(500));
 
 get('/sign-in', function () {
     if (isset ($_SESSION['user'])) {
@@ -11,7 +11,7 @@ get('/sign-in', function () {
 
     render(
         "auth",
-        "auth/sign-in",
+        "sign-in",
         [
             'head' => ['title' => "Connexion"],
         ]
@@ -28,7 +28,7 @@ post('/sign-in', function () use ($userModel) {
     if (!$user) {
         render(
             "auth",
-            "auth/sign-in",
+            "sign-in",
             [
                 'head' => ['title' => "Connexion"],
                 'errorMessage' => 'Email ou mot de passe incorrect'
@@ -45,7 +45,7 @@ post('/sign-in', function () use ($userModel) {
 
     render(
         "auth",
-        "auth/sign-in",
+        "sign-in",
         [
             'head' => ['title' => "Connexion"],
             'errorMessage' => 'Email ou mot de passe incorrect'
@@ -61,7 +61,7 @@ get('/sign-up', function () {
 
     render(
         "auth",
-        "auth/sign-up",
+        "sign-up",
         [
             'head' => ['title' => "Inscription"],
         ]
@@ -78,7 +78,7 @@ post('/sign-up', function () use ($userModel) {
     if ($user) {
         render(
             "auth",
-            "auth/sign-up",
+            "sign-up",
             [
                 'head' => ['title' => "Inscription"],
                 "errorMessage" => "Adresse email déjà utilisée"

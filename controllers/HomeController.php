@@ -2,7 +2,7 @@
 
 get('/', function () {
     render(
-        "out",
+        null,
         "home",
         [
             'head' => ['title' => "Home"],

@@ -6,5 +6,5 @@ function checkCsrf()
         return;
     }
 
-    render("out", "errors/403");
+    render("error", "403");
 }

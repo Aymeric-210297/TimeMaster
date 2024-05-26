@@ -15,7 +15,7 @@ require_once __DIR__ . "/utils/libs/router.php";
 require_once __DIR__ . "/utils/functions/checkCsrf.php";
 require_once __DIR__ . "/utils/functions/logError.php";
 require_once __DIR__ . "/utils/functions/render.php";
-require_once __DIR__ . "/utils/functions/create500ResponseCallback.php";
+require_once __DIR__ . "/utils/functions/createErrorCallback.php";
 require_once __DIR__ . "/utils/functions/redirect.php";
 
 /**
@@ -47,5 +47,5 @@ require_once __DIR__ . "/controllers/AuthController.php";
 
 // Handle 404 error
 any('/404', function () {
-    render("out", "errors/404");
+    render("error", "404");
 });
