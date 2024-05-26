@@ -2,9 +2,9 @@
 
 ## 🌟 À propos du projet
 
-Cette plateforme est conçue pour automatiser la création d'horaires dans les établissements scolaires et faciliter le suivi des absences et des retards des élèves et des professeurs. Les utilisateurs, qu'ils soient élèves ou professeurs, peuvent accéder à leurs horaires via des comptes administrés par les responsables de l'établissement.
+Cette plateforme est conçue pour automatiser la création d'horaires dans les établissements scolaires et faciliter le suivi des absences et des retards. Les élèves et les professeurs peuvent accéder à leurs horaires et déclarer leurs indisponibilités via des comptes administrés par les responsables de leur établissement.
 
-Réalisé à des fins éducatives dans le cadre d'un cours d'informatique, ce projet possède des fonctionnalités spécifiquement adaptées à un usage défini et n'est pas destiné à être universellement adaptable à tous types d'établissements ou d'environnements scolaires. Son développement a un but purement démonstratif.
+Réalisé à des fins éducatives dans le cadre d'un cours d'informatique, ce projet possède des fonctionnalités spécifiquement adaptées à un usage précis et n'est pas destiné à être adaptable à tous types d'établissements scolaires. Son développement a un but purement démonstratif.
 
 ## 🔧 Installation
 
@@ -16,9 +16,9 @@ Réalisé à des fins éducatives dans le cadre d'un cours d'informatique, ce pr
 
 ### Préparation
 
-1. Lancez le fichier SQL `database.sql` sur votre serveur MySQL pour créer la base de données et les tables nécessaires au fonctionnement du projet.
+1. Exécutez le fichier SQL `database.sql` sur votre serveur MySQL pour créer la base de données et les tables nécessaires au fonctionnement du projet.
 
-2. Clonez ce répertoire sur votre machine locale :
+2. Clonez ce projet sur votre machine :
 
     ```bash
     git clone https://github.com/Aymeric-210297/projet-horaires.git
@@ -59,4 +59,4 @@ php -S localhost:3000 -t public
 
 Ce projet est réalisé à des fins éducatives dans le cadre d'un cours d'informatique. **Ne l'utilisez pas en production**, car il peut présenter des vulnérabilités de sécurité, des problèmes de performance et ne suit pas nécessairement les meilleures pratiques de développement.
 
-Les auteurs de ce projet ne sont pas responsables des dommages, directs ou indirects, résultant de l'utilisation de ce projet. Utilisez-le à vos risques et périls.
+Les auteurs de ce projet ne sont pas responsables des dommages, directs ou indirects, résultant de l'utilisation de ce projet. L'utilisation de ce projet se fait aux risques et périls de l'utilisateur.
