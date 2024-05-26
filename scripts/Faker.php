@@ -592,7 +592,7 @@ for ($i = 0; $i < $nbEtablissement * $nbProf; $i++) {
             $presence_professeur[$compteur][0] = $i + 1;
             $presence_professeur[$compteur][1] = $j + 1;
             $presence_professeur[$compteur][2] = $y + 1;
-            $presence_professeur[$compteur][3] = 1;
+            $presence_professeur[$compteur][3] = $chiffreAleatoire;
             AddPresenceProfesseur($dbh, $presence_professeur, $compteur);
             $compteur++;
         }
