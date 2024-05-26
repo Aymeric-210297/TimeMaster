@@ -163,7 +163,7 @@ create table teacher
     teacherFamilyName  varchar(255) not null,
     teacherGivenName   varchar(255) not null,
     teacherGender      varchar(255) not null,
-    teacherNumberHours varchar(255) not null,
+    teacherNumberHours int          not null,
     schoolId           int          not null,
 
     unique (teacherEmail, schoolId),
