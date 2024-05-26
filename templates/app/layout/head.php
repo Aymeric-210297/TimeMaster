@@ -5,8 +5,10 @@
     <title><?= !empty($head["title"]) ? $head["title"] . " | " . APP_NAME : APP_NAME ?></title>
 
     <link rel="stylesheet" href="/assets/styles/index.css">
+    <link rel="stylesheet" href="/assets/styles/app.css">
     <link rel="stylesheet" href="/assets/styles/sidebar.css">
     <link rel="stylesheet" href="/assets/styles/form.css">
+    <link rel="stylesheet" href="/assets/styles/button.css">
 
     <script src="<?= $_ENV["FONT_AWESOME_KIT_URL"] ?>" crossorigin="anonymous"></script>
 </head>

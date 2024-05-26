@@ -4,7 +4,46 @@ require_once __DIR__ . "/../models/UserModel.php";
 
 $userModel = new UserModel($dbh, createErrorCallback(500));
 
-// TODO: /app/account
+get('/app/account', function () {
+    if (!isset ($_SESSION['user'])) {
+        redirect('/sign-in');
+    }
+
+    render(
+        "app",
+        "account",
+        [
+            'head' => ['title' => "Paramètres du compte"],
+            'navbarItem' => 'ACCOUNT'
+        ]
+    );
+});
+
+post('/app/account', function () use ($userModel) {
+    checkCsrf();
+
+    if (!isset ($_SESSION['user'])) {
+        redirect('/');
+    }
+
+    // TODO: vérification des données $_POST
+
+    if (isset ($_POST['save'])) {
+        $userModel->updateUserById($_SESSION['user']->userId, $_POST['first-name'], $_POST['last-name'], $_POST['email'], $_POST['password']);
+        refreshSession($userModel);
+
+        redirect();
+    } else if (isset ($_POST['delete-account'])) {
+        if (count($userModel->getUserSchools($_SESSION['user']->userId)) > 0) {
+            // TODO: renvoyer un message d'erreur
+        } else {
+            $userModel->deleteUserById($_SESSION['user']->userId);
+
+            redirect("/sign-out");
+        }
+    }
+});
+
 
 get('/sign-in', function () {
     if (isset ($_SESSION['user'])) {

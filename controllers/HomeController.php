@@ -10,6 +10,10 @@ get('/', function () {
 });
 
 get('/app', function () {
+    if (!isset ($_SESSION['user'])) {
+        redirect('/sign-in');
+    }
+
     render('app', 'home', [
         'head' => [
             'title' => 'App home'
