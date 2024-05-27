@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/assets/styles/sidebar.css">
     <link rel="stylesheet" href="/assets/styles/form.css">
     <link rel="stylesheet" href="/assets/styles/button.css">
+    <link rel="stylesheet" href="/assets/styles/flashMessage.css">
 
+    <script defer src="/assets/scripts/flashMessage.js"></script>
     <script src="<?= $_ENV["FONT_AWESOME_KIT_URL"] ?>" crossorigin="anonymous"></script>
 </head>

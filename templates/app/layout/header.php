@@ -21,6 +21,8 @@ $getNavbarLink = function ($href, $icon, $value, $name = null) use ($navbarItem)
 ?>
 
 <body>
+    <?php include_once __DIR__ . "/../../components/flashMessage.php" ?>
+
     <div class="sidebar">
         <h1>Projet horaires</h1>
         <div>

@@ -1,0 +1,60 @@
+#flash-message {
+    position: absolute;
+    display: flex;
+    top: 15px;
+    right: 15px;
+    max-width: 400px;
+    min-width: 300px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#flash-message > div {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#flash-message.primary {
+    border: 2px solid var(--primary-color);
+}
+
+#flash-message.error {
+    border: 2px solid var(--error-color);
+}
+
+#flash-message .icon {
+    font-size: 1.50em;
+}
+
+#flash-message > button {
+    margin-right: 10px;
+    margin-left: 20px;
+}
+
+#flash-message.primary .icon, #flash-message.primary .title {
+    color: var(--primary-color);
+}
+
+#flash-message.error .icon, #flash-message.error .title {
+    color: var(--error-color);
+}
+
+#flash-message .title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+#flash-message .message {
+    font-size: 15px;
+}
+
+#close-flash-message {
+    cursor: pointer;
+    border: none;
+    color: #4B5563;
+    font-size: 1.25em;
+}
