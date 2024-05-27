@@ -12,6 +12,12 @@ form div label {
     font-weight: 500;
 }
 
+form div p {
+    color: #6b7280;
+    font-size: 15px;
+    margin-top: -2px;
+}
+
 form div input {
     border: 1px solid #D1D5DB;
     border-radius: .375rem;

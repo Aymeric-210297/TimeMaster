@@ -21,6 +21,7 @@
         <div>
             <label for="password">Nouveau mot de passe</label>
             <input type="password" name="password" id="password" autocomplete="new-password">
+            <p>Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe.</p>
         </div>
 
         <button type="submit" name="save" class="button primary">Sauvegarder <i class="fa-solid fa-save"></i></button>
