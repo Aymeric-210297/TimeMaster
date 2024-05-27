@@ -15,13 +15,28 @@
     vertical-align: -.075em;
 }
 
-.button.primary {
-    background-color: var(--primary-color);
+.button.primary, .button.error, .button.success, .button.warning {
     color: white;
 }
 
-.button.primary:hover {
+.button.primary:hover, .button.error:hover, .button.success:hover, .button.warning:hover {
     opacity: 0.8;
+}
+
+.button.primary {
+    background-color: var(--primary-color);
+}
+
+.button.success {
+    background-color: var(--success-color);
+}
+
+.button.warning {
+    background-color: var(--warning-color);
+}
+
+.button.error {
+    background-color: var(--error-color);
 }
 
 .button.secondary {
@@ -31,13 +46,4 @@
 
 .button.secondary:hover {
     background-color: #F1F1F1;
-}
-
-.button.error {
-    background-color: var(--error-color);
-    color: white;
-}
-
-.button.error:hover {
-    opacity: 0.8;
 }

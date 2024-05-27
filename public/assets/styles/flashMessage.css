@@ -22,6 +22,14 @@
     border: 2px solid var(--primary-color);
 }
 
+#flash-message.success {
+    border: 2px solid var(--success-color);
+}
+
+#flash-message.warning {
+    border: 2px solid var(--warning-color);
+}
+
 #flash-message.error {
     border: 2px solid var(--error-color);
 }
@@ -37,6 +45,14 @@
 
 #flash-message.primary .icon, #flash-message.primary .title {
     color: var(--primary-color);
+}
+
+#flash-message.success .icon, #flash-message.success .title {
+    color: var(--success-color);
+}
+
+#flash-message.warning .icon, #flash-message.warning .title {
+    color: var(--warning-color);
 }
 
 #flash-message.error .icon, #flash-message.error .title {
