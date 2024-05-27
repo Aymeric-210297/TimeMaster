@@ -23,7 +23,9 @@
             <input type="password" name="password" id="password" autocomplete="new-password">
         </div>
 
-        <button type="submit" name="save" class="button primary">Sauvegarder</button>
-        <button type="submit" name="delete-account" class="button error">Supprimer mon compte</button>
+        <button type="submit" name="save" class="button primary">Sauvegarder <i class="fa-solid fa-save"></i></button>
+        <button type="submit" name="delete-account" class="button error">
+            Supprimer mon compte <i class="fa-solid fa-user-minus"></i>
+        </button>
     </form>
 </main>
