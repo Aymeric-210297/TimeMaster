@@ -5,11 +5,14 @@ require_once __DIR__ . '/printData.php';
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../models/BaseModel.php';
 require __DIR__ . '/../models/TeacherModel.php';
-
+require __DIR__ . '/../models/ClassroomModel.php';
+require __DIR__ . '/../models/ClassModel.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 require_once __DIR__ . "/../configs/database.php";
 $teacherModel = new TeacherModel($dbh);
+$classroomModel = new classroomModel($dbh);
+$classModel = new classModel($dbh);
 $schoolId = 1;
 $tables = array(
     "class_schedule",
@@ -59,10 +62,13 @@ $classeVariatif[0][0] = 1; // Id de la classe
 $classeVariatif[1][0][0][0] = 1; // le tab Variatif    3 case : jourId    4 case : creneauId
 $classeVariatif[2][0][1] = 10; // 3 : id de la matiere     valeur = nombre d'heure
 
+$nbClasse = $classModel->getClassCountBySchoolId($schoolId);
 
-
-
-
+for ($i=0; $i < $nbClasse; $i++) { 
+    $classeId = $classModel->getClassIdBySchoolIdAndIndex($schoolId,$i);
+    $classeVariatif[0][$i] = $classeId;
+    $classeVariatif[2][$i] = $classModel->getClassSubjectsByClassId($classeId);
+}
 
 
 
@@ -72,8 +78,16 @@ $classeVariatif[2][0][1] = 10; // 3 : id de la matiere     valeur = nombre d'heu
 //parametre 1 = type de donnée
 //parametre 2 = quel salle de classe
 
-$salleClasse[0][0] = 1; // Id de la salle de classe
-$salleClasse[1][0][0][0] = 1; // le tab variatif     3 case : jourId    4 case : creneauId
-$salleClasse[2][0][0][0] = 1; // le tab des presences      3 case : jourId    4 case : creneauId
-$salleClasse[2][0][0] = 1; // Id de la/les matiere preferentiel
+$salleClasseVariatif[0][0] = 1; // Id de la salle de classe
+$salleClasseVariatif[1][0][0][0] = 1; // le tab variatif     3 case : jourId    4 case : creneauId
+$salleClasseVariatif[2][0][0][0] = 1; // le tab des presences      3 case : jourId    4 case : creneauId
+$salleClasseVariatif[3][0][0] = 1; // Id de la/les matiere preferentiel
 
+$nbSalleClasse = $classroomModel->getClassroomCountBySchoolId($schoolId);
+
+for ($i=0; $i < $nbSalleClasse; $i++) { 
+    $salleClasseId = $classroomModel->getClassroomIdBySchoolIdAndIndex($schoolId,$i);
+    $salleClasseVariatif[0][0] = $salleClasseId;
+    $salleClasseVariatif[2][0] = $salleClasseId;
+
+}
