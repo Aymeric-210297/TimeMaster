@@ -81,7 +81,7 @@ $nbClasse = $nbClasse - ($nbClasse % ($nbAnnee - $anneeDebut));
 
 
 
-
+$startTimeAll = microtime(true);
 $tables = array(
     "user_school",
     "user",
@@ -108,13 +108,13 @@ $tables = array(
 );
 // Réinitialisation des données de chaque table
 foreach ($tables as $table) {
-    // Suppression des données de la table
+    $startTime = microtime(true);
     $sql = "DELETE FROM $table;";
     $dbh->exec($sql);
-    // Réinitialisation de la valeur d'auto-incrémentation
     $sql = "ALTER TABLE $table AUTO_INCREMENT = 1;";
     $dbh->exec($sql);
-    echo ("Ok => Supression de : " . $table . "\n");
+    $endTime = microtime(true);
+    echo "Ok => Suppression de : $table en " . number_format($endTime - $startTime, 4) . " secondes\n";
 }
 echo "Les données de la base de données ont été réinitialisées avec succès.\n";
 
@@ -125,35 +125,41 @@ $compteur = 0;
 //--------------------------
 //      ETABLISSEMENT
 //--------------------------
-
+$startTime = microtime(true);
 for ($i = 0; $i < $nbEtablissement; $i++) {
     $Etablissements[$i][0] = supprimerPassageLigne($faker->address());
     $Etablissements[$i][1] = $faker->company();
     AddEtablissement($dbh, $Etablissements, $i);
     $Etablissements[$i][2] = $dbh->lastInsertId();
 }
-echo ("Ok => Ajout de établissement \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de établissement en " . number_format($endTime - $startTime, 4) . " secondes\n");
 //--------------------------
 //          JOUR
 //--------------------------
+$startTime = microtime(true);
 for ($i = 0; $i < $nbJour; $i++) {
     addJour($dbh, $jours, $i);
 }
-echo ("Ok => Ajout de jour \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de jour en " . number_format($endTime - $startTime, 4) . " secondes\n");
 //--------------------------
 //         CRENEAU
 //--------------------------
+$startTime = microtime(true);
 for ($i = 0; $i < $nbCreneau; $i++) {
     for ($y = 0; $y < $nbEtablissement; $y++) {
         $creneaux[3][$i] = $Etablissements[$y][2];
         AddCreneau($dbh, $creneaux, $i);
     }
 }
-echo ("Ok => Ajout de creneau \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de creneau en " . number_format($endTime - $startTime, 4) . " secondes\n");
 
 //--------------------------
 //       UTILISATEUR
 //--------------------------
+$startTime = microtime(true);
 for ($i = 0; $i < $nbUtilisateur; $i++) {
     $utilisateurs[$i][1] = $faker->firstName();
     $utilisateurs[$i][2] = $faker->lastName();
@@ -162,18 +168,20 @@ for ($i = 0; $i < $nbUtilisateur; $i++) {
     AddUtilisateur($dbh, $utilisateurs, $i);
     $utilisateurs[$i][4] = $dbh->lastInsertId();
 }
+$endTime = microtime(true);
 $utilisateurs[$nbUtilisateur][0] = "test@example.com"; 
 $utilisateurs[$nbUtilisateur][1] = "John";
 $utilisateurs[$nbUtilisateur][2] = "Doe";
 $utilisateurs[$nbUtilisateur][3] = password_hash("test",PASSWORD_DEFAULT);
 AddUtilisateur($dbh, $utilisateurs, $nbUtilisateur);
-echo ("Ok => Ajout de utilisateur \n");
+echo ("Ok => Ajout de utilisateur en " . number_format($endTime - $startTime, 4) . " secondes\n");
 
 
 
 //--------------------------
 //        MATIERE
 //--------------------------
+$startTime = microtime(true);
 for ($y = 0; $y < $nbEtablissement; $y++) {
     for ($i = 0; $i < $nbMatiere; $i++) {
         $matieres[$compteur][0] = $matiereNom[$i];
@@ -183,11 +191,13 @@ for ($y = 0; $y < $nbEtablissement; $y++) {
         $compteur++;
     }
 }
-echo ("Ok => Ajout de matiere \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de matiere en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
 //--------------------------
 //         CLASSE
 //--------------------------
+$startTime = microtime(true);
 $optionsUtilisees = []; // Tableau pour stocker les options déjà utilisées
 
 for ($i = 0; $i < $nbEtablissement; $i++) {
@@ -216,13 +226,14 @@ for ($i = 0; $i < $nbEtablissement; $i++) {
         }
     }
 }
-echo ("Ok => Ajout de classe \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de classe en " . number_format($endTime - $startTime, 4) . " secondes\n");
 
 $compteur = 0;
 //--------------------------
 //         ELEVE
 //--------------------------
-
+$startTime = microtime(true);
 
 for ($i = 0; $i < $nbEtablissement; $i++) {
     for ($y = 0; $y < $nbEleve; $y++) {
@@ -236,12 +247,13 @@ for ($i = 0; $i < $nbEtablissement; $i++) {
         $compteur++;
     }
 }
-echo ("Ok => Ajout de eleve \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de eleve en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
 //--------------------------
 //UTILISATEUR_ETABLISSEMENT
 //--------------------------
-
+$startTime = microtime(true);
 
 for ($i = 0; $i < $nbUtilisateur; $i++) {
     for ($y = 0; $y < $nbEtablissement; $y++) {
@@ -251,17 +263,20 @@ for ($i = 0; $i < $nbUtilisateur; $i++) {
         $compteur++;
     }
 }
+
 $utilisateur_etablissement[$compteur+1][0] = $nbUtilisateur+1;
 $utilisateur_etablissement[$compteur+1][1] = 1;
 AddUtilisateur_Etablissement($dbh, $utilisateur_etablissement, $compteur+1);
 $utilisateur_etablissement[$compteur+1][1] = 2;
 AddUtilisateur_Etablissement($dbh, $utilisateur_etablissement, $compteur+1);
-echo ("Ok => Ajout de utilisateur_etablissement \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de utilisateur_etablissement en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
 
 //--------------------------
 //       PROFESSEUR
 //--------------------------
+$startTime = microtime(true);
 $probabilites = [
     8 => 5,
     10 => 5,
@@ -308,10 +323,12 @@ $professeurs[$compteur+1][4] = 2;
 
 addProf($dbh, $professeurs, $compteur+1);
 $compteur = 0;
-echo ("Ok => Ajout de professeur \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de professeur en " . number_format($endTime - $startTime, 4) . " secondes\n");
 //--------------------------
 //      SALLE CLASSE
 //--------------------------
+$startTime = microtime(true);
 for ($i = 0; $i < $nbEtablissement; $i++) {
     for ($y = 0; $y < $nbSalleClasse; $y++) {
         $salleClasse[$compteur][0] = $compteur;
@@ -329,11 +346,12 @@ for ($i = 0; $i < $nbEtablissement; $i++) {
     }
 }
 $compteur = 0;
-echo ("Ok => Ajout de salle de classe \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de salle de classe en " . number_format($endTime - $startTime, 4) . " secondes\n");
 //--------------------------
 //     CLASSE_MATIERE
 //--------------------------
-
+$startTime = microtime(true);
 for ($j = 0; $j < $nbEtablissement; $j++) {
     for ($y = 0; $y < $nbClasse; $y++) {
         for ($i = 0; $i < $nbMatiere; $i++) {
@@ -352,13 +370,14 @@ for ($j = 0; $j < $nbEtablissement; $j++) {
         $compteur2++;
     }
 }
-echo ("Ok => Ajout de classe_matiere \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de classe_matiere en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
 $compteur2 = 0;
 //--------------------------
 //  PROFESSEUR_MATIERE
 //--------------------------
-
+$startTime = microtime(true);
 
 for ($y = 0; $y < $nbProf * $nbEtablissement; $y++) {
     $random_number = rand(1, $nbMatiere);
@@ -367,7 +386,8 @@ for ($y = 0; $y < $nbProf * $nbEtablissement; $y++) {
     AddProfesseur_Matiere($dbh, $professeur_matiere, $y);
     $professeur_matiere[$y][2] = $dbh->lastInsertId();
 }
-echo ("Ok => Ajout de professeur_matiere \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de professeur_matiere en " . number_format($endTime - $startTime, 4) . " secondes\n");
 //--------------------------
 //  PROFESSEUR_AFFECTATION
 //--------------------------
@@ -461,7 +481,7 @@ for ($i=0; $i < $nbClasse*$nbEtablissement; $i++) {
 //--------------------------
 //  SALLECLASSE_MATIERE
 //--------------------------
-
+$startTime = microtime(true);
 
 for ($y = 0; $y < $nbSalleClasse * $nbEtablissement; $y++) {
     $chiffreAleatoire = rand(0, 3);
@@ -481,12 +501,14 @@ for ($y = 0; $y < $nbSalleClasse * $nbEtablissement; $y++) {
     }
 }
 
-echo ("Ok => Ajout de salleClasse_matiere \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de salleClasse_matiere en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
 
 //--------------------------
 //  FOURCHE_PREFERENTIEL
 //--------------------------
+$startTime = microtime(true);
 $multiplicateur = 0;
 for ($i = 0; $i < $nbEtablissement; $i++) {
     for ($y = 0; $y < $nbJour; $y++) {
@@ -525,7 +547,8 @@ for ($i = 0; $i < $nbEtablissement; $i++) {
     }
     $multiplicateur++;
 }
-echo ("Ok => Ajout de fourche_preferentiel \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de fourche_preferentiel en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
 
 
@@ -533,7 +556,7 @@ $compteur = 0;
 //--------------------------
 //  PROFESSEUR_SALLECLASSE
 //--------------------------
-
+$startTime = microtime(true);
 for ($i = 0; $i < $nbProf * $nbEtablissement; $i++) {
     $chiffreAleatoire = rand(0, 5);
     $sallesUtilisees = array(); // Initialisation d'un tableau pour les salles utilisées
@@ -555,14 +578,16 @@ for ($i = 0; $i < $nbProf * $nbEtablissement; $i++) {
     }
 }
 $compteur = 0;
-echo ("Ok => Ajout de professeur_salleClasse \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de professeur_salleClasse en " . number_format($endTime - $startTime, 4) . " secondes\n");
 
 //--------------------------
 //SALLECLASSE_DISPONIBILITE
 //--------------------------
+$startTime = microtime(true);
 $probabilites = [
-    0 => 5,
-    1 => 95
+    1 => 5,
+    2 => 95
 ];
 for ($i = 0; $i < $nbSalleClasse * $nbEtablissement; $i++) {
     for ($y = 0; $y < $nbJour; $y++) {
@@ -576,10 +601,12 @@ for ($i = 0; $i < $nbSalleClasse * $nbEtablissement; $i++) {
         }
     }
 }
-echo ("Ok => Ajout de salleClasse_disponibilite \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de salleClasse_disponibilite en " . number_format($endTime - $startTime, 4) . " secondes\n");
 //--------------------------
 //   PRESENCE_PROFESSEUR
 //--------------------------
+$startTime = microtime(true);
 $probabilites = [
     1 => 20,
     2 => 20,
@@ -598,8 +625,9 @@ for ($i = 0; $i < $nbEtablissement * $nbProf; $i++) {
         }
     }
 }
-echo ("Ok => Ajout de presence_professeur \n");
+$endTime = microtime(true);
+echo ("Ok => Ajout de presence_professeur en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
-
-
+$endTimeAll = microtime(true);
+echo("--------------------\nTemps Total de la génération des données : " . number_format($endTimeAll - $startTimeAll, 4) . " secondes\n");
 
