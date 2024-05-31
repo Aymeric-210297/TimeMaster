@@ -9,7 +9,8 @@ require __DIR__ . '/../models/ClassroomModel.php';
 require __DIR__ . '/../models/ClassModel.php';
 require __DIR__ . '/../models/jourModel.php';
 require __DIR__ . '/../models/creneauModel.php';
-require __DIR__ . '/../models/scheduleModel.php';
+require __DIR__ . '/../models/ScheduleModel.php';
+require __DIR__ . '/../models/SubjectModel.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 require_once __DIR__ . "/../configs/database.php";
@@ -19,7 +20,8 @@ $classModel = new classModel($dbh);
 $jourModel = new jourModel($dbh);
 $creneauModel = new creneauModel($dbh);
 $scheduleModel = new ScheduleModel($dbh);
-$schoolId = 1;
+$subjectModel = new SubjectModel($dbh);
+$schoolId = 2;
 $tables = array(
     "class_schedule",
     "schedule_day",
@@ -37,75 +39,97 @@ foreach ($tables as $table) {
     echo ("Ok => Supression de : " . $table . "\n");
 }
 echo "Les données de la base de données ont été réinitialisées avec succès.\n";
+$subjectNumber = $subjectModel->getNumberOfSubjectBySchoolId($schoolId);
 $dayNumber = $jourModel->getNumberOfDaysBySchoolId($schoolId);
-
 $timeSlotNumber = $creneauModel->getNumberOfTimeslotsBySchoolId($schoolId);
 $tabJourIdCreneauId = $jourModel->getDayTimeslotArrayBySchoolId($schoolId);
-//JOUR
-$days = array();
+$allDayIds = $jourModel->getAllDayIds();
 
-//CRENEAU
+// Récupérer tous les IDs de créneaux horaires pour l'établissement spécifié
+$allTimeslotIds = $creneauModel->getTimeslotIdsBySchoolId($schoolId);
+$timePreferences = $scheduleModel->getTimePreferences($schoolId);
+$groupement = $scheduleModel->createTimeslotGroupMapping($schoolId);
+
+// JOUR
+$days = array();
+for ($i = 0; $i < $dayNumber; $i++) {
+    if (isset($allDayIds[$i])) {
+        $days[$i] = $allDayIds[$i];
+    }
+}
+
+// CRENEAU
 $timeSlots = array();
+for ($i = 0; $i < $timeSlotNumber; $i++) {
+    if (isset($allTimeslotIds[$i])) {
+        $timeSlots[$i] = $allTimeslotIds[$i];
+    }
+}
+
+
+//PROF
+//PROF
 //PROF
 $profVariatif = array(); // le tab avec les points des profs
 //parametre 1 = type de donnée
 //parametre 2 = quel prof 
-$profVariatif[0][0] = 1; // id du prof
-$profVariatif[1][0][0][0] = 1; // le tab Variatif    3 case : jourId    4 case : creneauId
-$profVariatif[2][0][0][0] = 1; // le tab des presence   3 case : jourId    4 case : creneauId
-$profVariatif[3][0][0] = 1; // le classement des salle classe   3 case : classement apres le = IdClase
-$profVariatif[4][0][0] = 1; // id de la/les matiere qu'il donne
-$profVariatif[5][0] = 1; // nombre restant d'heure a donné
 $nbProf = $teacherModel->getTeacherCountBySchoolId($schoolId);
 $startTime = microtime(true);
 for ($i=0; $i < $nbProf; $i++) { 
     $profId = $teacherModel->getTeacherIdBySchoolIdAndIndex($schoolId,$i);
-    $profVariatif[0][$i] = $profId;
-    $profVariatif[1][$i] = $tabJourIdCreneauId;
-    $profVariatif[2][$i] = $teacherModel->getAvailabilitiesByTeacherId($profId);
-    $profVariatif[3][$i] = $teacherModel->getClassroomsByTeacherId($profId);
-    $profVariatif[4][$i] = $teacherModel->getSubjectIdsByTeacherId($profId);
-    $profVariatif[5][$i] = $teacherModel->getTeacherHoursByTeacherId($profId);
+    $profVariatif[0][$i] = $profId;// id du prof
+    $profVariatif[1][$i] = $tabJourIdCreneauId; // le tab Variatif    3 case : jourId    4 case : creneauId
+    $profVariatif[2][$i] = $teacherModel->getAvailabilitiesByTeacherId($profId);// le tab des presence   3 case : jourId    4 case : creneauId
+    $profVariatif[3][$i] = $teacherModel->getClassroomsByTeacherId($profId);// le classement des salle classe   3 case : classement apres le = IdClase
+    $profVariatif[4][$i] = $teacherModel->getSubjectIdsByTeacherId($profId); // id de la/les matiere qu'il donne
+    $profVariatif[5][$i] = $teacherModel->getTeacherHoursByTeacherId($profId); // nombre restant d'heure a donné
 }
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => Ajout de profVariatif \n");
 //CLASSE
+//CLASSE
+//CLASSE
 $classeVariatif = array();
 //parametre 1 = type de donnée
 //parametre 2 = quel classe
-$classeVariatif[0][0] = 1; // Id de la classe
-$classeVariatif[1][0][0][0] = 1; // le tab Variatif    3 case : jourId    4 case : creneauId
-$classeVariatif[2][0][1] = 10; // 3 : id de la matiere     valeur = nombre d'heure
-
 $nbClasse = $classModel->getClassCountBySchoolId($schoolId);
 $startTime = microtime(true);
 for ($i=0; $i < $nbClasse; $i++) { 
     $classeId = $classModel->getClassIdBySchoolIdAndIndex($schoolId,$i);
     $classeVariatif[0][$i] = $classeId; // id de la classe
-    $classeVariatif[1][$i] = $tabJourIdCreneauId;
-    $classeVariatif[2][$i] = $classModel->getClassSubjectsByClassId($classeId);
+    $classeVariatif[1][$i] = $tabJourIdCreneauId; // le tab Variatif    3 case : jourId    4 case : creneauId
+    $classeVariatif[2][$i] = $classModel->getClassSubjectsByClassId($classeId); // 3 : id de la matiere     valeur = nombre d'heure
 }
+print_r($classeVariatif[0][0]."\n");
+
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => Ajout de classeVariatif \n");
 //SALLE DE CLASSE
+//SALLE DE CLASSE
+//SALLE DE CLASSE
 //parametre 1 = type de donnée
 //parametre 2 = quel salle de classe
-$salleClasseVariatif[0][0] = 1; // Id de la salle de classe
-$salleClasseVariatif[1][0][0][0] = 1; // le tab variatif     3 case : jourId    4 case : creneauId
-$salleClasseVariatif[2][0][0][0] = 1; // le tab des presences      3 case : jourId    4 case : creneauId
-$salleClasseVariatif[3][0][0] = 1; // Id de la/les matiere preferentiel
 $nbSalleClasse = $classroomModel->getClassroomCountBySchoolId($schoolId);
 $startTime = microtime(true);
 for ($i=0; $i < $nbSalleClasse; $i++) { 
     $salleClasseId = $classroomModel->getClassroomIdBySchoolIdAndIndex($schoolId,$i);
-    $salleClasseVariatif[0][$i] = $salleClasseId;
-    $salleClasseVariatif[1][$i] = $tabJourIdCreneauId;
-    $salleClasseVariatif[2][$i] = $classroomModel->getClassroomAvailabilitiesByClassroomId($salleClasseId);
-    $salleClasseVariatif[3][$i] = $classroomModel->getClassroomSubjectsByClassroomId($salleClasseId);
+    $salleClasseVariatif[0][$i] = $salleClasseId; // Id de la salle de classe
+    $salleClasseVariatif[1][$i] = $tabJourIdCreneauId; // le tab variatif     3 case : jourId    4 case : creneauId
+    $salleClasseVariatif[2][$i] = $classroomModel->getClassroomAvailabilitiesByClassroomId($salleClasseId); // le tab des presences      3 case : jourId    4 case : creneauId
+    $salleClasseVariatif[3][$i] = $classroomModel->getClassroomSubjectsByClassroomId($salleClasseId); // Id de la/les matiere preferentiel
 }
+
+
+
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => Ajout de salleClasseVariatif\n");
-
+//MATIERE
+//MATIERE
+//MATIERE
+for ($i=0; $i < $subjectNumber; $i++) { 
+    $subjects = $subjectModel->getSubjectIdsBySchoolId($schoolId);
+}
+print_r($subjects);
 
 //ajout des points pour chaque tab
 $maxReached = false;
@@ -119,12 +143,68 @@ $tabClass_Schedule[5][0] = 1; //id de la salle de classe
 $tabClass_Schedule[6][0] = 1; //id de la matiere
 //creation d'un horaire pour chaque classe
 $time_preference = array();
+$startTime = microtime(true);
+$compteur = 0;
+$compteur2 = 0;
+
+print_r($classeVariatif[2][0]);
+
+
+
+
 
 
 for ($i=0; $i < $nbClasse; $i++) { 
-    $tabClass_Schedule[0][$i] = $scheduleModel->createSchedule($schoolId);
-    $tabClass_Schedule[3][$i] = $classeVariatif[0][$i];
+    for ($y=0; $y < $dayNumber; $y++) { 
+        for ($j=0; $j < $timeSlotNumber; $j++) { 
+        
+            $tabClass_Schedule[0][$compteur] = $scheduleModel->createSchedule($schoolId); //id de l'horaire 
+            $tabClass_Schedule[1][$compteur] = $days[$y]; //id du jour
+            $tabClass_Schedule[2][$compteur] = $timeSlots[$j]; //id du creneau
+            $tabClass_Schedule[3][$compteur] = $classeVariatif[0][$i]; //id de la classe
+            //quelle matiere ? : 
+            for ($a=0; $a < $subjectNumber; $a++) { 
+                
+                if (isset($classeVariatif[2][$i]) && isset($subjects[$a])) {
+                    if (isset($classeVariatif[2][$i][$subjects[$a]]) && $classeVariatif[2][$i][$subjects[$a]] != null) {
+                        if (in_array($classeVariatif[2][$i][$subjects[$a]], $classeVariatif[2][$i])) {
+                            $compteur2++;
+                            echo("$compteur2 \n");
+                            $classeVariatif[2][$i][$subjects[$a]] = null;
+                        }
+                        echo("test1");
+                    }
+
+                }
+                
+            }
+            $tabClass_Schedule[6][$compteur] = 1; //id de la matiere  
+            $tabClass_Schedule[4][$compteur] = 1; //id du prof                  
+            $tabClass_Schedule[5][$compteur] = 1; //id de la salle de classe
+             
+            $compteur++; 
+        }
+    }
+    //echo($compteur . "\n");
 }
+$compteur = 0;
+$endTime = microtime(true);
+echo (number_format($endTime - $startTime, 4)." => remplissage du tab\n");
+$startTime = microtime(true);
+for ($i=0; $i < $nbClasse; $i++) { 
+    for ($y=0; $y < $dayNumber; $y++) { 
+        for ($j=0; $j < $timeSlotNumber; $j++) { 
+
+            $scheduleModel->createClassSchedule($tabClass_Schedule,$compteur);
+            $compteur++; 
+        }
+        echo($compteur . "\n");
+    }
+    
+}
+$endTime = microtime(true);
+echo (number_format($endTime - $startTime, 4)." => Ajout du tab dans la bdd\n");
+/*
 $startTime = microtime(true);
 $compteur = 0;
 for ($i=0; $i < $dayNumber; $i++) { 
@@ -150,5 +230,5 @@ echo (number_format($endTime - $startTime, 4)." => test temp\n");
 echo($compteur);
 for ($i=0; $i < $nbClasse; $i++) { 
     
-}
+}*/
 
