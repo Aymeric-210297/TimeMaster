@@ -19,6 +19,7 @@ require_once __DIR__ . "/utils/functions/createErrorCallback.php";
 require_once __DIR__ . "/utils/functions/redirect.php";
 require_once __DIR__ . "/utils/functions/refreshSession.php";
 require_once __DIR__ . "/utils/functions/createFlashMessage.php";
+require_once __DIR__ . "/utils/functions/validateData.php";
 
 /**
  * Configurations

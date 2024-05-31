@@ -15,7 +15,11 @@ form div label {
 form div p {
     color: #6b7280;
     font-size: 15px;
-    margin-top: -2px;
+    margin-top: -4px;
+}
+
+form div p.error {
+    color: var(--error-color);
 }
 
 form div input {
@@ -25,9 +29,17 @@ form div input {
     font-size: 16px;
 }
 
+form div input.error {
+    border: 1px solid var(--error-color);
+}
+
 form div input:focus {
     padding: 8px;
     border: 2px solid var(--primary-color);
+}
+
+form div input.error:focus {
+    border: 2px solid var(--error-color);
 }
 
 .one-line {

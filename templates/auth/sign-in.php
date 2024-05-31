@@ -3,14 +3,16 @@
     <form method="post">
         <?= set_csrf() ?>
 
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" autocomplete="email" required>
-        </div>
-        <div>
-            <label for="password">Mot de passe</label>
-            <input type="password" name="password" id="password" autocomplete="current-password" required>
-        </div>
+        <?= getFormInput($formViolations, "email", "Email", [
+            'type' => 'email',
+            'autocomplete' => 'email',
+            'required' => true,
+        ]) ?>
+        <?= getFormInput($formViolations, "password", "Mot de passe", [
+            'type' => 'password',
+            'autocomplete' => 'current-password',
+            'required' => true,
+        ]) ?>
 
         <p class="switch-form-text">Pas encore membre ? <a href="/sign-up">S'inscrire</a></p>
 

@@ -3,26 +3,28 @@
     <form method="post">
         <?= set_csrf() ?>
 
-        <div>
-            <label for="first-name">Prénom</label>
-            <input type="text" name="first-name" id="first-name" autocomplete="given-name"
-                value="<?= out($_SESSION['user']->userGivenName) ?>" required>
-        </div>
-        <div>
-            <label for="last-name">Nom</label>
-            <input type="text" name="last-name" id="last-name" autocomplete="family-name"
-                value="<?= out($_SESSION['user']->userFamilyName) ?>" required>
-        </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" autocomplete="email"
-                value="<?= out($_SESSION['user']->userEmail) ?>" required>
-        </div>
-        <div>
-            <label for="password">Nouveau mot de passe</label>
-            <input type="password" name="password" id="password" autocomplete="new-password">
-            <p>Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe.</p>
-        </div>
+        <?= getFormInput($formViolations, "first-name", "Prénom", [
+            'type' => 'text',
+            'autocomplete' => 'given-name',
+            'value' => out($_SESSION['user']->userGivenName),
+            'required' => true,
+        ]) ?>
+        <?= getFormInput($formViolations, "last-name", "Nom", [
+            'type' => 'text',
+            'autocomplete' => 'family-name',
+            'value' => out($_SESSION['user']->userFamilyName),
+            'required' => true,
+        ]) ?>
+        <?= getFormInput($formViolations, "email", "Email", [
+            'type' => 'email',
+            'autocomplete' => 'email',
+            'value' => out($_SESSION['user']->userEmail),
+            'required' => true,
+        ]) ?>
+        <?= getFormInput($formViolations, "password", "Nouveau mot de passe", [
+            'type' => 'password',
+            'autocomplete' => 'new-password',
+        ], 'Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe.') ?>
 
         <button type="submit" name="save" class="button primary">Sauvegarder <i class="fa-solid fa-save"></i></button>
         <button type="submit" name="delete-account" class="button error">
