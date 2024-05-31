@@ -48,6 +48,21 @@ Réalisé à des fins éducatives dans le cadre d'un cours d'informatique, ce pr
 
 **Note :** Si nécessaire, activez l'extension `pdo_mysql` dans votre configuration PHP.
 
+### Données de test (facultatif)
+
+Pour tester le projet, vous pouvez utiliser le script de génération de données fourni :
+
+```bash
+php scripts/Faker.php
+```
+
+Le script crée un compte de test avec les informations suivantes :
+
+- Email : `test@example.com`
+- Mot de passe : `test`
+
+**Note :** Ce script simule des données pour l'application et ne doit être exécuté que dans un environnement de test.
+
 ### Lancement
 
 Configurez votre serveur web pour servir le projet dans le dossier `public/` ou alors lancez un serveur de développement PHP :
