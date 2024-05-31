@@ -19,8 +19,9 @@
                     <p><?= out($schoolDetails->schoolAddress) ?></p>
                 </div>
                 <div>
-                    <p><?= out($schoolDetails->teacherCount ?? 0) ?> professeurs - <?= out($schoolDetails->studentCount ?? 0) ?> élèves</p>
-                    <a href="/schools/<?= out($schoolDetails->schoolId) ?>" class="button primary">Gérer</a>
+                    <p><?= out($schoolDetails->teacherCount ?? 0) ?> professeurs -
+                        <?= out($schoolDetails->studentCount ?? 0) ?> élèves</p>
+                    <a href="/app/schools/<?= out($schoolDetails->schoolId) ?>" class="button primary">Gérer</a>
                 </div>
             </div>
         <?php endforeach ?>
