@@ -2,7 +2,7 @@ input {
     max-width: 800px;
 }
 
-.button {
+form .button {
     float: right;
     margin-left: 12px;
 }

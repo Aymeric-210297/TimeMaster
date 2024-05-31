@@ -1,7 +1,7 @@
 <?php
 
 get('/', function () {
-    if (isset ($_SESSION['user'])) {
+    if (isset($_SESSION['user'])) {
         redirect('/app');
     } else {
         redirect('/sign-in');
@@ -10,13 +10,13 @@ get('/', function () {
 });
 
 get('/app', function () {
-    if (!isset ($_SESSION['user'])) {
+    if (!isset($_SESSION['user'])) {
         redirect('/sign-in');
     }
 
     render('app', 'home', [
         'head' => [
-            'title' => 'App home'
+            'title' => 'Accueil'
         ],
         'navbarItem' => 'HOME'
     ]);

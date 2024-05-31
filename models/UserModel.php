@@ -72,7 +72,22 @@ class UserModel extends BaseModel
 
     public function getUserSchools($userId)
     {
-        $query = "SELECT schoolId FROM user_school WHERE user_school.userId = :userId";
+        $query = "SELECT schoolId FROM user_school us WHERE us.userId = :userId";
+
+        $sth = $this->executeQuery($query, [
+            ":userId" => $userId
+        ]);
+
+        return $sth->fetchAll();
+    }
+
+    public function getUserSchoolsDetails($userId)
+    {
+        $query = "SELECT s.schoolAddress, s.schoolName, s.schoolId, student_count.studentCount, teacher_count.teacherCount FROM user_school us ";
+        $query .= "INNER JOIN school s ON s.schoolId = us.schoolId ";
+        $query .= "LEFT JOIN (SELECT schoolId, COUNT(studentId) AS studentCount FROM student GROUP BY schoolId) student_count ON s.schoolId = student_count.schoolId ";
+        $query .= "LEFT JOIN (SELECT schoolId, COUNT(teacherId) AS teacherCount FROM teacher GROUP BY schoolId) teacher_count ON s.schoolId = teacher_count.schoolId ";
+        $query .= "WHERE us.userId = :userId";
 
         $sth = $this->executeQuery($query, [
             ":userId" => $userId

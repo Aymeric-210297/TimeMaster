@@ -47,6 +47,7 @@ require_once __DIR__ . "/models/BaseModel.php";
 
 require_once __DIR__ . "/controllers/HomeController.php";
 require_once __DIR__ . "/controllers/AuthController.php";
+require_once __DIR__ . "/controllers/SchoolController.php";
 
 // Handle 404 error
 any('/404', function () {

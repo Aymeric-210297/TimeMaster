@@ -1,5 +1,10 @@
 <main>
-    <h2>Paramètres du compte</h2>
+    <div class="content-header">
+        <div>
+            <h2>Paramètres du compte</h2>
+            <p>Vous pouvez gérer votre compte via cette page.</p>
+        </div>
+    </div>
     <form method="post">
         <?= set_csrf() ?>
 

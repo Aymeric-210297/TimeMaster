@@ -14,7 +14,7 @@ $getNavbarLink = function ($href, $icon, $value, $name = null) use ($navbarItem)
 
     return <<<HTML
             <a $class href="$href">
-                <i class="$icon fa-lg"></i>
+                <i class="$icon"></i>
                 <p>$value</p>
             </a>
     HTML;
@@ -28,7 +28,8 @@ $getNavbarLink = function ($href, $icon, $value, $name = null) use ($navbarItem)
     <div class="sidebar">
         <h1>Projet horaires</h1>
         <div>
-            <?= $getNavbarLink('/app', 'fa-solid fa-house', 'Home', 'HOME') ?>
+            <?= $getNavbarLink('/app', 'fa-solid fa-house', 'Accueil', 'HOME') ?>
+            <?= $getNavbarLink('/app/schools', 'fa-solid fa-school', 'Établissements', 'SCHOOLS') ?>
         </div>
         <div class="bottom-links">
             <?= $getNavbarLink('/app/account', 'fa-solid fa-user', out($_SESSION['user']->userGivenName . ' ' . $_SESSION['user']->userFamilyName), 'ACCOUNT') ?>
