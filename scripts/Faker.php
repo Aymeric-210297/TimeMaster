@@ -517,10 +517,10 @@ for ($i = 0; $i < $nbEtablissement; $i++) {
             $fourche_preferentiel[$compteur][1] = $y + 1;
             if ($j == 0 or $j == 1) {
                 //08h25-10h05 :
-                $fourche_preferentiel[$compteur][2] = 3;
+                $fourche_preferentiel[$compteur][2] = 2;
             } else if ($j == 2 or $j == 3) {
                 //10h20-12h00 :
-                $fourche_preferentiel[$compteur][2] = 4;
+                $fourche_preferentiel[$compteur][2] = 3;
             } else if ($j == 4) {
                 //12h00-12h50 :
                 $fourche_preferentiel[$compteur][2] = 0;
@@ -534,7 +534,7 @@ for ($i = 0; $i < $nbEtablissement; $i++) {
             } else {
                 //autres jour
                 if ($j == 5 or $j == 6) {
-                    $fourche_preferentiel[$compteur][2] = 4;
+                    $fourche_preferentiel[$compteur][2] = 3;
                 }
                 if ($j == 7 or $j == 8) {
                     $fourche_preferentiel[$compteur][2] = 1;

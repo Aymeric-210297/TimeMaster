@@ -22,4 +22,68 @@ class jourModel extends BaseModel
             die($e->getMessage());
         }
     }
+    public function getDayIdAndTimeSlotId($schoolId)
+    {
+        // Récupérer les jours
+        $query = "SELECT dayId FROM day";
+        $sth = $this->executeQuery($query);
+        $days = [];
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $days[] = $row['dayId'];
+        }
+
+        // Récupérer les créneaux horaires pour l'école
+        $query = "SELECT timeslotId FROM timeslot WHERE schoolId = :schoolId";
+        $sth = $this->executeQuery($query, [":schoolId" => $schoolId]);
+        $timeslots = [];
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $timeslots[] = $row['timeslotId'];
+        }
+
+        // Initialiser le tableau
+        $tabVariatif = [];
+        foreach ($days as $dayId) {
+            foreach ($timeslots as $timeslotId) {
+                $tabVariatif[$dayId][$timeslotId] = 0;
+            }
+        }
+
+        return $tabVariatif;
+    }
+
+    public function getNumberOfDaysBySchoolId($schoolId)
+    {
+        $query = "SELECT COUNT(*) AS numberOfDays ";
+        $query .= "FROM day ";
+        $sth = $this->executeQuery($query);
+
+        return $sth->fetch(PDO::FETCH_ASSOC)['numberOfDays'];
+    }
+    public function getDayTimeslotArrayBySchoolId($schoolId)
+    {
+        $query = "SELECT d.dayId, t.timeslotId ";
+        $query .= "FROM day d ";
+        $query .= "CROSS JOIN timeslot t ";
+        $query .= "WHERE t.schoolId = :schoolId";
+        
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+    
+        $tabVariatif = [];
+    
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $dayId = $row['dayId'];
+            $timeslotId = $row['timeslotId'];
+    
+            // Initialize the value to 0
+            if (!isset($tabVariatif[$dayId])) {
+                $tabVariatif[$dayId] = [];
+            }
+            $tabVariatif[$dayId][$timeslotId] = 0;
+        }
+    
+        return $tabVariatif;
+    }
+
 }

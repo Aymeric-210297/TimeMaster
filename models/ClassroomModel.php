@@ -29,4 +29,41 @@ class classroomModel extends BaseModel
 
         return $sth->fetch(PDO::FETCH_ASSOC)['classroomId'];
     }
+    public function getClassroomAvailabilitiesByClassroomId($classroomId)
+    {
+        $query = "SELECT dayId, timeslotId, classroomAvailability ";
+        $query .= "FROM classroom_availability ";
+        $query .= "WHERE classroomId = :classroomId";
+
+        $sth = $this->executeQuery($query, [
+            ":classroomId" => $classroomId
+        ]);
+
+        $availabilities = [];
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            if (!isset($availabilities[$row['dayId']])) {
+                $availabilities[$row['dayId']] = [];
+            }
+            $availabilities[$row['dayId']][$row['timeslotId']] = $row['classroomAvailability'];
+        }
+
+        return $availabilities;
+    }
+    public function getClassroomSubjectsByClassroomId($classroomId)
+    {
+        $query = "SELECT subjectId ";
+        $query .= "FROM classroom_subject ";
+        $query .= "WHERE classroomId = :classroomId";
+
+        $sth = $this->executeQuery($query, [
+            ":classroomId" => $classroomId
+        ]);
+
+        $classroomSubjects = [];
+        while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $classroomSubjects[] = $row['subjectId'];
+        }
+
+        return $classroomSubjects;
+    }
 }

@@ -8,6 +8,8 @@ require __DIR__ . '/../models/TeacherModel.php';
 require __DIR__ . '/../models/ClassroomModel.php';
 require __DIR__ . '/../models/ClassModel.php';
 require __DIR__ . '/../models/jourModel.php';
+require __DIR__ . '/../models/creneauModel.php';
+require __DIR__ . '/../models/scheduleModel.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 require_once __DIR__ . "/../configs/database.php";
@@ -15,6 +17,8 @@ $teacherModel = new TeacherModel($dbh);
 $classroomModel = new classroomModel($dbh);
 $classModel = new classModel($dbh);
 $jourModel = new jourModel($dbh);
+$creneauModel = new creneauModel($dbh);
+$scheduleModel = new ScheduleModel($dbh);
 $schoolId = 1;
 $tables = array(
     "class_schedule",
@@ -33,8 +37,15 @@ foreach ($tables as $table) {
     echo ("Ok => Supression de : " . $table . "\n");
 }
 echo "Les données de la base de données ont été réinitialisées avec succès.\n";
+$dayNumber = $jourModel->getNumberOfDaysBySchoolId($schoolId);
 
-$tabJourIdCreneauId = $jourModel -> getDayIdAndTimeSlotId($schoolId);
+$timeSlotNumber = $creneauModel->getNumberOfTimeslotsBySchoolId($schoolId);
+$tabJourIdCreneauId = $jourModel->getDayTimeslotArrayBySchoolId($schoolId);
+//JOUR
+$days = array();
+
+//CRENEAU
+$timeSlots = array();
 //PROF
 $profVariatif = array(); // le tab avec les points des profs
 //parametre 1 = type de donnée
@@ -70,7 +81,7 @@ $nbClasse = $classModel->getClassCountBySchoolId($schoolId);
 $startTime = microtime(true);
 for ($i=0; $i < $nbClasse; $i++) { 
     $classeId = $classModel->getClassIdBySchoolIdAndIndex($schoolId,$i);
-    $classeVariatif[0][$i] = $classeId;
+    $classeVariatif[0][$i] = $classeId; // id de la classe
     $classeVariatif[1][$i] = $tabJourIdCreneauId;
     $classeVariatif[2][$i] = $classModel->getClassSubjectsByClassId($classeId);
 }
@@ -97,7 +108,47 @@ echo (number_format($endTime - $startTime, 4)." => Ajout de salleClasseVariatif\
 
 
 //ajout des points pour chaque tab
-for ($i=0; $i < count($profVariatif[1][0][1]); $i++) { 
-    echo($i);
+$maxReached = false;
+$tabClass_Schedule = array();
+$tabClass_Schedule[0][0] = 1; //id de l'horaire             V
+$tabClass_Schedule[1][0] = 1; //id du jour
+$tabClass_Schedule[2][0] = 1; //id du creneau
+$tabClass_Schedule[3][0] = 1; //id de la classe             V
+$tabClass_Schedule[4][0] = 1; //id du prof                  
+$tabClass_Schedule[5][0] = 1; //id de la salle de classe
+$tabClass_Schedule[6][0] = 1; //id de la matiere
+//creation d'un horaire pour chaque classe
+$time_preference = array();
+
+
+for ($i=0; $i < $nbClasse; $i++) { 
+    $tabClass_Schedule[0][$i] = $scheduleModel->createSchedule($schoolId);
+    $tabClass_Schedule[3][$i] = $classeVariatif[0][$i];
+}
+$startTime = microtime(true);
+$compteur = 0;
+for ($i=0; $i < $dayNumber; $i++) { 
+    for ($y=0; $y < $timeSlotNumber; $y++) { 
+        for ($j=0; $j < $nbClasse; $j++) { 
+
+            $compteur++;
+            echo($compteur . "\n");
+        }
+        for ($j=0; $j < $nbSalleClasse; $j++) { 
+
+            $compteur++;
+            echo($compteur . "\n");
+        }
+        for ($j=0; $j < $nbProf; $j++) { 
+            $compteur++;
+            echo($compteur . "\n");
+        }
+    }
+}
+$endTime = microtime(true);
+echo (number_format($endTime - $startTime, 4)." => test temp\n");
+echo($compteur);
+for ($i=0; $i < $nbClasse; $i++) { 
+    
 }
 
