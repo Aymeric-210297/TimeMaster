@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/assets/styles/form.css">
     <link rel="stylesheet" href="/assets/styles/button.css">
     <link rel="stylesheet" href="/assets/styles/flashMessage.css">
+    <link rel="stylesheet" href="/assets/styles/schools.css">
 
     <script defer src="/assets/scripts/flashMessage.js"></script>
 
