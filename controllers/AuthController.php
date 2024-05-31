@@ -33,39 +33,39 @@ post('/app/account', function () use ($userModel) {
         redirect('/');
     }
 
-    $formViolations = validateData($_POST, [
-        'first-name' => [new NotBlank(), new Length(['max' => 40])],
-        'last-name' => [new NotBlank(), new Length(['max' => 40])],
-        'email' => [new NotBlank(), new Email(), new Length(['max' => 255])],
-        'password' => [new AtLeastOneOf([new Blank(), new PasswordStrength()])],
-    ]);
-
-    if (count($formViolations) > 0) {
-        render(
-            "app",
-            "account",
-            [
-                'head' => ['title' => "Paramètres du compte"],
-                'navbarItem' => 'ACCOUNT',
-                'formViolations' => $formViolations,
-            ],
-            400
-        );
-    }
-
     if (isset($_POST['save'])) {
+        $formViolations = validateData($_POST, [
+            'first-name' => [new NotBlank(), new Length(['max' => 40])],
+            'last-name' => [new NotBlank(), new Length(['max' => 40])],
+            'email' => [new NotBlank(), new Email(), new Length(['max' => 255])],
+            'password' => [new AtLeastOneOf([new Blank(), new PasswordStrength()])],
+        ]);
+
+        if (count($formViolations) > 0) {
+            render(
+                "app",
+                "account",
+                [
+                    'head' => ['title' => "Paramètres du compte"],
+                    'navbarItem' => 'ACCOUNT',
+                    'formViolations' => $formViolations,
+                ],
+                400
+            );
+        }
+
         $userModel->updateUserById($_SESSION['user']->userId, $_POST['first-name'], $_POST['last-name'], $_POST['email'], $_POST['password']);
         refreshSession($userModel);
 
         redirect();
-    } else if (isset($_POST['delete-account'])) {
+    } elseif (isset($_POST['delete-account'])) {
         if (count($userModel->getUserSchools($_SESSION['user']->userId)) > 0) {
             createFlashMessage(
                 "Impossible de supprimer votre compte en l'état",
                 "Vous devez d'abord vous retirer de tous les établissements auxquels vous avez accès.",
                 "error"
             );
-            
+
             render(
                 "app",
                 "account",
