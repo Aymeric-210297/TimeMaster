@@ -110,9 +110,9 @@ create table time_preference
 (
     timePreferenceId int auto_increment
         primary key,
-    timeslotId       int                                                    not null,
-    dayId            int                                                    not null,
-    timePreference   enum ('very-unlikely', 'unlikely', 'normal', 'better') not null,
+    timeslotId       int not null,
+    dayId            int not null,
+    timePreference   int not null,
 
     unique (timeslotId, dayId),
     foreign key (timeslotId) references timeslot (timeslotId),
