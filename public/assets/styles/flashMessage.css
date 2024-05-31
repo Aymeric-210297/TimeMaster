@@ -39,8 +39,8 @@
 }
 
 #flash-message > button {
-    margin-right: 10px;
-    margin-left: 20px;
+    margin: 6px 10px 0 20px;
+    align-self: flex-start;
 }
 
 #flash-message.primary .icon, #flash-message.primary .title {
