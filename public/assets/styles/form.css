@@ -12,6 +12,16 @@ form div label {
     font-weight: 500;
 }
 
+form div p {
+    color: #6b7280;
+    font-size: 15px;
+    margin-top: -4px;
+}
+
+form div p.error {
+    color: var(--error-color);
+}
+
 form div input {
     border: 1px solid #D1D5DB;
     border-radius: .375rem;
@@ -19,26 +29,17 @@ form div input {
     font-size: 16px;
 }
 
+form div input.error {
+    border: 1px solid var(--error-color);
+}
+
 form div input:focus {
     padding: 8px;
     border: 2px solid var(--primary-color);
 }
 
-form button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: .375rem;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-form button[type="submit"]:hover {
-    background-color: var(--primary-color);
-    opacity: 0.8;
-    cursor: pointer;
+form div input.error:focus {
+    border: 2px solid var(--error-color);
 }
 
 .one-line {

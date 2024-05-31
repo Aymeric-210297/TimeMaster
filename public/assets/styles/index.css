@@ -8,7 +8,9 @@
     --background-color: #FEFEFE;
     --text-color: #111111;
 
-    --error-color: #F83A3A;
+    --success-color: #339900;
+    --warning-color: #EBBC02;
+    --error-color: #CC3300;
 }
 
 * {

@@ -12,6 +12,8 @@ function render($section, $template, $data = array(), $responseCode = null)
         http_response_code($responseCode);
     }
 
+    $formViolations = $formViolations ?? array();
+
     if (isset($section)) {
         include_once __DIR__ . "/../../templates/$section/layout/header.php";
         include_once __DIR__ . "/../../templates/$section/$template.php";

@@ -13,6 +13,7 @@ Réalisé à des fins éducatives dans le cadre d'un cours d'informatique, ce pr
 - [PHP](https://www.php.net/downloads.php) (v8.3.6 ou supérieur)
 - [MySQL](https://dev.mysql.com/downloads/mysql/) (v8.2.0 ou supérieur)
 - [Composer](https://getcomposer.org/download/)
+- [Font Awesome Kit](https://docs.fontawesome.com/web/setup/use-kit) (v6)
 
 ### Préparation
 
