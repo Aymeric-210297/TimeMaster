@@ -1,4 +1,4 @@
-# 📅 Projet horaires
+# 📅 TimeMaster
 
 ## 🌟 À propos du projet
 
@@ -22,13 +22,13 @@ Réalisé à des fins éducatives dans le cadre d'un cours d'informatique, ce pr
 2. Clonez ce projet sur votre machine :
 
     ```bash
-    git clone https://github.com/Aymeric-210297/projet-horaires.git
+    git clone https://github.com/Aymeric-210297/TimeMaster.git
     ```
 
 3. Accédez au répertoire du projet :
 
     ```bash
-    cd projet-horaires
+    cd TimeMaster
     ```
 
 4. Configurez les variables d'environnement :
