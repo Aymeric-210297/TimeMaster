@@ -70,6 +70,18 @@ class UserModel extends BaseModel
         return true;
     }
 
+    public function deleteUserById($userId)
+    {
+        $query = "DELETE FROM user ";
+        $query .= "WHERE userId = :userId";
+
+        $this->executeQuery($query, [
+            ":userId" => $userId,
+        ]);
+
+        return true;
+    }
+
     public function getUserSchools($userId)
     {
         $query = "SELECT schoolId FROM user_school us WHERE us.userId = :userId";
@@ -96,15 +108,17 @@ class UserModel extends BaseModel
         return $sth->fetchAll();
     }
 
-    public function deleteUserById($userId)
-    {
-        $query = "DELETE FROM user ";
-        $query .= "WHERE userId = :userId";
+    public function createUserSchool($userId, $schoolId) {
+        $query = "INSERT INTO user_school ";
+        $query .= "(userId, schoolId)";
+        $query .= " VALUES ";
+        $query .= "(:userId, :schoolId)";
 
         $this->executeQuery($query, [
             ":userId" => $userId,
+            ":schoolId" => $schoolId
         ]);
 
-        return true;
+        return $this->dbh->lastInsertId();
     }
 }

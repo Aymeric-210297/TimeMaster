@@ -14,7 +14,7 @@
     <?php foreach ($schoolsDetails as $schoolDetails): ?>
         <h3><?= out($schoolDetails->schoolName) ?></h3>
         <p><?= out($schoolDetails->schoolAddress) ?></p>
-        <p><?= out($schoolDetails->teacherCount) ?> professeurs - <?= out($schoolDetails->studentCount) ?> élèves</p>
+        <p><?= out($schoolDetails->teacherCount ?? 0) ?> professeurs - <?= out($schoolDetails->studentCount ?? 0) ?> élèves</p>
     <?php endforeach ?>
     <!-- TODO: style de la page -->
 </main>
