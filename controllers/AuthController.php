@@ -59,7 +59,21 @@ post('/app/account', function () use ($userModel) {
         redirect();
     } else if (isset($_POST['delete-account'])) {
         if (count($userModel->getUserSchools($_SESSION['user']->userId)) > 0) {
-            // TODO: renvoyer un message d'erreur
+            createFlashMessage(
+                "Impossible de supprimer votre compte en l'état",
+                "Vous devez d'abord vous retirer de tous les établissements auxquels vous avez accès.",
+                "error"
+            );
+            
+            render(
+                "app",
+                "account",
+                [
+                    'head' => ['title' => "Paramètres du compte"],
+                    'navbarItem' => 'ACCOUNT',
+                ],
+                409
+            );
         } else {
             $userModel->deleteUserById($_SESSION['user']->userId);
 
