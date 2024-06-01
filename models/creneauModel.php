@@ -11,7 +11,20 @@ class creneauModel extends BaseModel
             die($e->getMessage());
         }
     }
+    public function recupCreneauParEtablissement2($schoolId)
+    {
+        $query = "
+            SELECT timeslotId, timeslotStartHour, timeslotEndHour
+            FROM timeslot
+            WHERE schoolId = :schoolId
+        ";
 
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+
+        return $sth->fetchAll(PDO::FETCH_OBJ);
+    }
     public function getNumberOfTimeslotsBySchoolId($schoolId)
     {
         $query = "SELECT COUNT(*) AS numberOfTimeslots ";

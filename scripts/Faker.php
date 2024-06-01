@@ -352,21 +352,30 @@ echo ("Ok => Ajout de salle de classe en " . number_format($endTime - $startTime
 //     CLASSE_MATIERE
 //--------------------------
 $startTime = microtime(true);
+$limitNbHeure = 0;
 for ($j = 0; $j < $nbEtablissement; $j++) {
     for ($y = 0; $y < $nbClasse; $y++) {
         for ($i = 0; $i < $nbMatiere; $i++) {
-            $random_number = rand(0, 4);
-            if ($random_number != 0) {
-                $classe_matiere[$compteur][0] = $random_number;
-                $classe_matiere[$compteur][1] = $classes[$compteur2][2];
-                $classe_matiere[$compteur][2] = $matieres[$i+($nbMatiere*$j)][2];
-                AddClass_Matiere($dbh, $classe_matiere, $compteur);
-                $classe_matiere[$compteur][3] = $dbh->lastInsertId();
-            } else {
-                $classe_matiere[$compteur][0] = null;
+            if ($limitNbHeure < $nbCreneau*$nbJour-3) {
+                $random_number = rand(0, 4);
+                if ($random_number != 0) {
+                    $classe_matiere[$compteur][0] = $random_number;
+                    $classe_matiere[$compteur][1] = $classes[$compteur2][2];
+                    $classe_matiere[$compteur][2] = $matieres[$i+($nbMatiere*$j)][2];
+                    AddClass_Matiere($dbh, $classe_matiere, $compteur);
+                    $classe_matiere[$compteur][3] = $dbh->lastInsertId();
+                    $limitNbHeure += $random_number;
+                } else {
+                    $classe_matiere[$compteur][0] = null;
+                }
+                $compteur++;
             }
-            $compteur++;
+            else {
+                break;
+            }
+
         }
+        $limitNbHeure = 0;
         $compteur2++;
     }
 }

@@ -123,4 +123,23 @@ class ScheduleModel extends BaseModel
 
         return $rankedTimeslots;
     }
+    public function getScheduleByClassId($classId)
+    {
+        $query = "
+            SELECT cs.*, t.teacherGivenName, t.teacherFamilyName, r.classroomRef, s.subjectName, ts.timeslotStartHour, ts.timeslotEndHour, d.dayName
+            FROM class_schedule cs
+            JOIN teacher t ON cs.teacherId = t.teacherId
+            JOIN classroom r ON cs.classroomId = r.classroomId
+            JOIN subject s ON cs.subjectId = s.subjectId
+            JOIN timeslot ts ON cs.timeslotId = ts.timeslotId
+            JOIN day d ON cs.dayId = d.dayId
+            WHERE cs.classId = :classId
+        ";
+
+        $sth = $this->executeQuery($query, [
+            ":classId" => $classId
+        ]);
+
+        return $sth->fetchAll(PDO::FETCH_OBJ); // Fetch results as objects
+    }
 }

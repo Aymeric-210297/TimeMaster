@@ -30,6 +30,7 @@ $getNavbarLink = function ($href, $icon, $value, $name = null) use ($navbarItem)
         <div>
             <?= $getNavbarLink('/app', 'fa-solid fa-house', 'Accueil', 'HOME') ?>
             <?= $getNavbarLink('/app/schools', 'fa-solid fa-school', 'Établissements', 'SCHOOLS') ?>
+            <?= $getNavbarLink('/app/testAffichageH', 'fa-solid fa-school', 'Horaires Classe', 'AFFICHAGE_HORAIRES') ?>
         </div>
         <div class="bottom-links">
             <?= $getNavbarLink('/app/account', 'fa-solid fa-user', out($_SESSION['user']->userGivenName . ' ' . $_SESSION['user']->userFamilyName), 'ACCOUNT') ?>

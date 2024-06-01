@@ -52,5 +52,15 @@ class classModel extends BaseModel
         $sth = $this->executeQuery($query);
         return $sth->fetchAll();
     }
+    public function getClassIdsBySchoolId($schoolId)
+    {
+        $query = "SELECT classId, classRef FROM class WHERE schoolId = :schoolId";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+
+        return $sth->fetchAll();
+    }
     
 }

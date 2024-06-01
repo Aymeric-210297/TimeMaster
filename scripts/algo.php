@@ -11,13 +11,13 @@ require __DIR__ . '/../models/jourModel.php';
 require __DIR__ . '/../models/creneauModel.php';
 require __DIR__ . '/../models/ScheduleModel.php';
 require __DIR__ . '/../models/SubjectModel.php';
-require __DIR__ . '/../models/ScheduleGenerator.php';
+
 
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 require_once __DIR__ . "/../configs/database.php";
-$scheduleGenerator = new ScheduleGenerator($dbh);
+
 $teacherModel = new TeacherModel($dbh);
 $classroomModel = new classroomModel($dbh);
 $classModel = new classModel($dbh);
@@ -207,7 +207,7 @@ for ($i=0; $i < $nbClasse; $i++) {
     }
     echo($compteur . "\n");
 }
-print_r($tabClass_Schedule[6]);
+//print_r($tabClass_Schedule[6]);
 $compteur = 0;
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => remplissage du tab\n");

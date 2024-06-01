@@ -22,6 +22,17 @@ class jourModel extends BaseModel
             die($e->getMessage());
         }
     }
+    public function recupJourParEtablissement2($schoolId)
+    {
+        $query = "
+            SELECT dayId, dayName
+            FROM day
+        ";
+
+        $sth = $this->executeQuery($query);
+
+        return $sth->fetchAll(PDO::FETCH_OBJ);
+    }
     public function getDayIdAndTimeSlotId($schoolId)
     {
         // Récupérer les jours
