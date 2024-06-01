@@ -19,11 +19,23 @@ get('/affichageHoraire', function () use($jourModel,$creneauModel,$dbh) {
     );
 });
 get('/', function () {
-    render(
-        "out",
-        "home",
-        [
-            'head' => ['title' => "Home"],
-        ]
-    );
+    if (isset($_SESSION['user'])) {
+        redirect('/app');
+    } else {
+        redirect('/sign-in');
+        // TODO: landing page
+    }
+});
+
+get('/app', function () {
+    if (!isset($_SESSION['user'])) {
+        redirect('/sign-in');
+    }
+
+    render('app', 'home', [
+        'head' => [
+            'title' => 'Accueil'
+        ],
+        'navbarItem' => 'HOME'
+    ]);
 });

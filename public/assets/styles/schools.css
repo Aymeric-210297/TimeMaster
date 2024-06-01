@@ -1,0 +1,28 @@
+.list-schools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.list-schools > div {
+    width: 300px;
+    border-radius: 15px;
+    padding: 15px;
+    border: 2px solid var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.list-schools .head {
+    margin-bottom: 10px;
+}
+
+.list-schools .head > p {
+    font-style: italic;
+}
+
+.list-schools .button {
+    width: 100%;
+    margin-top: 10px;
+}

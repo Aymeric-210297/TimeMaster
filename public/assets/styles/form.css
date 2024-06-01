@@ -1,0 +1,55 @@
+form > div {
+    margin-bottom: 20px;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form div label {
+    font-weight: 500;
+}
+
+form div p {
+    color: #6b7280;
+    font-size: 15px;
+    margin-top: -4px;
+}
+
+form div p.error {
+    color: var(--error-color);
+}
+
+form div input {
+    border: 1px solid #D1D5DB;
+    border-radius: .375rem;
+    padding: 9px;
+    font-size: 16px;
+}
+
+form div input.error {
+    border: 1px solid var(--error-color);
+}
+
+form div input:focus {
+    padding: 8px;
+    border: 2px solid var(--primary-color);
+}
+
+form div input.error:focus {
+    border: 2px solid var(--error-color);
+}
+
+.one-line {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.one-line div {
+    flex-grow: 1;
+    min-width: 250px;
+}

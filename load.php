@@ -17,6 +17,9 @@ require_once __DIR__ . "/utils/functions/logError.php";
 require_once __DIR__ . "/utils/functions/render.php";
 require_once __DIR__ . "/utils/functions/createErrorCallback.php";
 require_once __DIR__ . "/utils/functions/redirect.php";
+require_once __DIR__ . "/utils/functions/refreshSession.php";
+require_once __DIR__ . "/utils/functions/createFlashMessage.php";
+require_once __DIR__ . "/utils/functions/validateData.php";
 
 /**
  * Configurations
@@ -44,8 +47,9 @@ require_once __DIR__ . "/models/BaseModel.php";
 
 require_once __DIR__ . "/controllers/HomeController.php";
 require_once __DIR__ . "/controllers/AuthController.php";
+require_once __DIR__ . "/controllers/SchoolController.php";
 
 // Handle 404 error
 any('/404', function () {
-    render("out", "errors/404");
+    render("error", "404");
 });

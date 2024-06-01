@@ -1,0 +1,52 @@
+.button {
+    display: inline-block;
+    text-align: center;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    padding: 12px 16px;
+    border-radius: .375rem;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.button > i {
+    margin-left: 6px;
+    font-size: 1.25em;
+    line-height: .05em;
+    vertical-align: -.075em;
+}
+
+.button.primary, .button.error, .button.success, .button.warning {
+    color: white;
+}
+
+.button.primary:hover, .button.error:hover, .button.success:hover, .button.warning:hover {
+    opacity: 0.8;
+}
+
+.button.primary {
+    background-color: var(--primary-color);
+}
+
+.button.success {
+    background-color: var(--success-color);
+}
+
+.button.warning {
+    background-color: var(--warning-color);
+}
+
+.button.error {
+    background-color: var(--error-color);
+}
+
+.button.secondary {
+    box-shadow: inset 0px 0px 0px 1.2px var(--primary-color);
+    color: var(--primary-color);
+}
+
+.button.secondary:hover {
+    background-color: #F1F1F1;
+}

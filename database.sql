@@ -1,6 +1,6 @@
-create database if not exists projet_horaires character set utf8mb4 collate utf8mb4_unicode_ci;
+create database if not exists time_master_db character set utf8mb4 collate utf8mb4_unicode_ci;
 
-use projet_horaires;
+use time_master_db;
 
 drop table if exists
     user_school,
@@ -110,9 +110,9 @@ create table time_preference
 (
     timePreferenceId int auto_increment
         primary key,
-    timeslotId       int                                                    not null,
-    dayId            int                                                    not null,
-    timePreference   enum ('very-unlikely', 'unlikely', 'normal', 'better') not null,
+    timeslotId       int not null,
+    dayId            int not null,
+    timePreference   int not null,
 
     unique (timeslotId, dayId),
     foreign key (timeslotId) references timeslot (timeslotId),
@@ -157,13 +157,14 @@ create table class_subject
 
 create table teacher
 (
-    teacherId         int auto_increment
+    teacherId          int auto_increment
         primary key,
-    teacherEmail      varchar(255) not null,
-    teacherFamilyName varchar(255) not null,
-    teacherGivenName  varchar(255) not null,
-    teacherGender     varchar(255) not null,
-    schoolId          int          not null,
+    teacherEmail       varchar(255) not null,
+    teacherFamilyName  varchar(255) not null,
+    teacherGivenName   varchar(255) not null,
+    teacherGender      varchar(255) not null,
+    teacherNumberHours int          not null,
+    schoolId           int          not null,
 
     unique (teacherEmail, schoolId),
     foreign key (schoolId) references school (schoolId)
