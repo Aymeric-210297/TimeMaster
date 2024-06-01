@@ -100,7 +100,7 @@ for ($i=0; $i < $nbClasse; $i++) {
     $classeVariatif[1][$i] = $tabJourIdCreneauId; // le tab Variatif    3 case : jourId    4 case : creneauId
     $classeVariatif[2][$i] = $classModel->getClassSubjectsByClassId($classeId); // 3 : id de la matiere     valeur = nombre d'heure
 }
-print_r($classeVariatif[0][0]."\n");
+
 
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => Ajout de classeVariatif \n");
@@ -129,7 +129,7 @@ echo (number_format($endTime - $startTime, 4)." => Ajout de salleClasseVariatif\
 for ($i=0; $i < $subjectNumber; $i++) { 
     $subjects = $subjectModel->getSubjectIdsBySchoolId($schoolId);
 }
-print_r($subjects);
+
 
 //ajout des points pour chaque tab
 $maxReached = false;
@@ -140,20 +140,33 @@ $tabClass_Schedule[2][0] = 1; //id du creneau
 $tabClass_Schedule[3][0] = 1; //id de la classe             V
 $tabClass_Schedule[4][0] = 1; //id du prof                  
 $tabClass_Schedule[5][0] = 1; //id de la salle de classe
-$tabClass_Schedule[6][0] = 1; //id de la matiere
+//$tabClass_Schedule[6][0] = 1; //id de la matiere
 //creation d'un horaire pour chaque classe
 $time_preference = array();
 $startTime = microtime(true);
 $compteur = 0;
 $compteur2 = 0;
 
-print_r($classeVariatif[2][0]);
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 for ($i=0; $i < $nbClasse; $i++) { 
     for ($y=0; $y < $dayNumber; $y++) { 
         for ($j=0; $j < $timeSlotNumber; $j++) { 
@@ -164,29 +177,21 @@ for ($i=0; $i < $nbClasse; $i++) {
             $tabClass_Schedule[3][$compteur] = $classeVariatif[0][$i]; //id de la classe
             //quelle matiere ? : 
             for ($a=0; $a < $subjectNumber; $a++) { 
+                //test si la classe a cours de cette matiere si c'est le cas la matiere id est stockée et on passe a autre chose sinon on continue jusqu'a ne plus avoir de matiere
                 
-                if (isset($classeVariatif[2][$i]) && isset($subjects[$a])) {
-                    if (isset($classeVariatif[2][$i][$subjects[$a]]) && $classeVariatif[2][$i][$subjects[$a]] != null) {
-                        if (in_array($classeVariatif[2][$i][$subjects[$a]], $classeVariatif[2][$i])) {
-                            $compteur2++;
-                            echo("$compteur2 \n");
-                            $classeVariatif[2][$i][$subjects[$a]] = null;
-                        }
-                        echo("test1");
-                    }
-
-                }
+                
                 
             }
-            $tabClass_Schedule[6][$compteur] = 1; //id de la matiere  
+            $tabClass_Schedule[6][$compteur] = 1; //id de la matiere
             $tabClass_Schedule[4][$compteur] = 1; //id du prof                  
             $tabClass_Schedule[5][$compteur] = 1; //id de la salle de classe
              
             $compteur++; 
         }
     }
-    //echo($compteur . "\n");
+    echo($compteur . "\n");
 }
+
 $compteur = 0;
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => remplissage du tab\n");
@@ -194,8 +199,7 @@ $startTime = microtime(true);
 for ($i=0; $i < $nbClasse; $i++) { 
     for ($y=0; $y < $dayNumber; $y++) { 
         for ($j=0; $j < $timeSlotNumber; $j++) { 
-
-            $scheduleModel->createClassSchedule($tabClass_Schedule,$compteur);
+                $scheduleModel->createClassSchedule($tabClass_Schedule, $compteur);
             $compteur++; 
         }
         echo($compteur . "\n");

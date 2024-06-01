@@ -85,5 +85,19 @@ class jourModel extends BaseModel
     
         return $tabVariatif;
     }
+    public function getAllDayIds()
+    {
+        $query = "SELECT dayId ";
+        $query .= "FROM day";
+
+        $sth = $this->executeQuery($query);
+        $dayIds = $sth->fetchAll(PDO::FETCH_COLUMN, 0); // Récupère uniquement les valeurs de la première colonne (dayId)
+
+        $result = [];
+        foreach ($dayIds as $i => $dayId) {
+            $result[$i] = $dayId;
+        }
+        return $result;
+    }
 
 }

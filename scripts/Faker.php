@@ -359,7 +359,7 @@ for ($j = 0; $j < $nbEtablissement; $j++) {
             if ($random_number != 0) {
                 $classe_matiere[$compteur][0] = $random_number;
                 $classe_matiere[$compteur][1] = $classes[$compteur2][2];
-                $classe_matiere[$compteur][2] = $matieres[$i][2];
+                $classe_matiere[$compteur][2] = $matieres[$i+($nbMatiere*$j)][2];
                 AddClass_Matiere($dbh, $classe_matiere, $compteur);
                 $classe_matiere[$compteur][3] = $dbh->lastInsertId();
             } else {
