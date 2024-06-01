@@ -39,4 +39,28 @@ class creneauModel extends BaseModel
         }
         return $result;
     }
+    public function getTimeslots()
+    {
+        $query = "SELECT * FROM timeslot";
+        $sth = $this->executeQuery($query);
+        return $sth->fetchAll();
+    }
+    public function getTimePreferencesBySchoolId($schoolId)
+    {
+        $query = "
+        SELECT tp.*, d.dayName, t.timeslotId, t.timeslotStartHour, t.timeslotEndHour
+        FROM time_preference tp
+        JOIN timeslot t ON tp.timeslotId = t.timeslotId
+        JOIN school s ON t.schoolId = s.schoolId
+        JOIN day d ON tp.dayId = d.dayId
+        WHERE s.schoolId = 1
+        ORDER BY tp.timePreference desc, d.dayId;
+        ";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+
+        return $sth->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_ASSOC);
+    }
 }

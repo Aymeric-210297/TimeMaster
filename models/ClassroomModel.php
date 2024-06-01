@@ -66,4 +66,17 @@ class classroomModel extends BaseModel
 
         return $classroomSubjects;
     }
+    public function getClassrooms()
+    {
+        $query = "SELECT * FROM classroom";
+        $sth = $this->executeQuery($query);
+        return $sth->fetchAll();
+    }
+
+    public function getClassroomAvailability($classroomId)
+    {
+        $query = "SELECT * FROM classroom_availability WHERE classroomId = :classroomId";
+        $sth = $this->executeQuery($query, [":classroomId" => $classroomId]);
+        return $sth->fetchAll();
+    }
 }

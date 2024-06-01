@@ -6,4 +6,5 @@
     <?php else: ?>
         <a href="/sign-in">Connexion</a>
     <?php endif; ?>
+    <a href="/affichageHoraire">horaire</a>
 </main>
