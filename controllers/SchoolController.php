@@ -25,12 +25,12 @@ get('/app/schools', function () use ($userModel) {
     );
 });
 
-get('/app/schools/add', function () use ($userModel) {
+get('/app/schools/add', function () {
     checkAuth();
 
     render(
         "app",
-        "schools/add-school",
+        "schools/form-school",
         [
             'head' => ['title' => "Ajouter un établissement"],
             'navbarItem' => 'SCHOOLS'
@@ -50,7 +50,7 @@ post('/app/schools/add', function () use ($userModel, $schoolModel) {
     if (count($formViolations) > 0) {
         render(
             "app",
-            "schools/add-school",
+            "schools/form-school",
             [
                 'head' => ['title' => "Ajouter un établissement"],
                 'navbarItem' => 'SCHOOLS',
@@ -65,7 +65,7 @@ post('/app/schools/add', function () use ($userModel, $schoolModel) {
 
         render(
             "app",
-            "schools/add-school",
+            "schools/form-school",
             [
                 'head' => ['title' => "Ajouter un établissement"],
                 'navbarItem' => 'SCHOOLS',
@@ -86,8 +86,51 @@ get('/app/schools/$schoolId', function ($schoolId) use ($userModel, $schoolModel
 
     $school = $schoolModel->getSchoolById($schoolId);
 
-    render("app", "schools/overview-school", [
+    render("app", "schools/form-school", [
         'school' => $school,
         'navbarItem' => 'SCHOOLS'
     ]);
+});
+
+post('/app/schools/$schoolId', function ($schoolId) use ($userModel, $schoolModel) {
+    checkCsrf();
+    checkAuth($userModel, $schoolId);
+
+    $school = $schoolModel->getSchoolById($schoolId);
+
+    $formViolations = validateData($_POST, [
+        'name' => [new NotBlank(), new Length(['max' => 50])],
+        'address' => [new NotBlank(), new Length(['max' => 255])],
+    ]);
+
+    if (count($formViolations) > 0) {
+        render(
+            "app",
+            "schools/form-school",
+            [
+                'school' => $school,
+                'navbarItem' => 'SCHOOLS',
+                'formViolations' => $formViolations
+            ],
+            400
+        );
+    }
+
+    $schoolAlr = $schoolModel->getSchoolByAddress($_POST['address']);
+    if ($schoolAlr && $schoolAlr->schoolId != $schoolId) {
+        createFlashMessage("Impossible de créer l'établissement", "Un autre établissement utilise déjà cette adresse.", "error");
+
+        render(
+            "app",
+            "schools/form-school",
+            [
+                'school' => $school,
+                'navbarItem' => 'SCHOOLS'
+            ],
+            400
+        );
+    }
+
+    $schoolModel->updateSchoolById($schoolId, $_POST['name'], $_POST['address']);
+    redirect();
 });

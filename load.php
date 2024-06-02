@@ -46,6 +46,7 @@ require_once __DIR__ . "/models/BaseModel.php";
  * Controllers
  */
 
+// TODO: Ajouter les head['title'] dans les routes
 require_once __DIR__ . "/controllers/HomeController.php";
 require_once __DIR__ . "/controllers/AuthController.php";
 require_once __DIR__ . "/controllers/SchoolController.php";

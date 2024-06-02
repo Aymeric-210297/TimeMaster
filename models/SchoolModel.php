@@ -19,7 +19,7 @@ class SchoolModel extends BaseModel
 
     public function getSchoolByAddress($schoolAddress)
     {
-        $query = "SELECT schoolName, schoolAddress ";
+        $query = "SELECT schoolId, schoolName, schoolAddress ";
         $query .= "FROM school ";
         $query .= "WHERE schoolAddress = :schoolAddress";
 
@@ -125,5 +125,20 @@ class SchoolModel extends BaseModel
         ]);
 
         return $sth->fetch();
+    }
+
+    public function updateSchoolById($schoolId, $schoolName, $schoolAddress)
+    {
+        $query = "UPDATE school ";
+        $query .= "SET schoolName = :schoolName, schoolAddress = :schoolAddress ";
+        $query .= "WHERE schoolId = :schoolId";
+
+        $this->executeQuery($query, [
+            "schoolId" => $schoolId,
+            ":schoolName" => $schoolName,
+            ":schoolAddress" => $schoolAddress,
+        ]);
+
+        return true;
     }
 }
