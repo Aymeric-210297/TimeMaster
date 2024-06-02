@@ -29,6 +29,11 @@ form div input {
     font-size: 16px;
 }
 
+form div input[disabled] {
+    background-color: #F1F1F1;
+    cursor: not-allowed;
+}
+
 form div input.error {
     border: 1px solid var(--error-color);
 }
