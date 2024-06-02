@@ -90,7 +90,7 @@ class UserModel extends BaseModel
             ":userId" => $userId
         ]);
 
-        return $sth->fetchAll();
+        return $sth->fetchAll(PDO::FETCH_COLUMN, 0);
     }
 
     public function getUserSchoolsDetails($userId)
@@ -108,7 +108,8 @@ class UserModel extends BaseModel
         return $sth->fetchAll();
     }
 
-    public function createUserSchool($userId, $schoolId) {
+    public function createUserSchool($userId, $schoolId)
+    {
         $query = "INSERT INTO user_school ";
         $query .= "(userId, schoolId)";
         $query .= " VALUES ";

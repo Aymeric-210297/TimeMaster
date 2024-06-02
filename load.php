@@ -13,6 +13,7 @@ require_once __DIR__ . "/utils/libs/router.php";
 
 // Functions
 require_once __DIR__ . "/utils/functions/checkCsrf.php";
+require_once __DIR__ . "/utils/functions/checkAuth.php";
 require_once __DIR__ . "/utils/functions/logError.php";
 require_once __DIR__ . "/utils/functions/render.php";
 require_once __DIR__ . "/utils/functions/createErrorCallback.php";

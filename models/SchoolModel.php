@@ -17,7 +17,8 @@ class SchoolModel extends BaseModel
         return $this->dbh->lastInsertId();
     }
 
-    public function getSchoolByAddress($schoolAddress) {
+    public function getSchoolByAddress($schoolAddress)
+    {
         $query = "SELECT schoolName, schoolAddress ";
         $query .= "FROM school ";
         $query .= "WHERE schoolAddress = :schoolAddress";
@@ -26,6 +27,19 @@ class SchoolModel extends BaseModel
             ":schoolAddress" => $schoolAddress
         ]);
 
-        return $sth->fetch();  
+        return $sth->fetch();
+    }
+
+    public function getSchoolById($schoolId)
+    {
+        $query = "SELECT schoolId, schoolName, schoolAddress ";
+        $query .= "FROM school ";
+        $query .= "WHERE schoolId = :schoolId";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+
+        return $sth->fetch();
     }
 }

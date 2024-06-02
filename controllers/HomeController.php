@@ -10,9 +10,7 @@ get('/', function () {
 });
 
 get('/app', function () {
-    if (!isset($_SESSION['user'])) {
-        redirect('/sign-in');
-    }
+    checkAuth();
 
     render('app', 'home', [
         'head' => [

@@ -12,9 +12,7 @@ require_once __DIR__ . "/../models/UserModel.php";
 $userModel = new UserModel($dbh, createErrorCallback(500));
 
 get('/app/account', function () {
-    if (!isset($_SESSION['user'])) {
-        redirect('/sign-in');
-    }
+    checkAuth();
 
     render(
         "app",
@@ -28,10 +26,7 @@ get('/app/account', function () {
 
 post('/app/account', function () use ($userModel) {
     checkCsrf();
-
-    if (!isset($_SESSION['user'])) {
-        redirect('/');
-    }
+    checkAuth();
 
     if (isset($_POST['save'])) {
         $formViolations = validateData($_POST, [

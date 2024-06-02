@@ -10,9 +10,7 @@ $userModel = new UserModel($dbh, createErrorCallback(500));
 $schoolModel = new SchoolModel($dbh, createErrorCallback(500));
 
 get('/app/schools', function () use ($userModel) {
-    if (!isset($_SESSION['user'])) {
-        redirect('/sign-in');
-    }
+    checkAuth();
 
     $schoolsDetails = $userModel->getUserSchoolsDetails($_SESSION['user']->userId);
 
@@ -28,9 +26,7 @@ get('/app/schools', function () use ($userModel) {
 });
 
 get('/app/schools/add', function () use ($userModel) {
-    if (!isset($_SESSION['user'])) {
-        redirect('/sign-in');
-    }
+    checkAuth();
 
     render(
         "app",
@@ -44,10 +40,7 @@ get('/app/schools/add', function () use ($userModel) {
 
 post('/app/schools/add', function () use ($userModel, $schoolModel) {
     checkCsrf();
-
-    if (!isset($_SESSION['user'])) {
-        redirect('/sign-in');
-    }
+    checkAuth();
 
     $formViolations = validateData($_POST, [
         'name' => [new NotBlank(), new Length(['max' => 50])],
@@ -86,4 +79,15 @@ post('/app/schools/add', function () use ($userModel, $schoolModel) {
     // TODO: transaction
 
     redirect('/app/schools');
+});
+
+get('/app/schools/$schoolId', function ($schoolId) use ($userModel, $schoolModel) {
+    checkAuth($userModel, $schoolId);
+
+    $school = $schoolModel->getSchoolById($schoolId);
+
+    render("app", "schools/overview-school", [
+        'school' => $school,
+        'navbarItem' => 'SCHOOLS'
+    ]);
 });
