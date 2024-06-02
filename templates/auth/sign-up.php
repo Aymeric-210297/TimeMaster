@@ -26,7 +26,7 @@
             'required' => true,
         ]) ?>
 
-        <p class="switch-form-text">Déjà membre ? <a href="/sign-in">Se connecter</a></p>
+        <p class="switch-form-text">Déjà membre ? <a class="link primary" href="/sign-in">Se connecter</a></p>
 
         <?php if (!empty($errorMessage)): ?>
             <p class="error-text"><?= out($errorMessage) ?></p>

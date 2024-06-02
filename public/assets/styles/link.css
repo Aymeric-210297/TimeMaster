@@ -1,0 +1,28 @@
+a.link {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a.link.primary {
+    color: var(--primary-color);
+}
+
+a.link.success {
+    color: var(--success-color);
+}
+
+a.link.warning {
+    color: var(--warning-color);
+}
+
+a.link.error {
+    color: var(--error-color);
+}
+
+a.link:not(.icon):hover {
+    text-decoration: underline;
+}
+
+a.link.icon:hover {
+    opacity: 0.8;
+}

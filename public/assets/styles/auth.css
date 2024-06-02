@@ -20,15 +20,6 @@ h1 {
     margin: 20px auto;
 }
 
-.switch-form-text > a {
-    text-decoration: none;
-    color: var(--primary-color);
-}
-
-.switch-form-text > a:hover {
-    text-decoration: underline;
-}
-
 .error-text {
     color: var(--error-color);
     margin-bottom: 10px;

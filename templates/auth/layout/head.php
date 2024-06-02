@@ -8,4 +8,5 @@
     <link rel="stylesheet" href="/assets/styles/auth.css">
     <link rel="stylesheet" href="/assets/styles/form.css">
     <link rel="stylesheet" href="/assets/styles/button.css">
+    <link rel="stylesheet" href="/assets/styles/link.css">
 </head>
