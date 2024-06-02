@@ -200,9 +200,7 @@ print_r($days);
 
 for ($i = 0; $i < $nbClasse; $i++) {
     $compteurCombineDayTSlot = 0;
-    
     for ($y2 = 0; $y2 < $dayNumber; $y2++) {
-        
         for ($j2 = 0; $j2 < $timeSlotNumber; $j2++) {
             $y = $timeSlotsDays[$compteurCombineDayTSlot]["dayId"]-1;
             $j = $timeSlotsDays[$compteurCombineDayTSlot]["timeslotId"]-1;
