@@ -108,4 +108,30 @@ class teacherModel extends BaseModel
         $sth = $this->executeQuery($query, [":teacherId" => $teacherId]);
         return $sth->fetchAll();
     }
+    public function getTeacherHoursBySubject($schoolId)
+    {
+        $query = "SELECT
+                    ts.subjectId,
+                    SUM(t.teacherNumberHours) AS TotalHours
+                  FROM
+                    teacher_subject ts
+                    JOIN teacher t ON ts.teacherId = t.teacherId
+                  WHERE
+                    t.schoolId = :schoolId
+                  GROUP BY
+                    ts.subjectId";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+
+        $results = $sth->fetchAll(PDO::FETCH_ASSOC);
+        
+        $tabProf = [];
+        foreach ($results as $row) {
+            $tabProf[$row['subjectId']] = $row['TotalHours'];
+        }
+        
+        return $tabProf;
+    }
 }

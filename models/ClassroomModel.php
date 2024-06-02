@@ -79,4 +79,24 @@ class classroomModel extends BaseModel
         $sth = $this->executeQuery($query, [":classroomId" => $classroomId]);
         return $sth->fetchAll();
     }
+    public function getTotalClassroomHours($schoolId)
+    {
+        $query = "SELECT 
+                    COUNT(*) AS TotalHours
+                  FROM 
+                    classroom_availability ca
+                  JOIN 
+                    classroom c ON ca.classroomId = c.classroomId
+                  WHERE 
+                    ca.classroomAvailability = 'available'
+                    AND c.schoolId = :schoolId";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        
+        return $result['TotalHours'];
+    }
 }

@@ -62,5 +62,30 @@ class classModel extends BaseModel
 
         return $sth->fetchAll();
     }
-    
+    public function getClassHoursBySubject($schoolId)
+    {
+        $query = "SELECT
+                    cs.subjectId,
+                    SUM(cs.classSubjectNumberHours) AS TotalHours
+                  FROM
+                    class_subject cs
+                    JOIN class c ON cs.classId = c.classId
+                  WHERE
+                    c.schoolId = :schoolId
+                  GROUP BY
+                    cs.subjectId";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId
+        ]);
+
+        $results = $sth->fetchAll(PDO::FETCH_ASSOC);
+        
+        $tabClass = [];
+        foreach ($results as $row) {
+            $tabClass[$row['subjectId']] = $row['TotalHours'];
+        }
+        
+        return $tabClass;
+    }
 }

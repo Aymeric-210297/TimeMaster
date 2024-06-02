@@ -299,6 +299,7 @@ $probabilites = [
     34 => 10,
     36 => 10,
 ];
+$totalHeureProfs = 0;
 for ($y = 0; $y < $nbEtablissement; $y++) {
     for ($i = 0; $i < $nbProf; $i++) {
         if (rand(0, 1) == 0) {
@@ -311,7 +312,9 @@ for ($y = 0; $y < $nbEtablissement; $y++) {
         $professeurs[$compteur][2] = $faker->lastName();
         $professeurs[$compteur][3] = str_replace(' ', '', $professeurs[$compteur][2]) . "." . $professeurs[$compteur][1] . "_" . $compteur . "@site.ecole.be";
         $professeurs[$compteur][4] = $Etablissements[$y][2];
-        $professeurs[$compteur][5] = genererValeurAleatoire($probabilites);
+        $chiffreAleatoire = genererValeurAleatoire($probabilites);
+        $professeurs[$compteur][5] = $chiffreAleatoire;
+        $totalHeureProfs += $chiffreAleatoire;
         addProf($dbh, $professeurs, $compteur);
         $professeurs[$compteur][6] = $dbh->lastInsertId();
         $compteur++;
@@ -329,7 +332,7 @@ $professeurs[$compteur+1][4] = 2;
 addProf($dbh, $professeurs, $compteur+1);
 $compteur = 0;
 $endTime = microtime(true);
-echo ("Ok => Ajout de professeur en " . number_format($endTime - $startTime, 4) . " secondes\n");
+echo ("Ok => Ajout de professeur en " . number_format($endTime - $startTime, 4) . " secondes // Nb heure total : $totalHeureProfs\n");
 //--------------------------
 //   PRESENCE_PROFESSEUR
 //--------------------------
@@ -386,6 +389,7 @@ echo ("Ok => Ajout de salle de classe en " . number_format($endTime - $startTime
 //--------------------------
 $startTime = microtime(true);
 $limitNbHeure = 0;
+$totalHeureClasse = 0;
 for ($j = 0; $j < $nbEtablissement; $j++) {
     for ($y = 0; $y < $nbClasse; $y++) {
         for ($i = 0; $i < $nbMatiere; $i++) {
@@ -401,6 +405,7 @@ for ($j = 0; $j < $nbEtablissement; $j++) {
                 } else {
                     $classe_matiere[$compteur][0] = null;
                 }
+                $totalHeureClasse += $random_number;
                 $compteur++;
             }
             else {
@@ -413,7 +418,7 @@ for ($j = 0; $j < $nbEtablissement; $j++) {
     }
 }
 $endTime = microtime(true);
-echo ("Ok => Ajout de classe_matiere en " . number_format($endTime - $startTime, 4) . " secondes\n");
+echo ("Ok => Ajout de classe_matiere en " . number_format($endTime - $startTime, 4) . " secondes // Nb heure total : $totalHeureClasse\n");
 $compteur = 0;
 $compteur2 = 0;
 //--------------------------
