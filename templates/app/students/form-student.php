@@ -25,6 +25,7 @@
             'value' => isset($student) ? $student->studentEmail : null
         ], "Indiquez l'email de l'école lié à cet élève.") ?>
 
+        <!-- TODO: automatiquement ajouter le nouvel élève à la classe si param GET add-class défini -->
         <button type="submit" class="button primary"><?= isset($student) ? 'Sauvegarder' : 'Ajouter' ?> l'élève <i
                 class="fa-solid fa-<?= isset($student) ? 'save' : 'add' ?>"></i></button>
         <?php if (isset($student)): ?>

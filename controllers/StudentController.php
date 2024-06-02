@@ -26,7 +26,7 @@ get('/app/schools/$schoolId/students', function ($schoolId) use ($studentModel, 
         render('error', '400');
     }
 
-    $studentCount = $studentModel->countStudentsBySchool($schoolId, $search);
+    $studentCount = $studentModel->countStudentsBySchool($schoolId, $search, !empty($_GET['add-class']));
     $pageCount = ceil($studentCount / ITEMS_PER_PAGE);
 
     if ($pageCount > 0 && $page > $pageCount + 1) {
@@ -34,7 +34,7 @@ get('/app/schools/$schoolId/students', function ($schoolId) use ($studentModel, 
     }
 
     $school = $schoolModel->getSchoolById($schoolId);
-    $students = $studentModel->getStudentsBySchool($schoolId, ($page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE, $search);
+    $students = $studentModel->getStudentsBySchool($schoolId, ($page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE, $search, !empty($_GET['add-class']));
 
     render('app', 'students/list-students', [
         'school' => $school,
@@ -162,4 +162,40 @@ get('/app/schools/$schoolId/students/$studentId/delete', function ($schoolId, $s
     createFlashMessage("Élève supprimé avec succès", "Vous avez supprimé l'élève. Cette action ne peut être annulée.", "success");
 
     redirect("/app/schools/$schoolId/students");
+});
+
+get('/app/schools/$schoolId/students/$studentId/add-class', function ($schoolId, $studentId) use ($userModel, $studentModel) {
+    checkCsrf();
+    checkAuth($userModel, $schoolId);
+
+    $student = $studentModel->getStudentById($schoolId, $studentId);
+    if (!$student) {
+        render('error', '404');
+    }
+
+    $classId = filter_input(INPUT_GET, 'class-id', FILTER_VALIDATE_INT);
+
+    if (empty($classId)) {
+        render('error', '400');
+    }
+
+    $studentModel->updateStudentClassById($schoolId, $studentId, $classId);
+
+    createFlashMessage("L'élève a bien été placé dans une classe", "Vous avez placé l'élève dans une classe.", "success");
+
+    redirect("/app/schools/$schoolId/classes/$classId/students");
+});
+
+get('/app/schools/$schoolId/students/$studentId/remove-class', function ($schoolId, $studentId) use ($userModel, $studentModel) {
+    checkCsrf();
+    checkAuth($userModel, $schoolId);
+
+    $student = $studentModel->getStudentById($schoolId, $studentId);
+    if (!$student) {
+        render('error', '404');
+    }
+
+    $studentModel->updateStudentRemoveClass($schoolId, $studentId);
+
+    redirect();
 });

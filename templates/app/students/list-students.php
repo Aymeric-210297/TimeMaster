@@ -1,8 +1,9 @@
 <main>
     <div class="content-header">
         <div>
-            <h2>Élèves</h2>
-            <p>Vous pouvez gérer l'ensemble des élèves de l'établissement via cette page.</p>
+            <h2><?= !empty($_GET['add-class']) ? 'Ajouter un élève à une classe' : 'Élèves' ?></h2>
+            <p><?= !empty($_GET['add-class']) ? 'Cliquez sur le plus (+) à côté d\'un élève pour l\'ajouter à la classe.' : 'Vous pouvez gérer l\'ensemble des élèves de l\'établissement via cette page.' ?>
+            </p>
         </div>
         <div>
             <a href="/app/schools/<?= $school->schoolId ?>/students/add" class="button primary">
@@ -22,8 +23,14 @@
     <?php if (count($students) <= 0): ?>
         <div class="no-element">
             <i class="fa-solid fa-magnifying-glass-minus"></i>
-            <p>Aucun élève trouvé, vous pouvez en ajouter en <a href="/app/schools/<?= $school->schoolId ?>/students/add"
-                    class="link primary">cliquant ici</a>.</p>
+            <?php if (!empty($_GET['add-class'])): ?>
+                <p>Aucun élève n'a pas de classe attribué, vous pouvez ajouter un nouvel élève en <a
+                        href="/app/schools/<?= $school->schoolId ?>/students/add" class="link primary">cliquant ici</a>.</p>
+                <p>Pour déplacer la classe d'un élève, retirez le de sa classe actuelle puis revenez sur cette page.</p>
+            <?php else: ?>
+                <p>Aucun élève trouvé, vous pouvez en ajouter en <a href="/app/schools/<?= $school->schoolId ?>/students/add"
+                        class="link primary">cliquant ici</a>.</p>
+            <?php endif; ?>
         </div>
     <?php else: ?>
         <table>
@@ -31,7 +38,9 @@
                 <tr>
                     <th>Prénom</th>
                     <th>Nom</th>
-                    <th>Classe</th>
+                    <?php if (empty($_GET['add-class'])): ?>
+                        <th>Classe</th>
+                    <?php endif; ?>
                     <th></th>
                 </tr>
             </thead>
@@ -40,16 +49,25 @@
                     <tr>
                         <td><?= out($student->studentGivenName) ?></td>
                         <td><?= out($student->studentFamilyName) ?></td>
-                        <td><?= out($student->classRef ?? '--') ?></td>
+                        <?php if (empty($_GET['add-class'])): ?>
+                            <td><?= out($student->classRef ?? '--') ?></td>
+                        <?php endif; ?>
                         <td class="actions">
-                            <a class="link primary icon"
-                                href="/app/schools/<?= $school->schoolId ?>/students/<?= $student->studentId ?>">
-                                <i class="fa-solid fa-edit"></i>
-                            </a>
-                            <a class="link error icon"
-                                href="/app/schools/<?= $school->schoolId ?>/students/<?= $student->studentId ?>/delete?csrf=<?= $_SESSION['csrf'] ?>">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
+                            <?php if (!empty($_GET['add-class'])): ?>
+                                <a class="link success icon"
+                                    href="/app/schools/<?= $school->schoolId ?>/students/<?= $student->studentId ?>/add-class?class-id=<?= out($_GET['add-class']) ?>&csrf=<?= $_SESSION['csrf'] ?>">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            <?php else: ?>
+                                <a class="link primary icon"
+                                    href="/app/schools/<?= $school->schoolId ?>/students/<?= $student->studentId ?>">
+                                    <i class="fa-solid fa-edit"></i>
+                                </a>
+                                <a class="link error icon"
+                                    href="/app/schools/<?= $school->schoolId ?>/students/<?= $student->studentId ?>/delete?csrf=<?= $_SESSION['csrf'] ?>">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

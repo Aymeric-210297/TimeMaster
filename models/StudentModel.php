@@ -2,7 +2,7 @@
 
 class StudentModel extends BaseModel
 {
-    public function getStudentsBySchool($schoolId, $offset, $limit, $search = null)
+    public function getStudentsBySchool($schoolId, $offset, $limit, $search = null, $noClass = false)
     {
         $query = "SELECT studentId, studentGivenName, studentFamilyName, classRef ";
         $query .= "FROM student ";
@@ -10,6 +10,9 @@ class StudentModel extends BaseModel
         $query .= "WHERE student.schoolId = :schoolId ";
         if (!empty($search)) {
             $query .= "AND (studentGivenName LIKE :search OR studentFamilyName LIKE :search) ";
+        }
+        if ($noClass) {
+            $query .= "AND student.classId IS NULL ";
         }
         $query .= "ORDER BY studentFamilyName ASC, studentGivenName ASC ";
         $query .= "LIMIT :offset, :limit";
@@ -29,7 +32,7 @@ class StudentModel extends BaseModel
         return $sth->fetchAll();
     }
 
-    public function countStudentsBySchool($schoolId, $search = null)
+    public function countStudentsBySchool($schoolId, $search = null, $noClass = false)
     {
         $query = "SELECT COUNT(*) ";
         $query .= "FROM student ";
@@ -37,9 +40,64 @@ class StudentModel extends BaseModel
         if (!empty($search)) {
             $query .= "AND (studentGivenName LIKE :search OR studentFamilyName LIKE :search) ";
         }
+        if ($noClass) {
+            $query .= "AND student.classId IS NULL ";
+        }
 
         $params = [
             ":schoolId" => $schoolId
+        ];
+
+        if (!empty($search)) {
+            $params[':search'] = "%{$search}%";
+        }
+
+        $sth = $this->executeQuery($query, $params);
+
+        return $sth->fetch(PDO::FETCH_COLUMN, 0);
+    }
+
+    public function getStudentsByClass($schoolId, $classId, $offset, $limit, $search = null)
+    {
+        $query = "SELECT studentId, studentGivenName, studentFamilyName ";
+        $query .= "FROM student ";
+        $query .= "WHERE student.schoolId = :schoolId ";
+        $query .= "AND classId = :classId ";
+        if (!empty($search)) {
+            $query .= "AND (studentGivenName LIKE :search OR studentFamilyName LIKE :search) ";
+        }
+        $query .= "ORDER BY studentFamilyName ASC, studentGivenName ASC ";
+        $query .= "LIMIT :offset, :limit";
+
+        $params = [
+            ":schoolId" => $schoolId,
+            ":offset" => [$offset, PDO::PARAM_INT],
+            ":limit" => [$limit, PDO::PARAM_INT],
+            ":classId" => $classId,
+        ];
+
+        if (!empty($search)) {
+            $params[':search'] = "%{$search}%";
+        }
+
+        $sth = $this->executeQuery($query, $params);
+
+        return $sth->fetchAll();
+    }
+
+    public function countStudentsByClass($schoolId, $classId, $search = null)
+    {
+        $query = "SELECT COUNT(*) ";
+        $query .= "FROM student ";
+        $query .= "WHERE student.schoolId = :schoolId ";
+        $query .= "AND classId = :classId ";
+        if (!empty($search)) {
+            $query .= "AND (studentGivenName LIKE :search OR studentFamilyName LIKE :search) ";
+        }
+
+        $params = [
+            ":schoolId" => $schoolId,
+            ":classId" => $classId
         ];
 
         if (!empty($search)) {
@@ -119,6 +177,33 @@ class StudentModel extends BaseModel
             ":studentGivenName" => $studentGivenName,
             ":studentFamilyName" => $studentFamilyName,
             ":studentEmail" => $studentEmail,
+            ':schoolId' => $schoolId,
+            ':studentId' => $studentId
+        ]);
+
+        return true;
+    }
+
+    public function updateStudentClassById($schoolId, $studentId, $classId)
+    {
+        $query = "UPDATE student SET ";
+        $query .= "classId = :classId ";
+        $query .= "WHERE schoolId = :schoolId AND studentId  = :studentId ";
+
+        $this->executeQuery($query, [
+            ':schoolId' => $schoolId,
+            ':studentId' => $studentId,
+            ':classId' => $classId
+        ]);
+
+        return true;
+    }
+
+    public function updateStudentRemoveClass($schoolId, $studentId)
+    {
+        $query = "UPDATE student SET classId = NULL WHERE schoolId = :schoolId AND studentId = :studentId";
+
+        $this->executeQuery($query, [
             ':schoolId' => $schoolId,
             ':studentId' => $studentId
         ]);

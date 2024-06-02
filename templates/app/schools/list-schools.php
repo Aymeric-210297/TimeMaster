@@ -11,19 +11,30 @@
             </a>
         </div>
     </div>
-    <div class="list-schools">
-        <?php foreach ($schoolsDetails as $schoolDetails): ?>
-            <div>
-                <div class="head">
-                    <h3><?= out($schoolDetails->schoolName) ?></h3>
-                    <p><?= out($schoolDetails->schoolAddress) ?></p>
-                </div>
+
+    <?php if (count($schoolsDetails) <= 0): ?>
+        <div class="no-element">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+            <p>Vous ne gérez aucun établissement, vous pouvez ajouter votre établissement en <a href="/app/schools/add"
+                    class="link primary">cliquant
+                    ici</a>.</p>
+        </div>
+    <?php else: ?>
+        <div class="list-schools">
+            <?php foreach ($schoolsDetails as $schoolDetails): ?>
                 <div>
-                    <p><?= out($schoolDetails->teacherCount ?? 0) ?> professeurs -
-                        <?= out($schoolDetails->studentCount ?? 0) ?> élèves</p>
-                    <a href="/app/schools/<?= out($schoolDetails->schoolId) ?>" class="button primary">Gérer</a>
+                    <div class="head">
+                        <h3><?= out($schoolDetails->schoolName) ?></h3>
+                        <p><?= out($schoolDetails->schoolAddress) ?></p>
+                    </div>
+                    <div>
+                        <p><?= out($schoolDetails->teacherCount ?? 0) ?> professeurs -
+                            <?= out($schoolDetails->studentCount ?? 0) ?> élèves
+                        </p>
+                        <a href="/app/schools/<?= out($schoolDetails->schoolId) ?>" class="button primary">Gérer</a>
+                    </div>
                 </div>
-            </div>
-        <?php endforeach ?>
-    </div>
+            <?php endforeach ?>
+        </div>
+    <?php endif; ?>
 </main>
