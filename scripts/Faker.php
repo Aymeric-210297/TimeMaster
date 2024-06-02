@@ -70,11 +70,11 @@ $nbMatiere = 20; //si on modifie modifier le tab matiereNom
 $nbUtilisateur = 5;
 $nbJour = 5;
 $nbCreneau = 8;
-$nbProf = 150;
-$nbEleve = 200;
-$nbSalleClasse = 100;
+$nbProf = 400;
+$nbEleve = 800;
+$nbSalleClasse = 300;
 $nbEtablissement = 2;
-$nbClasse = 100; //max 800
+$nbClasse = 150; //max 800
 $nbAnnee = 6;
 $anneeDebut = 3;  //le nombre de classe sera ajusté en fonction du nombre d'année
 $nbClasse = $nbClasse - ($nbClasse % ($nbAnnee - $anneeDebut));
@@ -246,7 +246,8 @@ for ($i = 0; $i < $nbEtablissement; $i++) {
         $eleves[$compteur][1] = $faker->lastName();
         $eleves[$compteur][0] = supprimerEspace($eleves[$compteur][2] . "_" . $eleves[$compteur][1] . $compteur . "@site.com");
         $eleves[$compteur][3] = $i + 1;
-        $eleves[$compteur][4] = rand(1, $nbClasse + 1);
+
+        $eleves[$compteur][4] = rand(1+($i*$nbClasse), $nbClasse + ($i*$nbClasse));
         addEleve($dbh, $eleves, $compteur);
         $eleves[$compteur][5] = $dbh->lastInsertId();
         $compteur++;
@@ -334,6 +335,49 @@ $compteur = 0;
 $endTime = microtime(true);
 echo ("Ok => Ajout de professeur en " . number_format($endTime - $startTime, 4) . " secondes // Nb heure total : $totalHeureProfs\n");
 //--------------------------
+//  FOURCHE_PREFERENTIEL
+//--------------------------
+$startTime = microtime(true);
+$multiplicateur = 0;
+for ($i = 0; $i < $nbEtablissement; $i++) {
+    for ($y = 0; $y < $nbJour; $y++) {
+        for ($j = 0; $j < $nbCreneau; $j++) {
+            $fourche_preferentiel[$compteur][0] = $j + ($nbCreneau * $multiplicateur) + 1;
+            $fourche_preferentiel[$compteur][1] = $y + 1;
+            if ($j == 0 or $j == 1) {
+                //08h25-10h05 :
+                $fourche_preferentiel[$compteur][2] = 2;
+            } else if ($j == 2 or $j == 3) {
+                //10h20-12h00 :
+                $fourche_preferentiel[$compteur][2] = 3;
+            } 
+            if ($y == 2) {
+                //Mercredi aprem :
+                if ($j >= 4) {
+                    $fourche_preferentiel[$compteur][2] = 0;
+                }
+
+            } else {
+                //autres jour
+                if ($j == 4 or $j == 5) {
+                    $fourche_preferentiel[$compteur][2] = 3;
+                }
+                if ($j == 6 or $j == 7) {
+                    $fourche_preferentiel[$compteur][2] = 1;
+                }
+
+            }
+            AddFourchePreferentiel($dbh, $fourche_preferentiel, $compteur);
+            $compteur++;
+        }
+    }
+    $multiplicateur++;
+}
+$endTime = microtime(true);
+echo ("Ok => Ajout de fourche_preferentiel en " . number_format($endTime - $startTime, 4) . " secondes\n");
+$compteur = 0;
+
+//--------------------------
 //   PRESENCE_PROFESSEUR
 //--------------------------
 $startTime = microtime(true);
@@ -367,7 +411,7 @@ $compteur = 0;
 $startTime = microtime(true);
 for ($i = 0; $i < $nbEtablissement; $i++) {
     for ($y = 0; $y < $nbSalleClasse; $y++) {
-        $salleClasse[$compteur][0] = $compteur;
+        $salleClasse[$compteur][0] = $compteur+100;
         $salleClasse[$compteur][1] = rand(20, 25);
         $random_number = rand(1, 100);
         if ($random_number <= 80) {
@@ -554,51 +598,6 @@ $endTime = microtime(true);
 echo ("Ok => Ajout de salleClasse_matiere en " . number_format($endTime - $startTime, 4) . " secondes\n");
 $compteur = 0;
 
-//--------------------------
-//  FOURCHE_PREFERENTIEL
-//--------------------------
-$startTime = microtime(true);
-$multiplicateur = 0;
-for ($i = 0; $i < $nbEtablissement; $i++) {
-    for ($y = 0; $y < $nbJour; $y++) {
-        for ($j = 0; $j < $nbCreneau; $j++) {
-            $fourche_preferentiel[$compteur][0] = $j + ($nbCreneau * $multiplicateur) + 1;
-            $fourche_preferentiel[$compteur][1] = $y + 1;
-            if ($j == 0 or $j == 1) {
-                //08h25-10h05 :
-                $fourche_preferentiel[$compteur][2] = 2;
-            } else if ($j == 2 or $j == 3) {
-                //10h20-12h00 :
-                $fourche_preferentiel[$compteur][2] = 3;
-            } else if ($j == 4) {
-                //12h00-12h50 :
-                $fourche_preferentiel[$compteur][2] = 0;
-            }
-            if ($y == 2) {
-                //Mercredi aprem :
-                if ($j >= 5) {
-                    $fourche_preferentiel[$compteur][2] = 0;
-                }
-
-            } else {
-                //autres jour
-                if ($j == 5 or $j == 6) {
-                    $fourche_preferentiel[$compteur][2] = 3;
-                }
-                if ($j == 7 or $j == 8) {
-                    $fourche_preferentiel[$compteur][2] = 1;
-                }
-
-            }
-            AddFourchePreferentiel($dbh, $fourche_preferentiel, $compteur);
-            $compteur++;
-        }
-    }
-    $multiplicateur++;
-}
-$endTime = microtime(true);
-echo ("Ok => Ajout de fourche_preferentiel en " . number_format($endTime - $startTime, 4) . " secondes\n");
-$compteur = 0;
 
 
 

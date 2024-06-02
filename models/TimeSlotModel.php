@@ -44,29 +44,31 @@ class timeSlotModel extends BaseModel
         }
         return $result;
     }
-    //A TESTER
-        //A TESTER
-            //A TESTER
-                //A TESTER
-                    //A TESTER
-                        //A TESTER
-                            //A TESTER
+
     public function getTimePreferencesBySchoolId($schoolId)
     {
         $query = "
-        SELECT tp.*, d.dayName, t.timeslotId, t.timeslotStartHour, t.timeslotEndHour
+        SELECT tp.timeslotId, tp.dayId
         FROM time_preference tp
         JOIN timeslot t ON tp.timeslotId = t.timeslotId
         JOIN school s ON t.schoolId = s.schoolId
         JOIN day d ON tp.dayId = d.dayId
         WHERE s.schoolId = :schoolId
-        ORDER BY tp.timePreference desc, d.dayId;
+        ORDER BY tp.timePreference DESC, d.dayId, t.timeslotId;
         ";
-
+    
         $sth = $this->executeQuery($query, [
             ":schoolId" => $schoolId
         ]);
-
-        return $sth->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_ASSOC);
+    
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+    
+        $structuredResult = [];
+        foreach ($result as $index => $row) {
+            $structuredResult[$index]["dayId"] = $row["dayId"];
+            $structuredResult[$index]["timeslotId"] = $row["timeslotId"];
+        }
+    
+        return $structuredResult;
     }
 }

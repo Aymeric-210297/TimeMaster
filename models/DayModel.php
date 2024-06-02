@@ -53,7 +53,7 @@ class dayModel extends BaseModel
     public function getAllDayIds()
     {
         $query = "SELECT dayId ";
-        $query .= "FROM day";
+        $query .= "FROM day order by dayId";
 
         $sth = $this->executeQuery($query);
         $dayIds = $sth->fetchAll(PDO::FETCH_COLUMN, 0); // Récupère uniquement les valeurs de la première colonne (dayId)

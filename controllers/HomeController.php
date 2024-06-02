@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../models/classModel.php";
 require_once __DIR__ . "/../models/scheduleModel.php";
 require_once __DIR__ . "/../models/DayModel.php";
-require_once __DIR__ . "/../models/horaireModel.php";
+
 require_once __DIR__ . "/../models/TimeSlotModel.php";
 $dayModel = new dayModel($dbh);
 $timeSlotModel = new timeSlotModel($dbh);

@@ -91,7 +91,7 @@ for ($i = 0; $i < $nbProf; $i++) {
     $profVariatif[4][$i] = $teacherModel->getSubjectIdsByTeacherId($profId); // id de la/les matiere qu'il donne
     $profVariatif[5][$i] = $teacherModel->getTeacherHoursByTeacherId($profId); // nombre restant d'heure a donné
 }
-//print_r($profVariatif[2][0]);
+
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4) . " => Ajout de profVariatif \n");
 //CLASSE
@@ -195,9 +195,19 @@ $doublonSalleClasse = 0;
 $testSiProfPris = false;
 $testSiSalleClassePris = false;
 $testSiMatierePris = false;
+$timeSlotsDays = $timeSlotModel->getTimePreferencesBySchoolId($schoolId);
+print_r($days);
+
 for ($i = 0; $i < $nbClasse; $i++) {
-    for ($y = 0; $y < $dayNumber; $y++) {
-        for ($j = 0; $j < $timeSlotNumber; $j++) {
+    $compteurCombineDayTSlot = 0;
+    
+    for ($y2 = 0; $y2 < $dayNumber; $y2++) {
+        
+        for ($j2 = 0; $j2 < $timeSlotNumber; $j2++) {
+            $y = $timeSlotsDays[$compteurCombineDayTSlot]["dayId"]-1;
+            $j = $timeSlotsDays[$compteurCombineDayTSlot]["timeslotId"]-1;
+
+            $compteurCombineDayTSlot = $j2 + ($y2 * $timeSlotNumber);
             $tabClass_Schedule[0][$compteur] = $scheduleModel->createSchedule($schoolId); //id de l'horaire 
             $tabClass_Schedule[1][$compteur] = $days[$y]; //id du jour
             $tabClass_Schedule[2][$compteur] = $timeSlots[$j]; //id du creneau
@@ -217,7 +227,7 @@ for ($i = 0; $i < $nbClasse; $i++) {
                             for ($compteurProf = 0; $compteurProf < $nbProf - 1; $compteurProf++) {
                                 for ($compteurProfMatiere = 0; $compteurProfMatiere < count($profVariatif[4][$compteurProf]); $compteurProfMatiere++) {
 
-                                    if ($profVariatif[4][$compteurProf][$compteurProfMatiere] == $subjects[$compteurMatiere] && ($profVariatif[5][$compteurProf] >= $classeVariatif[2][$i][$subjects[$compteurMatiere]]) && $profVariatif[2][$compteurProf][$days[$y]][$timeSlots[$j]] == "available") {
+                                    if ($profVariatif[4][$compteurProf][$compteurProfMatiere] == $subjects[$compteurMatiere] && ($profVariatif[5][$compteurProf] >= $classeVariatif[2][$i][$subjects[$compteurMatiere]]) && ($profVariatif[2][$compteurProf][$days[$y]][$timeSlots[$j]] == "available" || $profVariatif[2][$compteurProf][$days[$y]][$timeSlots[$j]] == "prefer-not") ) {
 
                                         //la on est sure que ce prof donne au moins cette matiere on va donc le mettre : 
                                         $tabClass_Schedule[4][$compteur] = $profVariatif[0][$compteurProf]; //id du prof   
@@ -335,30 +345,3 @@ for ($i = 0; $i < $nbClasse; $i++) {
 }
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4) . " => Ajout du tab dans la bdd\n");
-/*
-$startTime = microtime(true);
-$compteur = 0;
-for ($i=0; $i < $dayNumber; $i++) { 
-    for ($y=0; $y < $timeSlotNumber; $y++) { 
-        for ($j=0; $j < $nbClasse; $j++) { 
-
-            $compteur++;
-            echo($compteur . "\n");
-        }
-        for ($j=0; $j < $nbSalleClasse; $j++) { 
-
-            $compteur++;
-            echo($compteur . "\n");
-        }
-        for ($j=0; $j < $nbProf; $j++) { 
-            $compteur++;
-            echo($compteur . "\n");
-        }
-    }
-}
-$endTime = microtime(true);
-echo (number_format($endTime - $startTime, 4)." => test temp\n");
-echo($compteur);
-for ($i=0; $i < $nbClasse; $i++) { 
-    
-}*/
