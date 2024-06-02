@@ -10,6 +10,7 @@
     align-items: center;
     justify-content: space-between;
     background-color: var(--background-color);
+    z-index: 100;
 }
 
 #flash-message > div {
