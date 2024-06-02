@@ -20,7 +20,7 @@
             'value' => isset($student) ? $student->studentFamilyName : null
         ]) ?>
         <?= getFormInput($formViolations, "email", "Email de l'élève", [
-            'type' => 'text',
+            'type' => 'email',
             'required' => true,
             'value' => isset($student) ? $student->studentEmail : null
         ], "Indiquez l'email de l'école lié à cet élève.") ?>
