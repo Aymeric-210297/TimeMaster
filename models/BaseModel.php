@@ -30,7 +30,16 @@ class BaseModel
     {
         try {
             $sth = $this->dbh->prepare($query);
-            $sth->execute($params);
+
+            foreach ($params as $key => $value) {
+                if (is_array($value) && count($value) == 2 && is_int($value[1])) {
+                    $sth->bindValue($key, $value[0], $value[1]);
+                } else {
+                    $sth->bindValue($key, $value);
+                }
+            }
+
+            $sth->execute();
             return $sth;
         } catch (PDOException $e) {
             $this->handleError($e, $errorMessage);
