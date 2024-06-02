@@ -47,6 +47,7 @@ $getNavbarLink = function ($href, $icon, $value, $name = null) use ($navbarItem)
                 <?= $getNavbarLink("/app/schools/{$school->schoolId}/schedules", 'fa-solid fa-calendar-days', 'Horaires', 'SCHEDULES') ?>
                 <?= $getNavbarLink("/app/schools/{$school->schoolId}/collaborators", 'fa-solid fa-user-tie', 'Collaborateurs', 'COLLABORATORS') ?>
             <?php endif; ?>
+            <?= $getNavbarLink('/app/testAffichageH', 'fa-solid fa-school', 'Horaires Classe', 'AFFICHAGE_HORAIRES') ?>
         </div>
         <div class="bottom-links">
             <?= $getNavbarLink('/app/account', 'fa-solid fa-user', out($_SESSION['user']->userGivenName . ' ' . $_SESSION['user']->userFamilyName), 'ACCOUNT') ?>

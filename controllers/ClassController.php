@@ -8,7 +8,7 @@ require_once __DIR__ . "/../models/ClassModel.php";
 require_once __DIR__ . "/../models/SchoolModel.php";
 require_once __DIR__ . "/../models/StudentModel.php";
 
-$classModel = new ClasseModel($dbh, createErrorCallback(500));
+$classModel = new ClassModel($dbh, createErrorCallback(500));
 $userModel = new UserModel($dbh, createErrorCallback(500));
 $schoolModel = new SchoolModel($dbh, createErrorCallback(500));
 $studentModel = new StudentModel($dbh, createErrorCallback(500));
