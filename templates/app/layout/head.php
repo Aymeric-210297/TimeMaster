@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="/assets/styles/app.css">
     <link rel="stylesheet" href="/assets/styles/sidebar.css">
     <link rel="stylesheet" href="/assets/styles/form.css">
+    <link rel="stylesheet" href="/assets/styles/table.css">
     <link rel="stylesheet" href="/assets/styles/button.css">
+    <link rel="stylesheet" href="/assets/styles/link.css">
     <link rel="stylesheet" href="/assets/styles/flashMessage.css">
     <link rel="stylesheet" href="/assets/styles/schools.css">
 

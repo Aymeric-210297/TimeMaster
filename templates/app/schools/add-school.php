@@ -2,7 +2,7 @@
     <div class="content-header">
         <div>
             <h2>Ajouter un établissement</h2>
-            <p>Vous pouvez ajouter un établissement via cette page
+            <p>Vous pouvez ajouter un établissement via cette page.
             </p>
         </div>
     </div>
