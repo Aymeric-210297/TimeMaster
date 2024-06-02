@@ -7,8 +7,8 @@ require __DIR__ . '/../models/BaseModel.php';
 require __DIR__ . '/../models/TeacherModel.php';
 require __DIR__ . '/../models/ClassroomModel.php';
 require __DIR__ . '/../models/ClassModel.php';
-require __DIR__ . '/../models/jourModel.php';
-require __DIR__ . '/../models/creneauModel.php';
+require __DIR__ . '/../models/DayModel.php';
+require __DIR__ . '/../models/TimeSlotModel.php';
 require __DIR__ . '/../models/ScheduleModel.php';
 require __DIR__ . '/../models/SubjectModel.php';
 
@@ -21,8 +21,8 @@ require_once __DIR__ . "/../configs/database.php";
 $teacherModel = new TeacherModel($dbh);
 $classroomModel = new classroomModel($dbh);
 $classModel = new classModel($dbh);
-$jourModel = new jourModel($dbh);
-$creneauModel = new creneauModel($dbh);
+$dayModel = new dayModel($dbh);
+$timeSlotModel = new timeSlotModel($dbh);
 $scheduleModel = new ScheduleModel($dbh);
 $subjectModel = new SubjectModel($dbh);
 $schoolId = 1;
@@ -47,15 +47,15 @@ foreach ($tables as $table) {
 }
 echo "Les données de la base de données ont été réinitialisées avec succès.\n";
 $subjectNumber = $subjectModel->getNumberOfSubjectBySchoolId($schoolId);
-$dayNumber = $jourModel->getNumberOfDaysBySchoolId($schoolId);
-$timeSlotNumber = $creneauModel->getNumberOfTimeslotsBySchoolId($schoolId);
-$tabJourIdCreneauId = $jourModel->getDayTimeslotArrayBySchoolId($schoolId);
-$allDayIds = $jourModel->getAllDayIds();
+$dayNumber = $dayModel->getNumberOfDaysBySchoolId($schoolId);
+$timeSlotNumber = $timeSlotModel->getNumberOfTimeslotsBySchoolId($schoolId);
+$tabJourIdCreneauId = $dayModel->getDayTimeslotArrayBySchoolId($schoolId);
+$allDayIds = $dayModel->getAllDayIds();
 
 // Récupérer tous les IDs de créneaux horaires pour l'établissement spécifié
-$allTimeslotIds = $creneauModel->getTimeslotIdsBySchoolId($schoolId);
+$allTimeslotIds = $timeSlotModel->getTimeslotIdsBySchoolId($schoolId);
 $timePreferences = $scheduleModel->getTimePreferences($schoolId);
-$groupement = $scheduleModel->createTimeslotGroupMapping($schoolId);
+
 
 // JOUR
 $days = array();
@@ -109,7 +109,7 @@ for ($i = 0; $i < $nbClasse; $i++) {
     $classeVariatif[2][$i] = $classModel->getClassSubjectsByClassId($classeId); // 3 : id de la matiere     valeur = nombre d'heure
 }
 //print_r($classeVariatif[1][0]);
-$rankedTimeslots = $scheduleModel->getRankedTimeslotsBySchoolId($schoolId);
+
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4) . " => Ajout de classeVariatif \n");
 //SALLE DE CLASSE

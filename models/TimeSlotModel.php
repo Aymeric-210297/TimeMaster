@@ -1,22 +1,14 @@
 <?php
-class creneauModel extends BaseModel 
+class timeSlotModel extends BaseModel 
 {
+
     public function recupCreneauParEtablissement($schoolId)
-    {
-        try {
-            $query = "SELECT * FROM timeslot WHERE schoolId = :schoolId ORDER BY timeslotStartHour";
-            $sth = $this->executeQuery($query, [':schoolId' => $schoolId]);
-            return $sth->fetchAll();
-        } catch (PDOException $e) {
-            die($e->getMessage());
-        }
-    }
-    public function recupCreneauParEtablissement2($schoolId)
     {
         $query = "
             SELECT timeslotId, timeslotStartHour, timeslotEndHour
             FROM timeslot
             WHERE schoolId = :schoolId
+            ORDER BY timeslotStartHour
         ";
 
         $sth = $this->executeQuery($query, [
@@ -52,12 +44,13 @@ class creneauModel extends BaseModel
         }
         return $result;
     }
-    public function getTimeslots()
-    {
-        $query = "SELECT * FROM timeslot";
-        $sth = $this->executeQuery($query);
-        return $sth->fetchAll();
-    }
+    //A TESTER
+        //A TESTER
+            //A TESTER
+                //A TESTER
+                    //A TESTER
+                        //A TESTER
+                            //A TESTER
     public function getTimePreferencesBySchoolId($schoolId)
     {
         $query = "
@@ -66,7 +59,7 @@ class creneauModel extends BaseModel
         JOIN timeslot t ON tp.timeslotId = t.timeslotId
         JOIN school s ON t.schoolId = s.schoolId
         JOIN day d ON tp.dayId = d.dayId
-        WHERE s.schoolId = 1
+        WHERE s.schoolId = :schoolId
         ORDER BY tp.timePreference desc, d.dayId;
         ";
 

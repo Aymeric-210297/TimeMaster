@@ -46,12 +46,7 @@ class classModel extends BaseModel
 
         return $classSubjects;
     }
-    public function getClasses()
-    {
-        $query = "SELECT * FROM class";
-        $sth = $this->executeQuery($query);
-        return $sth->fetchAll();
-    }
+    
     public function getClassIdsBySchoolId($schoolId)
     {
         $query = "SELECT classId, classRef FROM class WHERE schoolId = :schoolId";

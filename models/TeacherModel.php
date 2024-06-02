@@ -95,19 +95,7 @@ class teacherModel extends BaseModel
 
         return $availabilities;
     }
-    public function getTeachers()
-    {
-        $query = "SELECT * FROM teacher";
-        $sth = $this->executeQuery($query);
-        return $sth->fetchAll();
-    }
-
-    public function getTeacherAvailability($teacherId)
-    {
-        $query = "SELECT * FROM teacher_availability WHERE teacherId = :teacherId";
-        $sth = $this->executeQuery($query, [":teacherId" => $teacherId]);
-        return $sth->fetchAll();
-    }
+    
     public function getTeacherHoursBySubject($schoolId)
     {
         $query = "SELECT

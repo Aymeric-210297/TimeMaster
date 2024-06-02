@@ -41,7 +41,7 @@
                                     if ($entry->timeslotId == $timeslot->timeslotId && $entry->dayId == $day->dayId) {
                                         ?>
                                         <p><?= htmlspecialchars($entry->subjectName) ?></p>
-                                        <p><?php if ($entry->teacherFamilyName == "M"):?>M.<?php else : ?>Mme<?php endif ?> <?= htmlspecialchars($entry->teacherFamilyName) ?></p>
+                                        <p><?php if ($entry->teacherGender == "M"):?>M.<?php else : ?>Mme<?php endif ?> <?= htmlspecialchars($entry->teacherFamilyName) ?></p>
                                         <p><?= htmlspecialchars($entry->classroomRef) ?></p>
                                         <?php
                                         $entryFound = true;
