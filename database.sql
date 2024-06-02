@@ -69,7 +69,7 @@ create table student
     studentFamilyName varchar(255) not null,
     studentGivenName  varchar(255) not null,
     schoolId          int          not null,
-    classId           int          not null,
+    classId           int          null,
 
     unique (studentEmail, schoolId),
     foreign key (classId) references class (classId),
