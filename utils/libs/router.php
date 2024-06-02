@@ -1,10 +1,15 @@
 <?php
 
 /*
- * Ce fichier est basé sur le travail original de PhpRouter, accessible à https://github.com/phprouter/main,
- * sous la licence MIT. Des modifications mineures ont été effectuées.
+ * ----------------------------------------------------------------------------
+ * PHP ROUTER
+ * https://github.com/phprouter/main
  *
+ * Ce fichier est basé sur le travail original de PHP ROUTER, disponible sous
+ * la licence MIT.
+ * ----------------------------------------------------------------------------
  * Copyright (c) 2021 <info@phprouter.com>
+ * Copyright (c) 2024 Aymeric-210297
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +28,17 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ * ----------------------------------------------------------------------------
+ * Modifications apportées par Aymeric-210297, 2024 :
+ * - Ajout de la gestion de la méthode HEAD.
+ * - Ajout de la possibilité de mettre le token CSRF dans les query params.
+ * - Suppression de la possibilité de mettre un fichier à inclure dans les
+ *   routes pour privilégier l'utilisation par fonction callback.
+ * - Application de la pull request :
+ *   https://github.com/phprouter/main/pull/52 pour corriger le problème avec
+ *   les query params.
+ * - Divers ajustements mineurs pour adapter le code aux besoins spécifiques de notre projet.
+ * ----------------------------------------------------------------------------
  */
 
 function get($route, $callback)
