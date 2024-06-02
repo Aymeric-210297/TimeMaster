@@ -4,7 +4,16 @@ class ClassModel extends BaseModel
 {
     public function getClassesBySchool($schoolId, $offset, $limit, $search = null)
     {
-        $query = "SELECT class.classId, class.classRef, COUNT(student.studentId) AS numberOfStudents ";
+        /*$query = "SELECT class.classId, class.classRef, COUNT(student.studentId) AS numberOfStudents ";
+        $query .= "FROM class ";
+        $query .= "LEFT JOIN student ON class.classId = student.classId ";
+        $query .= "WHERE class.schoolId = :schoolId ";*/
+
+        $query = "SELECT
+             class.classId,
+             class.classRef,
+             COUNT(student.studentId) AS numberOfStudents,
+             EXISTS (SELECT 1 FROM class_schedule WHERE class_schedule.classId = class.classId) AS classExistsInSchedule ";
         $query .= "FROM class ";
         $query .= "LEFT JOIN student ON class.classId = student.classId ";
         $query .= "WHERE class.schoolId = :schoolId ";

@@ -4,7 +4,11 @@ class ClassroomModel extends BaseModel
 {
     public function getClassroomsBySchool($schoolId, $offset, $limit, $search = null)
     {
-        $query = "SELECT classroomId,classroomRef, classroomNumberSeats, classroomProjector ";
+        $query = "SELECT
+                    classroomId,classroomRef,
+                    classroomNumberSeats,
+                    classroomProjector,
+                    EXISTS (SELECT 1 FROM class_schedule WHERE class_schedule.classroomId = classroom.classroomId) AS classroomExistsInSchedule ";
         $query .= "FROM classroom ";
         $query .= "WHERE classroom.schoolId = :schoolId ";
         if (!empty($search)) {

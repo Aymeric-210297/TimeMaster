@@ -4,7 +4,13 @@ class TeacherModel extends BaseModel
 {
     public function getTeachersBySchool($schoolId, $offset, $limit, $search = null)
     {
-        $query = "SELECT teacherId, teacherGivenName, teacherFamilyName, teacherGender, teacherNumberHours ";
+        $query = "SELECT
+                    teacherId,
+                    teacherGivenName,
+                    teacherFamilyName,
+                    teacherGender,
+                    teacherNumberHours,
+                    EXISTS (SELECT 1 FROM class_schedule WHERE class_schedule.teacherId = teacher.teacherId) AS teacherExistsInSchedule ";
         $query .= "FROM teacher ";
         $query .= "WHERE teacher.schoolId = :schoolId ";
         if (!empty($search)) {

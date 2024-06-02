@@ -7,13 +7,15 @@ require_once __DIR__ . "/../models/UserModel.php";
 require_once __DIR__ . "/../models/ClassModel.php";
 require_once __DIR__ . "/../models/SchoolModel.php";
 require_once __DIR__ . "/../models/StudentModel.php";
+require_once __DIR__ . "/../models/ScheduleModel.php";
 
 $classModel = new ClassModel($dbh, createErrorCallback(500));
 $userModel = new UserModel($dbh, createErrorCallback(500));
 $schoolModel = new SchoolModel($dbh, createErrorCallback(500));
 $studentModel = new StudentModel($dbh, createErrorCallback(500));
+$scheduleModel = new ScheduleModel($dbh, createErrorCallback(500));
 
-get('/app/schools/$schoolId/classes', function ($schoolId) use ($classModel, $userModel, $schoolModel) {
+get('/app/schools/$schoolId/classes', function ($schoolId) use ($classModel, $userModel, $schoolModel, $scheduleModel) {
     checkAuth($userModel, $schoolId);
 
     $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -42,7 +44,7 @@ get('/app/schools/$schoolId/classes', function ($schoolId) use ($classModel, $us
         'navbarItem' => 'CLASSES',
         'classes' => $classes,
         'page' => $page,
-        'pageCount' => $pageCount
+        'pageCount' => $pageCount,
     ]);
 });
 

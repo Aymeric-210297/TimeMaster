@@ -40,6 +40,12 @@
                         <td><?= out($class->classRef) ?></td>
                         <td><?= out($class->numberOfStudents) ?></td>
                         <td class="actions">
+                            <?php if ($class->classExistsInSchedule): ?>
+                                <a class="link success icon"
+                                    href="/app/schools/<?= $school->schoolId ?>/schedules/classes/<?= $class->classId ?>">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </a>
+                            <?php endif; ?>
                             <a class="link primary icon"
                                 href="/app/schools/<?= $school->schoolId ?>/classes/<?= $class->classId ?>">
                                 <i class="fa-solid fa-edit"></i>

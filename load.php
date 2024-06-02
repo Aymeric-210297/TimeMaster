@@ -56,6 +56,7 @@ require_once __DIR__ . "/controllers/ClassController.php";
 require_once __DIR__ . "/controllers/ClassroomController.php";
 require_once __DIR__ . "/controllers/SubjectController.php";
 require_once __DIR__ . "/controllers/CollaboratorController.php";
+require_once __DIR__ . "/controllers/ScheduleController.php";
 
 // Handle 404 error
 any('/404', function () {

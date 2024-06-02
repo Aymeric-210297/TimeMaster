@@ -1,6 +1,21 @@
 <?php
 class ScheduleModel extends BaseModel
 {
+    public function getSchedulesBySchool($schoolId)
+    {
+        $query = "SELECT scheduleId ";
+        $query .= "FROM schedule ";
+        $query .= "WHERE schoolId = :schoolId";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId,
+        ]);
+
+        return $sth->fetchAll();
+    }
+
+    // ALGO
+
     public function createSchedule($schoolId)
     {
         $query = "INSERT INTO schedule ";
@@ -14,7 +29,7 @@ class ScheduleModel extends BaseModel
 
         return $this->dbh->lastInsertId();
     }
-    public function createClassSchedule($tabClass_Schedule,$compteur)
+    public function createClassSchedule($tabClass_Schedule, $compteur)
     {
         $query = "INSERT INTO class_schedule ";
         $query .= "(scheduleId, dayId, timeslotId, classId, teacherId, classroomId, subjectId)";
@@ -49,10 +64,7 @@ class ScheduleModel extends BaseModel
         return $timePreferences;
     }
 
-
-
-    
-    public function getScheduleByClassId($classId)
+    public function getScheduleByClassId($schoolId, $classId)
     {
         $query = "
             SELECT cs.*, t.teacherGender, t.teacherFamilyName, r.classroomRef, s.subjectName, ts.timeslotStartHour, ts.timeslotEndHour, d.dayName
@@ -62,13 +74,61 @@ class ScheduleModel extends BaseModel
             JOIN subject s ON cs.subjectId = s.subjectId
             JOIN timeslot ts ON cs.timeslotId = ts.timeslotId
             JOIN day d ON cs.dayId = d.dayId
-            WHERE cs.classId = :classId
+            JOIN schedule sch ON cs.scheduleId = sch.scheduleId
+            WHERE cs.classId = :classId AND sch.schoolId = :schoolId
         ";
 
         $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId,
             ":classId" => $classId
         ]);
 
         return $sth->fetchAll(PDO::FETCH_OBJ); // Fetch results as objects
+    }
+
+    public function getScheduleByTeacherId($schoolId, $teacherId)
+    {
+        $query = "
+            SELECT cs.*, t.teacherGender, t.teacherFamilyName, r.classroomRef, s.subjectName, ts.timeslotStartHour, ts.timeslotEndHour, d.dayName, cl.classRef
+            FROM class_schedule cs
+            JOIN teacher t ON cs.teacherId = t.teacherId
+            JOIN classroom r ON cs.classroomId = r.classroomId
+            JOIN class cl ON cs.classId = cl.classId
+            JOIN subject s ON cs.subjectId = s.subjectId
+            JOIN timeslot ts ON cs.timeslotId = ts.timeslotId
+            JOIN day d ON cs.dayId = d.dayId
+            JOIN schedule sch ON cs.scheduleId = sch.scheduleId
+            WHERE cs.teacherId = :teacherId AND sch.schoolId = :schoolId
+        ";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId,
+            ":teacherId" => $teacherId
+        ]);
+
+        return $sth->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function getScheduleByClassroomId($schoolId, $classroomId)
+    {
+        $query = "
+            SELECT cs.*, t.teacherGender, t.teacherFamilyName, r.classroomRef, s.subjectName, ts.timeslotStartHour, ts.timeslotEndHour, d.dayName, cl.classRef
+            FROM class_schedule cs
+            JOIN teacher t ON cs.teacherId = t.teacherId
+            JOIN classroom r ON cs.classroomId = r.classroomId
+            JOIN class cl ON cs.classId = cl.classId
+            JOIN subject s ON cs.subjectId = s.subjectId
+            JOIN timeslot ts ON cs.timeslotId = ts.timeslotId
+            JOIN day d ON cs.dayId = d.dayId
+            JOIN schedule sch ON cs.scheduleId = sch.scheduleId
+            WHERE cs.classroomId = :classroomId AND sch.schoolId = :schoolId
+        ";
+
+        $sth = $this->executeQuery($query, [
+            ":schoolId" => $schoolId,
+            ":classroomId" => $classroomId
+        ]);
+
+        return $sth->fetchAll(PDO::FETCH_OBJ);
     }
 }

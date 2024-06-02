@@ -44,6 +44,12 @@
                         <td><?= out($teacher->teacherGender) ?></td>
                         <td><?= out($teacher->teacherNumberHours) ?></td>
                         <td class="actions">
+                            <?php if ($teacher->teacherExistsInSchedule): ?>
+                                <a class="link success icon"
+                                    href="/app/schools/<?= $school->schoolId ?>/schedules/teachers/<?= $teacher->teacherId ?>">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                </a>
+                            <?php endif; ?>
                             <a class="link primary icon"
                                 href="/app/schools/<?= $school->schoolId ?>/teachers/<?= $teacher->teacherId ?>">
                                 <i class="fa-solid fa-edit"></i>

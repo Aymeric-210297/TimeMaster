@@ -32,7 +32,7 @@ class SchoolModel extends BaseModel
 
     public function getSchoolById($schoolId)
     {
-        $query = "SELECT schoolId, schoolName, schoolAddress ";
+        $query = "SELECT schoolId, schoolName, schoolAddress, schoolAlgoGenerating ";
         $query .= "FROM school ";
         $query .= "WHERE schoolId = :schoolId";
 
@@ -140,5 +140,19 @@ class SchoolModel extends BaseModel
         ]);
 
         return true;
+    }
+
+    // ALGO
+
+    public function updateSchoolAlgoGeneratingById($schoolId, $schoolAlgoGenerating)
+    {
+        $query = "UPDATE school ";
+        $query .= "SET schoolAlgoGenerating = :schoolAlgoGenerating ";
+        $query .= "WHERE schoolId = :schoolId";
+
+        return $this->executeQuery($query, [
+            ":schoolAlgoGenerating" => [$schoolAlgoGenerating, PDO::PARAM_BOOL],
+            ":schoolId" => $schoolId
+        ]);
     }
 }

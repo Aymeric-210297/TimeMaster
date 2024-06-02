@@ -30,8 +30,9 @@ create table school
 (
     schoolId      int auto_increment
         primary key,
-    schoolAddress varchar(255) not null,
-    schoolName    varchar(255) not null,
+    schoolAddress        varchar(255)         not null,
+    schoolName           varchar(255)         not null,
+    schoolAlgoGenerating tinyint(1) default 0 not null,
 
     unique (schoolAddress)
 );

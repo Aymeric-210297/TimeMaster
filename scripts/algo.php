@@ -11,6 +11,7 @@ require __DIR__ . '/../models/DayModel.php';
 require __DIR__ . '/../models/TimeSlotModel.php';
 require __DIR__ . '/../models/ScheduleModel.php';
 require __DIR__ . '/../models/SubjectModel.php';
+require __DIR__ . '/../models/SchoolModel.php';
 
 
 
@@ -25,9 +26,14 @@ $dayModel = new DayModel($dbh);
 $timeSlotModel = new TimeSlotModel($dbh);
 $scheduleModel = new ScheduleModel($dbh);
 $subjectModel = new SubjectModel($dbh);
-$schoolId = 1;
+$schoolModel = new SchoolModel($dbh);
+$schoolId = intval($argv[1]);
 //$scheduleGenerator -> generateSchedule($schoolId);
 
+
+$schoolModel->updateSchoolAlgoGeneratingById($schoolId, true);
+
+// TODO: supprimer uniquement les données relatives à l'établissement
 
 $tables = array(
     "class_schedule",
@@ -344,3 +350,5 @@ for ($i = 0; $i < $nbClasse; $i++) {
 }
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4) . " => Ajout du tab dans la bdd\n");
+
+$schoolModel->updateSchoolAlgoGeneratingById($schoolId, false);
