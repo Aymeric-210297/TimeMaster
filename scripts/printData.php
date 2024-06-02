@@ -1,4 +1,6 @@
 <?php
+
+ 
 function generateUniqueRandom($min, $max, &$lastValues) {
     do {
         $newValue = rand($min, $max);

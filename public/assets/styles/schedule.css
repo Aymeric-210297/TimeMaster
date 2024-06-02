@@ -1,0 +1,55 @@
+
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* Style pour les cellules d'information */
+  .info-cell {
+    background-color: #dff0d8; /* Couleur de fond pour les cellules d'information (vert clair) */
+  
+  }
+  .null-cell {
+    background-color: #ffffff; /* Couleur de fond pour les cellules d'information (vert clair) */
+  
+  }
+  
+  a {
+    display: block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  /* Ajout d'un style pour les liens */
+  a:hover {
+    color: #0088cc;
+  }
+  
+  tr {
+    display: flex;
+  }
+  
+  th, td {
+    flex: 1; /* Fait en sorte que chaque cellule ait la même taille */
+  }
+  p{
+    margin: 0;
+    font-size: 13px;
+  }
+  td{
+    min-height: 47px;
+  }
+  .bold{
+    font-weight:bold ;
+  }

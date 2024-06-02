@@ -5,6 +5,7 @@
     <title><?= !empty($head["title"]) ? $head["title"] . " | " . APP_NAME : APP_NAME ?></title>
 
     <link rel="stylesheet" href="/assets/styles/index.css">
+    <link rel="stylesheet" href="/assets/styles/schedule.css">
     <link rel="stylesheet" href="/assets/styles/auth.css">
     <link rel="stylesheet" href="/assets/styles/form.css">
     <link rel="stylesheet" href="/assets/styles/button.css">
