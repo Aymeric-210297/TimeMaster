@@ -146,13 +146,18 @@ echo ("Ok => Ajout de jour en " . number_format($endTime - $startTime, 4) . " se
 //--------------------------
 //         CRENEAU
 //--------------------------
+
 $startTime = microtime(true);
-for ($i = 0; $i < $nbCreneau; $i++) {
-    for ($y = 0; $y < $nbEtablissement; $y++) {
+for ($y = 0; $y < $nbEtablissement; $y++) {
+    for ($i = 0; $i < $nbCreneau; $i++) {
+    
         $creneaux[3][$i] = $Etablissements[$y][2];
         AddCreneau($dbh, $creneaux, $i);
+        $creneaux[4][$i+($nbCreneau*$y)] = $dbh->lastInsertId();
+        
     }
 }
+
 $endTime = microtime(true);
 echo ("Ok => Ajout de creneau en " . number_format($endTime - $startTime, 4) . " secondes\n");
 
@@ -326,6 +331,34 @@ $compteur = 0;
 $endTime = microtime(true);
 echo ("Ok => Ajout de professeur en " . number_format($endTime - $startTime, 4) . " secondes\n");
 //--------------------------
+//   PRESENCE_PROFESSEUR
+//--------------------------
+$startTime = microtime(true);
+$probabilites = [
+    1 => 20,
+    2 => 20,
+    3 => 60
+];
+for ($a = 0; $a < $nbEtablissement; $a++) {
+    for ($i=0; $i < $nbProf; $i++) { 
+        for ($y = 0; $y < $nbJour; $y++) {
+            for ($j = 0; $j < $nbCreneau; $j++) {
+                $chiffreAleatoire = genererValeurAleatoire($probabilites);
+                
+                $presence_professeur[$compteur][0] = $i+($nbProf*$a)+1;
+                $presence_professeur[$compteur][1] = $creneaux[4][$j +($nbCreneau*$a)];
+                $presence_professeur[$compteur][2] = $y + 1;
+                $presence_professeur[$compteur][3] = $chiffreAleatoire;
+                AddPresenceProfesseur($dbh, $presence_professeur, $compteur);
+                $compteur++;
+            }
+        }
+    }
+}
+$endTime = microtime(true);
+echo ("Ok => Ajout de presence_professeur en " . number_format($endTime - $startTime, 4) . " secondes\n");
+$compteur = 0;
+//--------------------------
 //      SALLE CLASSE
 //--------------------------
 $startTime = microtime(true);
@@ -388,12 +421,14 @@ $compteur2 = 0;
 //--------------------------
 $startTime = microtime(true);
 
-for ($y = 0; $y < $nbProf * $nbEtablissement; $y++) {
-    $random_number = rand(1, $nbMatiere);
-    $professeur_matiere[$y][0] = $professeurs[$y][6];
-    $professeur_matiere[$y][1] = $random_number;
-    AddProfesseur_Matiere($dbh, $professeur_matiere, $y);
-    $professeur_matiere[$y][2] = $dbh->lastInsertId();
+for ($i=0; $i < $nbEtablissement; $i++) { 
+    for ($y = 0; $y < $nbProf ; $y++) {
+        $random_number = rand(1, $nbMatiere);
+        $professeur_matiere[$y+($nbProf*$i)][0] = $professeurs[$y+($nbProf*$i)][6];
+        $professeur_matiere[$y+($nbProf*$i)][1] = $random_number+($nbMatiere*$i);
+        AddProfesseur_Matiere($dbh, $professeur_matiere, $y+($nbProf*$i));
+        $professeur_matiere[$y+($nbProf*$i)][2] = $dbh->lastInsertId();
+    }
 }
 $endTime = microtime(true);
 echo ("Ok => Ajout de professeur_matiere en " . number_format($endTime - $startTime, 4) . " secondes\n");
@@ -612,31 +647,7 @@ for ($i = 0; $i < $nbSalleClasse * $nbEtablissement; $i++) {
 }
 $endTime = microtime(true);
 echo ("Ok => Ajout de salleClasse_disponibilite en " . number_format($endTime - $startTime, 4) . " secondes\n");
-//--------------------------
-//   PRESENCE_PROFESSEUR
-//--------------------------
-$startTime = microtime(true);
-$probabilites = [
-    1 => 20,
-    2 => 20,
-    3 => 60
-];
-for ($i = 0; $i < $nbEtablissement * $nbProf; $i++) {
-    for ($y = 0; $y < $nbJour; $y++) {
-        for ($j = 0; $j < $nbCreneau; $j++) {
-            $chiffreAleatoire = genererValeurAleatoire($probabilites);
-            $presence_professeur[$compteur][0] = $i + 1;
-            $presence_professeur[$compteur][1] = $j + 1;
-            $presence_professeur[$compteur][2] = $y + 1;
-            $presence_professeur[$compteur][3] = $chiffreAleatoire;
-            AddPresenceProfesseur($dbh, $presence_professeur, $compteur);
-            $compteur++;
-        }
-    }
-}
-$endTime = microtime(true);
-echo ("Ok => Ajout de presence_professeur en " . number_format($endTime - $startTime, 4) . " secondes\n");
-$compteur = 0;
+
 $endTimeAll = microtime(true);
 echo("--------------------\nTemps Total de la génération des données : " . number_format($endTimeAll - $startTimeAll, 4) . " secondes\n");
 

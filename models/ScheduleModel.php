@@ -126,7 +126,7 @@ class ScheduleModel extends BaseModel
     public function getScheduleByClassId($classId)
     {
         $query = "
-            SELECT cs.*, t.teacherGivenName, t.teacherFamilyName, r.classroomRef, s.subjectName, ts.timeslotStartHour, ts.timeslotEndHour, d.dayName
+            SELECT cs.*, t.teacherGender, t.teacherFamilyName, r.classroomRef, s.subjectName, ts.timeslotStartHour, ts.timeslotEndHour, d.dayName
             FROM class_schedule cs
             JOIN teacher t ON cs.teacherId = t.teacherId
             JOIN classroom r ON cs.classroomId = r.classroomId

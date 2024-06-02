@@ -91,6 +91,7 @@ for ($i=0; $i < $nbProf; $i++) {
     $profVariatif[4][$i] = $teacherModel->getSubjectIdsByTeacherId($profId); // id de la/les matiere qu'il donne
     $profVariatif[5][$i] = $teacherModel->getTeacherHoursByTeacherId($profId); // nombre restant d'heure a donné
 }
+//print_r($profVariatif[2][0]);
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => Ajout de profVariatif \n");
 //CLASSE
@@ -107,7 +108,7 @@ for ($i=0; $i < $nbClasse; $i++) {
     $classeVariatif[1][$i] = $tabJourIdCreneauId; // le tab Variatif    3 case : jourId    4 case : creneauId
     $classeVariatif[2][$i] = $classModel->getClassSubjectsByClassId($classeId); // 3 : id de la matiere     valeur = nombre d'heure
 }
-
+//print_r($classeVariatif[1][0]);
 $rankedTimeslots = $scheduleModel->getRankedTimeslotsBySchoolId($schoolId);
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => Ajout de classeVariatif \n");
@@ -157,13 +158,15 @@ $compteur2 = 0;
 
 
 
-
 $indices = range(0, $subjectNumber-1);
 
 shuffle($indices);
 
 
-$doublon = 0;
+$doublonMatiere = 0;
+$doublonProf = 0;
+$testSiProfPris = false;
+$testSiMatierePris = false;
 for ($i=0; $i < $nbClasse; $i++) { 
     for ($y=0; $y < $dayNumber; $y++) { 
         for ($j=0; $j < $timeSlotNumber; $j++) { 
@@ -173,19 +176,53 @@ for ($i=0; $i < $nbClasse; $i++) {
             $tabClass_Schedule[3][$compteur] = $classeVariatif[0][$i]; //id de la classe
             $tabClass_Schedule[6][$compteur] = null;
             //quelle matiere ? : 
-            if ($doublon == 0) {
-                foreach ($indices as $a) {
-                    if(isset($classeVariatif[2][$i][$subjects[$a]])){
-                        if ($classeVariatif[2][$i][$subjects[$a]] > 0) {
+            if ($doublonMatiere == 0) {
+                foreach ($indices as $compteurMatiere) {
+                    if(isset($classeVariatif[2][$i][$subjects[$compteurMatiere]])){
+                        if ($classeVariatif[2][$i][$subjects[$compteurMatiere]] > 0) {
                             
-                            $tabClass_Schedule[6][$compteur] = $subjects[$a];//id de la matiere
-                            if ($classeVariatif[2][$i][$subjects[$a]] % 2 == 0) {
-                                $classeVariatif[2][$i][$subjects[$a]] -= 2;
-                                $doublon = $subjects[$a];
+                            $tabClass_Schedule[6][$compteur] = $subjects[$compteurMatiere];//id de la matiere
+                            $testSiProfPris = false;
+                            for ($compteurProf=0; $compteurProf < $nbProf-1; $compteurProf++) { 
+                                //echo($compteurProf . "\n");
+                                for ($compteurProfMatiere=0; $compteurProfMatiere < count($profVariatif[4][$compteurProf]); $compteurProfMatiere++) { 
+                                    //print_r($profVariatif[2][$compteurProf]);
+                                    //echo("jourId :" . $days[$y] . " creneauId =" . $timeSlots[$j] . "\n");
+                                    //print_r($timeSlots);
+                                    if ($profVariatif[4][$compteurProf][$compteurProfMatiere] == $subjects[$compteurMatiere] && ($profVariatif[5][$compteurProf] >= $classeVariatif[2][$i][$subjects[$compteurMatiere]]) && $profVariatif[2][$compteurProf][$days[$y]][$timeSlots[$j]] == "available") {
+                                        //echo("comtpeurProf : 1 : $compteurProf \n");
+                                        //echo("id matiereProf : $subjects[$compteurMatiere] \n");
+                                        //la on est sure que ce prof donne au moins cette matiere on va donc le mettre : 
+                                        $tabClass_Schedule[4][$compteur] = $profVariatif[0][$compteurProf]; //id du prof   
+                                        
+                                        $testSiProfPris = true;
+                                        break;
+                                    }
+                                }
+                                if ($testSiProfPris) {
+                                    break;
+                                }
+                                
+                            }
+                            if (!$testSiProfPris) {
+                                
+                                $tabClass_Schedule[4][$compteur] = null;
+                            }
+                            if ($classeVariatif[2][$i][$subjects[$compteurMatiere]] % 2 == 0) {
+                                //echo("comtpeurProf : 2 : $compteurProf \n");
+                                $profVariatif[5][$compteurProf] -= 2;
+                                $classeVariatif[2][$i][$subjects[$compteurMatiere]] -= 2;
+                                $doublonMatiere = $subjects[$compteurMatiere];
+                                $doublonProf = $profVariatif[0][$compteurProf];
+                                //echo("id matiere     : $subjects[$compteurMatiere] \n");
+                                
+                                
                             }
                             else {
-                                $classeVariatif[2][$i][$subjects[$a]] -= 1;
-                                $doublon = 0;
+                                $profVariatif[5][$compteurProf] -= 1;
+                                $classeVariatif[2][$i][$subjects[$compteurMatiere]] -= 1;
+                                $doublonMatiere = 0;
+                                
                             }
                             
                             break;
@@ -194,12 +231,13 @@ for ($i=0; $i < $nbClasse; $i++) {
                 }
             }
             else {
-                $tabClass_Schedule[6][$compteur] = $doublon;
-                $doublon = 0;
+                $tabClass_Schedule[6][$compteur] = $doublonMatiere;
+                $tabClass_Schedule[4][$compteur] = $doublonProf;
+                $doublonMatiere = 0;
             }
             
              
-            $tabClass_Schedule[4][$compteur] = 1; //id du prof                  
+                           
             $tabClass_Schedule[5][$compteur] = 1; //id de la salle de classe
              
             $compteur++; 
@@ -207,7 +245,7 @@ for ($i=0; $i < $nbClasse; $i++) {
     }
     echo($compteur . "\n");
 }
-//print_r($tabClass_Schedule[6]);
+
 $compteur = 0;
 $endTime = microtime(true);
 echo (number_format($endTime - $startTime, 4)." => remplissage du tab\n");
@@ -215,12 +253,17 @@ $startTime = microtime(true);
 for ($i=0; $i < $nbClasse; $i++) { 
     for ($y=0; $y < $dayNumber; $y++) { 
         for ($j=0; $j < $timeSlotNumber; $j++) { 
-            if ($tabClass_Schedule[6][$compteur] != null) {
-                
-                $scheduleModel->createClassSchedule($tabClass_Schedule, $compteur);
-            }
+            if (isset($tabClass_Schedule[6][$compteur]) && $tabClass_Schedule[6][$compteur] != null ) {
+                if (isset($tabClass_Schedule[4][$compteur]) && $tabClass_Schedule[4][$compteur] != null) {
+                    $scheduleModel->createClassSchedule($tabClass_Schedule, $compteur);
+                }
+                else {
+                    echo("pas assez de prof ou aucun prof disponible \n");
+                }
             
-            $compteur++; 
+            } 
+
+            $compteur++;
         }
         
     }
