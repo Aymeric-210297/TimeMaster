@@ -1,0 +1,112 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #F2F2F2;
+}
+
+td, th {
+  text-align: left;
+  padding: 16px;
+}
+
+td.actions {
+    display: flex;
+    gap: 15px;
+    float: right;
+}
+
+td.actions i {
+  font-size: 1.25em;
+  line-height: .05em;
+  vertical-align: -.075em;
+}
+
+thead th:first-child {
+    border-top-left-radius: .375rem;
+}
+
+thead th:last-child {
+    border-top-right-radius: .375rem;
+}
+
+tbody tr:last-child > td:first-child {
+    border-bottom-left-radius: .375rem;
+}
+
+tbody tr:last-child > td:last-child {
+    border-bottom-right-radius: .375rem;
+}
+
+.table-top {
+    margin-bottom: 15px;
+}
+
+.pagination {
+    margin-top: 15px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pagination a {
+    border-radius: .375rem;
+    display: inline-block;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.pagination > div > a {
+    padding: 10px 18px;
+}
+
+.pagination > a {
+    padding: 12px 16px;
+}
+
+.pagination > a.left > i {
+    margin-right: 4px;
+}
+
+.pagination > a.right > i {
+    margin-left: 4px;
+}
+
+.pagination a > i {
+  font-size: 1.25em;
+  line-height: .05em;
+  vertical-align: -.075em;
+}
+
+.pagination a:hover:not(.active):not(.disabled) {
+    background-color: #F1F1F1;
+}
+
+.pagination a.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.pagination a.disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    margin: 10px;
+}
+
+.pagination > div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

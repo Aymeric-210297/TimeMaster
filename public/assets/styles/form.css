@@ -42,14 +42,40 @@ form div input.error:focus {
     border: 2px solid var(--error-color);
 }
 
-.one-line {
+form .one-line {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.one-line div {
+form .one-line div {
     flex-grow: 1;
     min-width: 250px;
+}
+
+form.search > input {
+    width: 300px;
+    padding: 9px;
+    border: 1px solid #D1D5DB;
+    font-size: 16px;
+    border-top-left-radius: .375rem;
+    border-bottom-left-radius: .375rem;
+}
+
+form.search > input:focus {
+    padding: 8px;
+    border: 2px solid var(--primary-color);
+}
+
+form.search > button {
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    border-top-right-radius: .375rem;
+    border-bottom-right-radius: .375rem;
+    margin-left: -7px;
 }
