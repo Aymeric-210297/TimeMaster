@@ -33,9 +33,7 @@ $schoolId = intval($argv[1]);
 
 $schoolModel->updateSchoolAlgoGeneratingById($schoolId, true);
 
-// TODO: supprimer uniquement les données relatives à l'établissement
-
-$tables = array(
+/*$tables = array(
     "class_schedule",
     "schedule_day",
     "schedule_timeslot",
@@ -50,7 +48,13 @@ foreach ($tables as $table) {
     $sql = "ALTER TABLE $table AUTO_INCREMENT = 1;";
     $dbh->exec($sql);
     echo ("Ok => Supression de : " . $table . "\n");
-}
+}*/
+
+$scheduleModel->deleteClassSchedulesBySchoolId($schoolId);
+echo ("Ok => Supression de : class_schedule\n");
+$scheduleModel->deleteSchedulesBySchoolId($schoolId);
+echo ("Ok => Supression de : schedule\n");
+
 echo "Les données de la base de données ont été réinitialisées avec succès.\n";
 $subjectNumber = $subjectModel->getNumberOfSubjectBySchoolId($schoolId);
 $dayNumber = $dayModel->getNumberOfDaysBySchoolId($schoolId);
@@ -201,7 +205,7 @@ $testSiProfPris = false;
 $testSiSalleClassePris = false;
 $testSiMatierePris = false;
 $timeSlotsDays = $timeSlotModel->getTimePreferencesBySchoolId($schoolId);
-print_r($days);
+
 
 for ($i = 0; $i < $nbClasse; $i++) {
     $compteurCombineDayTSlot = 0;

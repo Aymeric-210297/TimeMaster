@@ -131,4 +131,26 @@ class ScheduleModel extends BaseModel
 
         return $sth->fetchAll(PDO::FETCH_OBJ);
     }
+
+    public function deleteClassSchedulesBySchoolId($schoolId)
+    {
+        $query = "DELETE csch FROM class_schedule csch INNER JOIN schedule sch ON sch.scheduleId = csch.scheduleId WHERE sch.schoolId = :schoolId";
+
+        $this->executeQuery($query, [
+            ":schoolId" => $schoolId,
+        ]);
+
+        return true;
+    }
+
+    public function deleteSchedulesBySchoolId($schoolId)
+    {
+        $query = "DELETE FROM schedule WHERE schoolId = :schoolId";
+
+        $this->executeQuery($query, [
+            ":schoolId" => $schoolId,
+        ]);
+
+        return true;
+    }
 }
