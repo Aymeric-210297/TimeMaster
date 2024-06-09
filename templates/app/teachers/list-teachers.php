@@ -44,7 +44,7 @@
                         <td><?= out($teacher->teacherGender) ?></td>
                         <td><?= out($teacher->teacherNumberHours) ?></td>
                         <td class="actions">
-                            <?php if ($teacher->teacherExistsInSchedule): ?>
+                            <?php if (!$school->schoolAlgoGenerating && $teacher->teacherExistsInSchedule): ?>
                                 <a class="link success icon"
                                     href="/app/schools/<?= $school->schoolId ?>/schedules/teachers/<?= $teacher->teacherId ?>">
                                     <i class="fa-solid fa-calendar-days"></i>

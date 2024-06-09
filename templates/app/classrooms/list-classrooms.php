@@ -43,7 +43,7 @@
                         <td><?php if (out($classroom->classroomProjector) == 1): ?>Oui<?php else: ?>Non<?php endif ?></td>
 
                         <td class="actions">
-                            <?php if ($classroom->classroomExistsInSchedule): ?>
+                            <?php if (!$school->schoolAlgoGenerating && $classroom->classroomExistsInSchedule): ?>
                                 <a class="link success icon"
                                     href="/app/schools/<?= $school->schoolId ?>/schedules/classrooms/<?= $classroom->classroomId ?>">
                                     <i class="fa-solid fa-calendar-days"></i>

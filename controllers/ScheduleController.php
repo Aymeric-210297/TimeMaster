@@ -14,7 +14,7 @@ $timeSlotModel = new TimeSlotModel($dbh, createErrorCallback(500));
 $scheduleModel = new ScheduleModel($dbh, createErrorCallback(500));
 $classModel = new ClassModel($dbh, createErrorCallback(500));
 
-get('/app/schools/$schoolId/schedules', function ($schoolId) use ($userModel, $schoolModel, $scheduleModel, $timeSlotModel, $dayModel) {
+get('/app/schools/$schoolId/schedules', function ($schoolId) use ($userModel, $schoolModel, $scheduleModel) {
     checkAuth($userModel, $schoolId);
 
     $school = $schoolModel->getSchoolById($schoolId);
@@ -49,6 +49,13 @@ get('/app/schools/$schoolId/schedules/generate', function ($schoolId) use ($user
 get('/app/schools/$schoolId/schedules/$entity/$entityId', function ($schoolId, $entity, $entityId) use ($userModel, $schoolModel, $dayModel, $timeSlotModel, $scheduleModel) {
     checkAuth($userModel, $schoolId);
 
+    $school = $schoolModel->getSchoolById($schoolId);
+
+    if ($school->schoolAlgoGenerating) {
+        createFlashMessage("Les horaires sont en cours de génération", "Vous devez attendre que les horaires finissent de se générer", 'warning');
+        redirect();
+    }
+
     switch ($entity) {
         case 'classes':
             $schedule = $scheduleModel->getScheduleByClassId($schoolId, $entityId);
@@ -62,8 +69,6 @@ get('/app/schools/$schoolId/schedules/$entity/$entityId', function ($schoolId, $
         default:
             render('error', '404');
     }
-
-    $school = $schoolModel->getSchoolById($schoolId);
 
     $days = $dayModel->recupJourParEtablissement($schoolId);
     $timeslots = $timeSlotModel->recupCreneauParEtablissement($schoolId);
